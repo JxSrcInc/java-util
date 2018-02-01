@@ -1,6 +1,6 @@
 package jxsource.tool.folder.search.filter;
 
-import jxsource.tool.folder.file.AbstractJFile;
+import jxsource.tool.folder.file.JFile;
 
 /**
  * getStatus() method determines the argument (JFile) is 
@@ -37,9 +37,9 @@ public abstract class Filter {
 	 * @param file
 	 * @return
 	 */
-	public abstract int getStatus(AbstractJFile file);
+	public abstract int getStatus(JFile file);
 
-	public int accept(AbstractJFile file) {
+	public int accept(JFile file) {
 		if (!reject) {
 			switch (getStatus(file)) {
 			case ACCEPT:

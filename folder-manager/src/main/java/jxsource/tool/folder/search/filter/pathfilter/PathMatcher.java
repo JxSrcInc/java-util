@@ -7,7 +7,7 @@ import java.util.StringTokenizer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import jxsource.tool.folder.file.AbstractJFile;
+import jxsource.tool.folder.file.JFile;
 import jxsource.tool.folder.search.filter.Filter;
 import jxsource.tool.folder.search.match.AnyMatch;
 import jxsource.tool.folder.search.match.Match;
@@ -52,7 +52,7 @@ public class PathMatcher {
 	private boolean endMatches(int mIndex) {
 		return mIndex == matches.length - 1;
 	}
-	public int start(AbstractJFile file) {
+	public int start(JFile file) {
 		String path = file.getPath();
 		StringTokenizer st = new StringTokenizer(path, "\\");
 		List<String> list = new ArrayList<String>();

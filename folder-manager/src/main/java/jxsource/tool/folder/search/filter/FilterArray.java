@@ -3,7 +3,7 @@ package jxsource.tool.folder.search.filter;
 import java.util.HashSet;
 import java.util.Set;
 
-import jxsource.tool.folder.file.AbstractJFile;
+import jxsource.tool.folder.file.JFile;
 
 public class FilterArray extends Filter{
 
@@ -16,7 +16,7 @@ public class FilterArray extends Filter{
 		filters.add(filter);
 	}
 	@Override
-	public int getStatus(AbstractJFile file) {
+	public int getStatus(JFile file) {
 		boolean pass = false;
 		for(Filter filter: filters) {
 			int status = filter.accept(file);

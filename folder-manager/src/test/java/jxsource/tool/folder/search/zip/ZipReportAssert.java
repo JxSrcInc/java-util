@@ -10,6 +10,7 @@ import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 
 import jxsource.tool.folder.file.AbstractJFile;
+import jxsource.tool.folder.file.JFile;
 import jxsource.tool.folder.search.util.Util;
 import jxsource.tool.folder.search.zip.ZipReportAction;
 
@@ -62,10 +63,10 @@ public class ZipReportAssert extends ZipReportAction {
 	}
 
 	@Override
-	public void report(String url, List<AbstractJFile> extractFiles) {
+	public void report(String url, List<JFile> extractFiles) {
 //		assertTrue(extractFiles.size() > 0);
 		log.debug("find "+extractFiles.size()+" entries in "+url);
-		for (AbstractJFile f : extractFiles) {
+		for (JFile f : extractFiles) {
 			if (exts != null) {
 				assertThat(f.getExt(), contains(exts));
 			}

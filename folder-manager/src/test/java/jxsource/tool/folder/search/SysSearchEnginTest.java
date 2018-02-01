@@ -16,6 +16,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import jxsource.tool.folder.file.AbstractJFile;
+import jxsource.tool.folder.file.JFile;
 import jxsource.tool.folder.search.action.CollectionAction;
 import jxsource.tool.folder.search.filter.Filter;
 import jxsource.tool.folder.search.filter.pathfilter.ExtFilter;
@@ -26,10 +27,10 @@ import jxsource.tool.folder.search.hamcrestMatcher.MatcherFactory;
 import jxsource.tool.folder.search.hamcrestMatcher.IncludeStringMatcher;
 
 public class SysSearchEnginTest {
-	private Matcher<AbstractJFile> hasExt(final String exts) {
-		   return new BaseMatcher<AbstractJFile>() {
+	private Matcher<JFile> hasExt(final String exts) {
+		   return new BaseMatcher<JFile>() {
 		      public boolean matches(final Object item) {
-		         final AbstractJFile f = (AbstractJFile) item;
+		         final JFile f = (JFile) item;
 		         return exts.indexOf(f.getExt()) >= 0 || f.isDirectory();
 		      }
 		   
@@ -53,9 +54,9 @@ public class SysSearchEnginTest {
 		engin.setFilter(new ExtFilter("java, class"));
 		engin.search(new File(root));
 		assertThat(root, is(ca.getUrl()));
-		List<AbstractJFile> files = ca.getFiles();
+		List<JFile> files = ca.getFiles();
 		assertThat(files, everyItem(hasProperty("ext", MatcherFactory.createIncludeStringMatcher("java, class"))));
-		for(AbstractJFile f: files) {
+		for(JFile f: files) {
 			assertThat(f, hasExt("java, class"));			
 		}
 	}
@@ -70,9 +71,9 @@ public class SysSearchEnginTest {
 		engin.setFilter(new ExtFilter("jaVa, Class").setIgnoreCase(true));
 		engin.search(new File(root));
 		assertThat(root, is(ca.getUrl()));
-		List<AbstractJFile> files = ca.getFiles();
+		List<JFile> files = ca.getFiles();
 		assertThat(files, everyItem(hasProperty("ext", MatcherFactory.createIncludeStringMatcher("java, class"))));
-		for(AbstractJFile f: files) {
+		for(JFile f: files) {
 			assertThat(f, hasExt("java, class"));			
 		}
 	}
@@ -86,9 +87,9 @@ public class SysSearchEnginTest {
 		engin.setFilter(new ExtFilter("jaV").setIgnoreCase(true).setLike(true));
 		engin.search(new File(root));
 		assertThat(root, is(ca.getUrl()));
-		List<AbstractJFile> files = ca.getFiles();
+		List<JFile> files = ca.getFiles();
 		assertThat(files, everyItem(hasProperty("ext", MatcherFactory.createIncludeStringMatcher("java"))));
-		for(AbstractJFile f: files) {
+		for(JFile f: files) {
 			assertThat(f, hasExt("java, class"));			
 		}
 	}
@@ -103,7 +104,7 @@ public class SysSearchEnginTest {
 		engin.setFilter(new PathFilter("**/src"));
 		engin.search(new File(root));
 		assertThat(root, is(ca.getUrl()));
-		List<AbstractJFile> files = ca.getFiles();
+		List<JFile> files = ca.getFiles();
 		assertThat(files, everyItem(hasProperty("path", MatcherFactory.createIncludeStringMatcher("src"))));
 	}
 
@@ -119,7 +120,7 @@ public class SysSearchEnginTest {
 		engin.setFilter(filter);
 		engin.search(new File(root));
 		assertThat(root, is(ca.getUrl()));
-		List<AbstractJFile> files = ca.getFiles();
+		List<JFile> files = ca.getFiles();
 		assertThat(files, everyItem(hasProperty("path", MatcherFactory.createExcludeStringMatcher("src"))));
 	}
 
@@ -133,7 +134,7 @@ public class SysSearchEnginTest {
 		engin.setFilter(new FullNameFilter().add("Data.java"));
 		engin.search(new File(root));
 		assertThat(root, is(ca.getUrl()));
-		List<AbstractJFile> files = ca.getFiles();
+		List<JFile> files = ca.getFiles();
 		assertThat(files, everyItem(hasProperty("name", is("Data.java"))));
 	}
 
@@ -147,7 +148,7 @@ public class SysSearchEnginTest {
 		engin.setFilter(new NameFilter().add("Data"));
 		engin.search(new File(root));
 		assertThat(root, is(ca.getUrl()));
-		List<AbstractJFile> files = ca.getFiles();
+		List<JFile> files = ca.getFiles();
 		assertThat(files, hasSize(2));
 		assertThat(files, everyItem(hasProperty("name", containsString("Data"))));
 	}
@@ -164,7 +165,7 @@ public class SysSearchEnginTest {
 		engin.setFilter(filter);
 		filter.setNext(new NameFilter().add("Data"));
 		engin.search(new File(root));
-		List<AbstractJFile> files = ca.getFiles();
+		List<JFile> files = ca.getFiles();
 		assertThat(files, hasSize(1));
 		assertThat(files, everyItem(hasProperty("path", MatcherFactory.createExcludeStringMatcher("src"))));
 		assertThat(files, everyItem(hasProperty("name", containsString("Data"))));

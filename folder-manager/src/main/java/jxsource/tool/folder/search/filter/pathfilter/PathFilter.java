@@ -1,6 +1,6 @@
 package jxsource.tool.folder.search.filter.pathfilter;
 
-import jxsource.tool.folder.file.AbstractJFile;
+import jxsource.tool.folder.file.JFile;
 import jxsource.tool.folder.search.filter.Filter;
 import jxsource.tool.folder.search.match.Match;
 import jxsource.tool.folder.search.match.MatchFactory;
@@ -17,7 +17,7 @@ public class PathFilter extends Filter{
 		matches = MatchFactory.createPathMatch(pathMatch);
 	}
 	@Override
-	public int getStatus(AbstractJFile file) {
+	public int getStatus(JFile file) {
 		PathMatcher pfp = new PathMatcher(matches);
 		return pfp.start(file);
 	}

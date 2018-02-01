@@ -3,7 +3,7 @@ package jxsource.tool.folder.search.filter.pathfilter;
 import java.util.HashSet;
 import java.util.Set;
 
-import jxsource.tool.folder.file.AbstractJFile;
+import jxsource.tool.folder.file.JFile;
 import jxsource.tool.folder.search.filter.Filter;
 
 /**
@@ -22,7 +22,7 @@ public class FullNameFilter extends AbstractFilter {
 		return add(multiMatch.split(","));
 	}
 	@Override
-	public int getStatus(AbstractJFile file) {
+	public int getStatus(JFile file) {
 		if(file.isDirectory()) {
 			return Filter.PASS;
 		}

@@ -26,11 +26,12 @@ public class ZipSearchTemplate {
 	private File rootDir;
 	private SysSearchEngine se;
 	
-	private ZipSearchTemplate(File rootDir, Filter sysFilter, Filter zipFilter, ZipReportAction zipReport) {
+	private ZipSearchTemplate(File rootDir, Filter sysFilter, Filter zipFilter, ZipReportAction zipReport, boolean cache) {
 		se = new SysSearchEngine();
 		se.setFilter(sysFilter==null?new ZipFilter():sysFilter); // select archive file only
 		
 		ZipExtractAction zipExtractAction = new ZipExtractAction()
+				.setCache(cache)
 				.setReport(zipReport);
 		if(zipFilter != null) {
 			zipExtractAction.setFilter(zipFilter);
@@ -50,6 +51,7 @@ public class ZipSearchTemplate {
 		Filter zipFilter;
 		Filter sysFilter;
 		ZipReportAction zipReport;
+		boolean cache;
 		public ZipSearchTemplateBuilder setRootDir(File rootDir) {
 			this.rootDir = rootDir;
 			return this;
@@ -66,9 +68,13 @@ public class ZipSearchTemplate {
 			this.sysFilter = sysFilter;
 			return this;
 		}
+		public ZipSearchTemplateBuilder setCache(boolean cache) {
+			this.cache = cache;
+			return this;
+		}
 		public ZipSearchTemplate build() {
 			return new ZipSearchTemplate(rootDir, sysFilter, zipFilter, 
-					zipReport!=null?zipReport:new ZipReportPrinter());
+					zipReport!=null?zipReport:new ZipReportPrinter(), cache);
 		}
 	}
 }

@@ -4,25 +4,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class FileManager {
-	private Map<String, AbstractJFile> map = new HashMap<String, AbstractJFile>();
-	private static FileManager me;
+	private Map<String, JFile> map = new HashMap<String, JFile>();
 	
-	private FileManager() {
+	FileManager() {
 		
 	}
-	public void add(AbstractJFile file) {
+	public void add(JFile file) {
 		map.put(file.getPath(), file);
 	}
-	public AbstractJFile get(String path) {
+	public JFile get(String path) {
 		return map.get(path);
 	}
-	public static FileManager getInstance() {
-		if(me == null) {
-			me = new FileManager();
-		}
-		return me;
-	}
-	public Map<String, AbstractJFile> getMap() {
+	public Map<String, JFile> getMap() {
 		return map;
 	}
 	public void reset() {

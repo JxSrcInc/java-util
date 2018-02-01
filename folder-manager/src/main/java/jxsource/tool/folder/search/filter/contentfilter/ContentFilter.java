@@ -6,14 +6,14 @@ import java.io.InputStream;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import jxsource.tool.folder.file.AbstractJFile;
+import jxsource.tool.folder.file.JFile;
 import jxsource.tool.folder.search.filter.Filter;
 
 public abstract class ContentFilter extends Filter {
 	private static Logger log = LogManager.getLogger(ContentFilter.class);
 
 	@Override
-	public int getStatus(AbstractJFile file) {
+	public int getStatus(JFile file) {
 		if (file.isDirectory()) {
 			// a safe way to handle directory
 			return PASS;

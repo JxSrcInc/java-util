@@ -7,7 +7,7 @@ import java.util.zip.ZipInputStream;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import jxsource.tool.folder.file.AbstractJFile;
+import jxsource.tool.folder.file.JFile;
 import jxsource.tool.folder.search.ZipSearchEngine;
 import jxsource.tool.folder.search.filter.Filter;
 import jxsource.tool.folder.search.util.Util;
@@ -25,19 +25,21 @@ public class ZipExtractAction implements Action {
 	private Filter filter;
 	private ZipReportAction reportAction;
 	private CollectionAction ca = new CollectionAction();
+	private boolean cache;
 
-	public void proc(AbstractJFile f) {
+	public void proc(JFile f) {
 		// skip all non-archive files.
 		if (Util.isArchive(f)) {
 			log.debug("search "+f.getPath());
 			String url = f.getPath();
-			ca.reset();;
+			ca.reset();
 			try {
 				ZipInputStream in = new ZipInputStream(new FileInputStream(f.getPath()));
 				ZipSearchEngine engin = new ZipSearchEngine();
 				engin.addAction(ca);
 				engin.setFilter(filter);
 				engin.search(in);
+				engin.setCache(cache);
 				if(reportAction != null) {
 					reportAction.report(url, ca.getFiles());
 				}
@@ -47,7 +49,7 @@ public class ZipExtractAction implements Action {
 		}
 	}
 
-	public List<AbstractJFile> getResult() {
+	public List<JFile> getResult() {
 		return ca.getFiles();
 	}
 	public Filter getFilter() {
@@ -65,6 +67,15 @@ public class ZipExtractAction implements Action {
 
 	public ZipExtractAction setReport(ZipReportAction report) {
 		this.reportAction = report;
+		return this;
+	}
+
+	public boolean isCache() {
+		return cache;
+	}
+
+	public ZipExtractAction setCache(boolean cache) {
+		this.cache = cache;
 		return this;
 	}
 

@@ -16,7 +16,7 @@ public class FileManagerTest {
 
 	@Test
 	public void test() {
-		FileManager fileManager = FileManager.getInstance();
+		FileManager fileManager = FileManagerHolder.get();
 		fileManager.reset();
 		String root = "./test-data";
 		SysSearchEngine engin = new SysSearchEngine();
@@ -25,8 +25,8 @@ public class FileManagerTest {
 		engin.addAction(ca);
 		engin.search(new File(root));
 		assertThat(root, is(ca.getUrl()));
-		List<AbstractJFile> files = ca.getFiles();
-		Map<String, AbstractJFile> map = fileManager.getMap();
+		List<JFile> files = ca.getFiles();
+		Map<String, JFile> map = fileManager.getMap();
 		assertThat(files.size(), is(map.size()));
 	}
 }
