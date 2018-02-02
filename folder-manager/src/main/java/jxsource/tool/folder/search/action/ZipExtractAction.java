@@ -39,7 +39,6 @@ public class ZipExtractAction implements Action {
 				engin.addAction(ca);
 				engin.setFilter(filter);
 				engin.search(in);
-				engin.setCache(cache);
 				if(reportAction != null) {
 					reportAction.report(url, ca.getFiles());
 				}

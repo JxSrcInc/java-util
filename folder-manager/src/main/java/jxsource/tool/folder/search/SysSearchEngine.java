@@ -28,13 +28,9 @@ public class SysSearchEngine extends SearchEngine {
 	public void search(File file) {
 		SysFile sysFile = new SysFile(file);
 		int status = consum(sysFile);
-		if(status == Filter.ACCEPT && !file.isDirectory() && cache) {
-			try {
-				new CacheFile<SysFile>(sysFile);
-			} catch (IOException e) {
-				throw new RuntimeException("Error when creating CacheFile "+sysFile.getPath(), e);
-			}
-		}
+//		if(status == Filter.ACCEPT && !file.isDirectory() && cache) {
+//			new CacheFile(sysFile);
+//		}
 		if(status == Filter.ACCEPT || status == Filter.PASS) {
 			if (file.isDirectory()) {
 				for (File child : file.listFiles()) {

@@ -13,14 +13,18 @@ import java.io.OutputStream;
  *
  * @param <T>
  */
-public class CacheFile<T extends AbstractJFile> implements JFile{
+public class CacheFile implements JFile{
 
-	private T cache;
+	private JFile cache;
 	private byte[] content;
 	private ByteArrayInputStream inputStream;
-	public CacheFile(T cache) throws IOException {
+	public CacheFile(JFile cache) {
 		this.cache = cache;
-		loadContent();
+		try {
+			loadContent();
+		} catch (IOException e) {
+			throw new RuntimeException("Error when loading content for "+cache.getPath(), e);
+		}
 		// re-register in FileManager with the same key (file path) 
 		// but different value - replace T with CacheFile<T>
 		// refer AbstractJFile.setPath() method

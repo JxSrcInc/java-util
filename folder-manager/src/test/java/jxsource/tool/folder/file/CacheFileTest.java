@@ -17,7 +17,7 @@ public class CacheFileTest {
 	public void test() throws IOException {
 		String path = "./test-data/resources/pom.xml";
 		SysFile file = new SysFile(new File(path));
-		CacheFile<SysFile> cache = new CacheFile<SysFile>(file);
+		CacheFile cache = new CacheFile(file);
 		InputStream in = new FileInputStream(path);
 		String content = Util.getContent(in);
 		in.close();

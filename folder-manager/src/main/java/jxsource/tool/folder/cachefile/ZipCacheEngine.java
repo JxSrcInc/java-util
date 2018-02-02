@@ -1,7 +1,8 @@
-package jxsource.tool.folder.search;
+package jxsource.tool.folder.cachefile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
 import java.util.zip.ZipInputStream;
@@ -13,6 +14,9 @@ import jxsource.tool.folder.file.AbstractJFile;
 import jxsource.tool.folder.file.CacheFile;
 import jxsource.tool.folder.file.JFile;
 import jxsource.tool.folder.file.ZipFile;
+import jxsource.tool.folder.search.ZipSearchEngine;
+import jxsource.tool.folder.search.action.Action;
+import jxsource.tool.folder.search.action.CacheFileAction;
 import jxsource.tool.folder.search.action.FilePrintAction;
 import jxsource.tool.folder.search.filter.Filter;
 import jxsource.tool.folder.search.filter.pathfilter.ExtFilter;
@@ -23,21 +27,15 @@ import jxsource.tool.folder.search.filter.pathfilter.ExtFilter;
  * @author JiangJxSrc
  *
  */
-public class ZipSearchEngine extends SearchEngine {
-	private static Logger log = LogManager.getLogger(ZipSearchEngine.class);
-	public void search(ZipInputStream zis) throws ZipException, IOException {
-		ZipEntry entry;
-		JFile parentNode = null;
-		boolean ok = true;
-		while ((entry = zis.getNextEntry()) != null) {
-			JFile currNode = new ZipFile(entry, zis);
-			consum(currNode);
-//			if(consum(currNode) == Filter.ACCEPT && !currNode.isDirectory() && cache) {
-//					currNode = new CacheFile(currNode);
-//			}
-		}
+public class ZipCacheEngine extends ZipSearchEngine {
+	public ZipCacheEngine() {
+		super.addAction(new CacheFileAction());		
+	}
 
-		zis.close();
+	@Override
+	public void setActions(Set<Action> actions) {
+		actions.add(new CacheFileAction());
+		super.setActions(actions);
 	}
 	
 

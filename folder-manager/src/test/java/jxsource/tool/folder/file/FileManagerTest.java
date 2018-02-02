@@ -9,6 +9,7 @@ import java.util.Map;
 
 import org.junit.Test;
 
+import jxsource.tool.folder.cachefile.SysCacheEngine;
 import jxsource.tool.folder.search.SysSearchEngine;
 import jxsource.tool.folder.search.action.CollectionAction;
 
@@ -19,11 +20,11 @@ public class FileManagerTest {
 		CacheFileManager fileManager = CacheFileManagerHolder.get();
 		fileManager.reset();
 		String root = "./test-data";
-		SysSearchEngine engin = new SysSearchEngine();
+		SysCacheEngine engin = new SysCacheEngine();
 		CollectionAction ca = new CollectionAction();
 		ca.setUrl(root);
 		engin.addAction(ca);
-		engin.setCache(true);
+//		engin.setCache(true);
 		engin.search(new File(root));
 		assertThat(root, is(ca.getUrl()));
 		List<JFile> files = ca.getFiles();
