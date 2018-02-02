@@ -16,17 +16,24 @@ public class FileManagerTest {
 
 	@Test
 	public void test() {
-		FileManager fileManager = FileManagerHolder.get();
+		CacheFileManager fileManager = CacheFileManagerHolder.get();
 		fileManager.reset();
 		String root = "./test-data";
 		SysSearchEngine engin = new SysSearchEngine();
 		CollectionAction ca = new CollectionAction();
 		ca.setUrl(root);
 		engin.addAction(ca);
+		engin.setCache(true);
 		engin.search(new File(root));
 		assertThat(root, is(ca.getUrl()));
 		List<JFile> files = ca.getFiles();
-		Map<String, JFile> map = fileManager.getMap();
-		assertThat(files.size(), is(map.size()));
+		Map<String, CacheFile> cacheFiles = fileManager.getCacheFiles();
+		int count = 0;
+		for(JFile f: files) {
+			if(!f.isDirectory()) {
+				count++;
+			}
+		}
+		assertThat(cacheFiles.size(), is(count));
 	}
 }

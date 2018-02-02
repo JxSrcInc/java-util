@@ -29,7 +29,7 @@ public abstract class AbstractJFile implements JFile{
 		} else {
 			name = path;
 		}
-		FileManagerHolder.get().add(this);
+//		FileManagerHolder.get().add(this);
 	}
 	public long getLength() {
 		return length;

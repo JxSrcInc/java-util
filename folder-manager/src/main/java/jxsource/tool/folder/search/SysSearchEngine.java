@@ -1,31 +1,47 @@
 package jxsource.tool.folder.search;
 
 import java.io.File;
+import java.io.IOException;
 
+import jxsource.tool.folder.file.CacheFile;
 import jxsource.tool.folder.file.SysFile;
+import jxsource.tool.folder.file.ZipFile;
 import jxsource.tool.folder.search.action.FilePrintAction;
+import jxsource.tool.folder.search.filter.Filter;
 import jxsource.tool.folder.search.filter.pathfilter.ExtFilter;
 
 /**
- * Search a folder 
+ * Search a folder
+ * 
  * @author JiangJxSrc
  *
  */
 public class SysSearchEngine extends SearchEngine {
-	
+
 	/**
-	 * this is recursive method.
-	 * the parameter in the first call is the root directory to search
+	 * this is recursive method. the parameter in the first call is the root
+	 * directory to search
+	 * 
 	 * @param file
+	 * @throws IOException 
 	 */
 	public void search(File file) {
-		if(consum(new SysFile(file))) {
-			if(file.isDirectory()) {
-			for(File child: file.listFiles()) {
-				search(child);
+		SysFile sysFile = new SysFile(file);
+		int status = consum(sysFile);
+		if(status == Filter.ACCEPT && !file.isDirectory() && cache) {
+			try {
+				new CacheFile<SysFile>(sysFile);
+			} catch (IOException e) {
+				throw new RuntimeException("Error when creating CacheFile "+sysFile.getPath(), e);
 			}
+		}
+		if(status == Filter.ACCEPT || status == Filter.PASS) {
+			if (file.isDirectory()) {
+				for (File child : file.listFiles()) {
+					search(child);
+				}
 			}
 		}
 	}
-	
+
 }

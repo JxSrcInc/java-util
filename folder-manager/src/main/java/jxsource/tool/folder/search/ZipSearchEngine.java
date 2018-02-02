@@ -14,6 +14,7 @@ import jxsource.tool.folder.file.CacheFile;
 import jxsource.tool.folder.file.JFile;
 import jxsource.tool.folder.file.ZipFile;
 import jxsource.tool.folder.search.action.FilePrintAction;
+import jxsource.tool.folder.search.filter.Filter;
 import jxsource.tool.folder.search.filter.pathfilter.ExtFilter;
 
 /**
@@ -24,48 +25,19 @@ import jxsource.tool.folder.search.filter.pathfilter.ExtFilter;
  */
 public class ZipSearchEngine extends SearchEngine {
 	private static Logger log = LogManager.getLogger(ZipSearchEngine.class);
-	private boolean cache;
-	
-	public void setCache(boolean cache) {
-		this.cache = cache;
-	}
 	public void search(ZipInputStream zis) throws ZipException, IOException {
 		ZipEntry entry;
 		JFile parentNode = null;
 		boolean ok = true;
 		while ((entry = zis.getNextEntry()) != null) {
 			JFile currNode = new ZipFile(entry, zis);
-			if(consum(currNode)) {
-				if(cache) {
+			if(consum(currNode) == Filter.ACCEPT && !currNode.isDirectory() && cache) {
 					currNode = new CacheFile<ZipFile>((ZipFile)currNode);
-				}
 			}
-			// TODO: why need if condition?
-//			if (parentNode == null) {
-//				ok = consum(currNode, parentNode);
-//			} else {
-//				if(currNode.getPath().contains(parentNode.getPath()) && ok) {
-//					// process children only if parent is ACCEPT or PASS
-//					ok = consum(currNode, parentNode);
-//				} else {
-//					// currNode is not child of parentNode
-//					ok = consum(currNode, parentNode);
-//				}
-//			}
 		}
 
 		zis.close();
 	}
 	
-	private boolean consum(AbstractJFile currNode, AbstractJFile parentNode) {
-		log.debug(currNode+","+parentNode);
-		if (consum(currNode)) {
-			parentNode = currNode;
-			return true;
-		} else {
-			return false;
-		}
-		
-	}
 
 }

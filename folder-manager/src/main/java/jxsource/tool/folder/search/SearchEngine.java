@@ -10,6 +10,11 @@ import jxsource.tool.folder.search.filter.Filter;
 public abstract class SearchEngine {
 	private Set<Action> actions = new HashSet<Action>();
 	private Filter filter;
+	protected boolean cache;
+	
+	public void setCache(boolean cache) {
+		this.cache = cache;
+	}
 
 	public void setFilter(Filter filter) {
 		this.filter = filter;
@@ -35,24 +40,34 @@ public abstract class SearchEngine {
 	 * @return true to allow search engine to process its children
 	 * 		false inform search engine to stop process its children
 	 */
-	protected boolean consum(JFile file) {
-		if (filter == null) {
-			for (Action action : actions) {
-				action.proc(file);
-			}
-			return true;
-		} else {
-			switch (filter.accept(file)) {
-			case Filter.ACCEPT:
-				for (Action action : actions) {
-					action.proc(file);
-				}
-			case Filter.PASS:
-				return true;
-			default:
-				return false;
-			}
+	protected int consum(JFile file) {
+		int status = Filter.ACCEPT;
+		if(filter != null) {
+			status = filter.accept(file);
 		}
+		if(status == Filter.ACCEPT) {
+			for (Action action : actions) {
+			action.proc(file);
+			}	
+		}
+		return status;
+//		if (filter == null) {
+//			for (Action action : actions) {
+//				action.proc(file);
+//			}
+//			return true;
+//		} else {
+//			switch (filter.accept(file)) {
+//			case Filter.ACCEPT:
+//				for (Action action : actions) {
+//					action.proc(file);
+//				}
+//			case Filter.PASS:
+//				return true;
+//			default:
+//				return false;
+//			}
+//		}
 	}
 
 }

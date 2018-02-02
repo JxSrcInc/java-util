@@ -24,7 +24,7 @@ public class CacheFile<T extends AbstractJFile> implements JFile{
 		// re-register in FileManager with the same key (file path) 
 		// but different value - replace T with CacheFile<T>
 		// refer AbstractJFile.setPath() method
-		FileManagerHolder.get().add(this);
+		CacheFileManagerHolder.get().add(this);
 	}
 	
 	// Wrap the same method of T - JFile method
