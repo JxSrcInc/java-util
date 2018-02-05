@@ -14,5 +14,6 @@ public interface JFile {
 	public String getExt();
 	public InputStream getInputStream() throws IOException;
 	public void close();
+	public long getLastModified();
 
 }

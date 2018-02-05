@@ -42,5 +42,9 @@ public class SysFile extends AbstractJFile{
 		file = null;
 		super.finalize();
 	}
+	@Override
+	public long getLastModified() {
+		return file.lastModified();
+	}
 	
 }

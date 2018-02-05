@@ -2,6 +2,8 @@ package jxsource.tool.folder.search.zip;
 
 import static org.junit.Assert.assertNotNull;
 
+import java.text.ParseException;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -16,6 +18,7 @@ import org.junit.Test;
 import jxsource.tool.folder.search.filter.pathfilter.ExtFilter;
 import jxsource.tool.folder.search.filter.pathfilter.FullNameFilter;
 import jxsource.tool.folder.search.filter.pathfilter.NameFilter;
+import jxsource.tool.folder.search.filter.pathfilter.TimeFilter;
 import jxsource.tool.folder.search.zip.ZipSearchTemplate;
 
 public class ZipSearchTemplateTest {
@@ -92,5 +95,16 @@ public class ZipSearchTemplateTest {
 		// found more than checked.
 		assertThat(zipReportAssert.getFound().size(), greaterThanOrEqualTo(3));
 	}		
-	
+	@Test
+	public void timeFilterTest() throws ParseException {
+		ZipSearchTemplate zst = ZipSearchTemplate.getBuilder()
+				.setZipFilter(new TimeFilter("2001-01-01 00:00:00", "2030-01-01 00:00:00"))
+				.setZipReport(zipReportAssert.setStart(TimeFilter.convert("2001-01-01 00:00:00")))
+				.build();
+			zst.search();		
+		log.debug(zipReportAssert.getFound().size());
+		// found more than checked.
+		assertThat(zipReportAssert.getFound().size(), greaterThanOrEqualTo(0));
+		
+	}
 }

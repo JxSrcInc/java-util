@@ -24,6 +24,9 @@
       <AppenderRef ref="syserr"/>
       <AppenderRef ref="fileLogger"/>
     </Root>
+    <Logger name="jxsource.tool.folder.search.zip" level="debug" additivity="false">
+    	<Appender-ref ref="sysout"/>
+    </Logger>
     <Logger name="jxsource.tool.folder.search" level="info" additivity="false">
     	<Appender-ref ref="sysout"/>
        <AppenderRef ref="fileLogger"/>

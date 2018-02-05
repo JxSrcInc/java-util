@@ -11,6 +11,7 @@ import org.hamcrest.Matcher;
 
 import jxsource.tool.folder.file.AbstractJFile;
 import jxsource.tool.folder.file.JFile;
+import jxsource.tool.folder.search.filter.Filter;
 import jxsource.tool.folder.search.util.Util;
 import jxsource.tool.folder.search.zip.ZipReportAction;
 
@@ -22,6 +23,7 @@ public class ZipReportAssert extends ZipReportAction {
 	private String[] paths;
 	private String[] names;
 	private String[] exts;
+	private long start, end;
 	private List<String> found = new ArrayList<String>();
 	
 	private Matcher<String> contains(final String[] matchs) {
@@ -61,6 +63,14 @@ public class ZipReportAssert extends ZipReportAction {
 		exts = Util.toArray(multiExts);
 		return this;
 	}
+	public ZipReportAssert setStart(long start) {
+		this.start = start;
+		return this;
+	}
+	public ZipReportAssert setEnd(long end) {
+		this.end = end;
+		return this;
+	}
 
 	@Override
 	public void report(String url, List<JFile> extractFiles) {
@@ -79,7 +89,17 @@ public class ZipReportAssert extends ZipReportAction {
 				}
 				assertThat(name, contains(names));
 			}
+			if(start > 0) {
+				if(f.getLastModified() >= start && (end == 0 ||f.getLastModified() < end)) {
+					found.add(f.getPath());
+					assertTrue(true);
+				} else {
+					assertTrue(false);
+				}
+				
+			}
 		}
 	}
+
 
 }

@@ -110,4 +110,9 @@ public class CacheFile implements JFile{
 		out.write(content);
 	}
 
+	@Override
+	public long getLastModified() {
+		return cache.getLastModified();
+	}
+
 }
