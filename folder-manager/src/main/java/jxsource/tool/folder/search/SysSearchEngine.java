@@ -23,18 +23,21 @@ public class SysSearchEngine extends SearchEngine {
 	 * directory to search
 	 * 
 	 * @param file
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	public void search(File file) {
 		SysFile sysFile = new SysFile(file);
 		int status = consum(sysFile);
-//		if(status == Filter.ACCEPT && !file.isDirectory() && cache) {
-//			new CacheFile(sysFile);
-//		}
-		if(status == Filter.ACCEPT || status == Filter.PASS) {
+		// if(status == Filter.ACCEPT && !file.isDirectory() && cache) {
+		// new CacheFile(sysFile);
+		// }
+		if (status == Filter.ACCEPT || status == Filter.PASS) {
 			if (file.isDirectory()) {
-				for (File child : file.listFiles()) {
-					search(child);
+				File[] children = file.listFiles();
+				if (children != null) {
+					for (File child : children) {
+						search(child);
+					}
 				}
 			}
 		}

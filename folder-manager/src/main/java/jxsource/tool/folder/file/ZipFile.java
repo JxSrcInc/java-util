@@ -2,14 +2,15 @@ package jxsource.tool.folder.file;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 public class ZipFile extends AbstractJFile{
 	private ZipInputStream zis;
-	private long lastModified;
-	public ZipFile(ZipEntry zipEntry, ZipInputStream zis) {
-		super("/");
+	
+	public ZipFile(ZipEntry zipEntry, ZipInputStream zis) { 
+		super('/'); // set fileSeparator as '/'
 		setPath(zipEntry.getName());
 		setLength(zipEntry.getSize());
 		setDirectory(zipEntry.isDirectory());
@@ -34,6 +35,15 @@ public class ZipFile extends AbstractJFile{
 	@Override
 	public long getLastModified() {
 		return lastModified;
+	}
+
+	@Override
+	public List<JFile> getChildren() {
+		if(children == null) {
+			throw new RuntimeException("Children in zip@"+path+" has not been set. Use TreeFactory to setup.");
+		} else {
+			return super.getChildren();
+		}
 	}
 	
 }

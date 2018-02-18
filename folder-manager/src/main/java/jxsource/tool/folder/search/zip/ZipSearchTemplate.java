@@ -56,6 +56,9 @@ public class ZipSearchTemplate {
 			this.rootDir = rootDir;
 			return this;
 		}
+		public ZipSearchTemplateBuilder setRootDir(String rootDir) {
+			return setRootDir(new File(rootDir));
+		}
 		public ZipSearchTemplateBuilder setZipFilter(Filter zipFilter) {
 			this.zipFilter = zipFilter;
 			return this;

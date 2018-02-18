@@ -17,7 +17,7 @@ public class FileManagerTest {
 
 	@Test
 	public void test() {
-		CacheFileManager fileManager = CacheFileManagerHolder.get();
+		FileManager fileManager = FileManagerHolder.get();
 		fileManager.reset();
 		String root = "./test-data";
 		SysCacheEngine engin = new SysCacheEngine();
@@ -28,7 +28,7 @@ public class FileManagerTest {
 		engin.search(new File(root));
 		assertThat(root, is(ca.getUrl()));
 		List<JFile> files = ca.getFiles();
-		Map<String, CacheFile> cacheFiles = fileManager.getCacheFiles();
+		Map<String, JFile> cacheFiles = fileManager.getFiles();
 		int count = 0;
 		for(JFile f: files) {
 			if(!f.isDirectory()) {

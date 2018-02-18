@@ -5,13 +5,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.List;
+
+import com.fasterxml.jackson.databind.JsonNode;
 
 /**
- * It is a wrapper of type T but with content of file T
- * It has all methods of T plus content access methods
- * @author JiangJxSrc
- *
- * @param <T>
+ * extended JFile contains file content in memory
  */
 public class CacheFile implements JFile{
 
@@ -25,12 +24,15 @@ public class CacheFile implements JFile{
 		} catch (IOException e) {
 			throw new RuntimeException("Error when loading content for "+cache.getPath(), e);
 		}
-		// re-register in FileManager with the same key (file path) 
-		// but different value - replace T with CacheFile<T>
-		// refer AbstractJFile.setPath() method
-		CacheFileManagerHolder.get().add(this);
+		// register the file in CacheFileManager
+		FileManagerHolder.get().add(this);
 	}
 	
+	// Wrap the same method of T - JFile method
+	public char getFileSeparator() {
+
+		return cache.getFileSeparator();
+	}
 	// Wrap the same method of T - JFile method
 	public String getName() {
 		return cache.getName();
@@ -115,4 +117,69 @@ public class CacheFile implements JFile{
 		return cache.getLastModified();
 	}
 
+	@Override
+	public List<JFile> getChildren() {
+		return cache.getChildren();
+	}
+
+	@Override
+	public void setChildren(List<JFile> children) {
+		cache.setChildren(children);
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((cache.getPath() == null) ? 0 : cache.getPath().hashCode());
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		CacheFile other = (CacheFile) obj;
+		if (cache.getPath() == null) {
+			if (other.cache.getPath() != null)
+				return false;
+		} else if (!cache.getPath().equals(other.cache.getPath()))
+			return false;
+		return true;
+	}
+	@Override
+	public int compareTo(JFile o) {
+		if(o == null) {
+			return -1;
+		}
+		return cache.getPath().compareTo(o.getPath());
+	}
+
+	@Override
+	public void setParent(JFile parent) {
+		cache.setParent(parent);
+	}
+
+	@Override
+	public JFile getParent() {
+		return cache.getParent();
+	}
+	@Override 
+	public String getParentPath() {
+		return cache.getParentPath();
+	}
+
+	@Override
+	public void addChild(JFile child) {
+		cache.addChild(child);
+		
+	}
+
+	@Override
+	public JsonNode convertToJson() {
+		return cache.convertToJson();
+	}
 }

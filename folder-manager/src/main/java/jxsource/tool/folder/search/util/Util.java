@@ -5,6 +5,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+
 import jxsource.tool.folder.file.JFile;
 
 public class Util {
@@ -36,5 +40,30 @@ public class Util {
 			sb.append(cbuf,0,i);
 		}
 		return sb.toString();
+	}
+	public static String getFileSeparator(JFile f) {
+		String fileSeparator = ""+f.getFileSeparator();
+		if(fileSeparator.equals("\\"))
+			fileSeparator += '\\';
+		return fileSeparator;
+	}
+	/**
+	 * 
+	 * @param f
+	 * @param fileSeparator
+	 * @return
+	 */
+	public static int getFileSeparatorCount(JFile f, String...fileSeparator) {
+		String separator = fileSeparator.length>0?fileSeparator[0]:getFileSeparator(f);
+		return f.getPath().split(separator).length;
+	}
+	public static String getJson(JFile file) {
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);		
+		try {
+			return mapper.writeValueAsString(file);
+		} catch (JsonProcessingException e) {
+			throw new RuntimeException("Error when convert to JSON for file "+file.getPath(), e);
+		}
 	}
 }
