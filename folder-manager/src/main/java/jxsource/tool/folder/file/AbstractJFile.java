@@ -15,6 +15,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import jxsource.tool.folder.search.util.Util;
 
 public abstract class AbstractJFile implements JFile{
+	public static final String Root = "";
 	protected String name;
 	protected String path;
 	protected long length;
@@ -81,7 +82,11 @@ public abstract class AbstractJFile implements JFile{
 			for(int i=0; i<ele.length-2; i++) {
 				parentPath += ele[i] + fileSeparator;
 			}
-			parentPath += ele[ele.length-2];
+			if(ele.length > 1) {
+				parentPath += ele[ele.length-2];
+			} else {
+				parentPath = Root;
+			}
 		}
 		return parentPath;
 //		int index = path.indexOf(name);
@@ -145,7 +150,7 @@ public abstract class AbstractJFile implements JFile{
 	@Override
 	public String toString() {
 		return "AbstractJFile [name=" + name + ", path=" + path + ", directory=" + directory
-				+ ", children=" + children + "]";
+				+ ", parent=" + parentPath + ", children=" + children + "]";
 	}
 	@Override
 	public boolean equals(Object obj) {

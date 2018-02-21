@@ -3,6 +3,9 @@ package jxsource.tool.folder.search;
 import java.io.File;
 import java.io.IOException;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import jxsource.tool.folder.file.CacheFile;
 import jxsource.tool.folder.file.SysFile;
 import jxsource.tool.folder.file.ZipFile;
@@ -17,6 +20,7 @@ import jxsource.tool.folder.search.filter.pathfilter.ExtFilter;
  *
  */
 public class SysSearchEngine extends SearchEngine {
+	private static Logger log = LogManager.getLogger(SysSearchEngine.class);
 
 	/**
 	 * this is recursive method. the parameter in the first call is the root

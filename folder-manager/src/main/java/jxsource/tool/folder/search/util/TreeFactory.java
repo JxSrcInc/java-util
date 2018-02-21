@@ -10,6 +10,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import jxsource.tool.folder.file.JFile;
+import jxsource.tool.folder.file.XFile;
 
 public class TreeFactory {
 	Logger log = LogManager.getLogger(TreeFactory.class);
@@ -87,7 +88,11 @@ public class TreeFactory {
 				"parent="+(path.size()==0?"\\":path.get(path.size()-1).getPath()));
 		switch(relation(file)) {
 		case Child:
-			path.get(path.size()-1).addChild(file);
+			JFile _parent = path.get(path.size()-1);
+			if(file.getParent() == null) {
+				file.setParent(_parent);
+			}
+			_parent.addChild(file);
 			if(file.isDirectory()) {
 				path.add(file);
 			}

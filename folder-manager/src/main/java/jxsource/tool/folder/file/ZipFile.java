@@ -11,7 +11,13 @@ public class ZipFile extends AbstractJFile{
 	
 	public ZipFile(ZipEntry zipEntry, ZipInputStream zis) { 
 		super('/'); // set fileSeparator as '/'
-		setPath(zipEntry.getName());
+		String path = zipEntry.getName();
+		// in zip, the last char of path is '/' if zipEntry is not file
+		// so remove it
+		if(path.charAt(path.length()-1) == '/') {
+			path = path.substring(0, path.length()-1);
+		}
+		setPath(path);
 		setLength(zipEntry.getSize());
 		setDirectory(zipEntry.isDirectory());
 		lastModified = zipEntry.getLastModifiedTime().toMillis();

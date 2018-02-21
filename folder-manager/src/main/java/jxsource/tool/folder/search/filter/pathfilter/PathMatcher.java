@@ -11,6 +11,7 @@ import jxsource.tool.folder.file.JFile;
 import jxsource.tool.folder.search.filter.Filter;
 import jxsource.tool.folder.search.match.AnyMatch;
 import jxsource.tool.folder.search.match.Match;
+import jxsource.tool.folder.search.util.Util;
 
 /**
  * A file path converts to String[] nodes
@@ -54,7 +55,7 @@ public class PathMatcher {
 	}
 	public int start(JFile file) {
 		String path = file.getPath();
-		StringTokenizer st = new StringTokenizer(path, "\\");
+		StringTokenizer st = new StringTokenizer(path, Util.getFileSeparator(file));
 		List<String> list = new ArrayList<String>();
 		while(st.hasMoreTokens()) {
 			list.add(st.nextToken());

@@ -19,7 +19,19 @@ public class PathFilter extends Filter{
 	@Override
 	public int getStatus(JFile file) {
 		PathMatcher pfp = new PathMatcher(matches);
-		return pfp.start(file);
+		// Modified to allow accept File if the file is in accepted path
+		switch(pfp.start(file)) {
+		case Filter.PASS:
+			if(file.isDirectory()) {
+				return Filter.PASS;
+			} else {
+				return Filter.ACCEPT;
+			}
+		case Filter.ACCEPT:
+			return Filter.ACCEPT;
+			default:
+				return Filter.REJECT;
+		}
 	}
 
 }

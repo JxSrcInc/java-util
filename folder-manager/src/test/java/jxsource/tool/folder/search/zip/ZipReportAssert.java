@@ -24,7 +24,7 @@ public class ZipReportAssert extends ZipReportAction {
 	private String[] names;
 	private String[] exts;
 	private long start, end;
-	private List<String> found = new ArrayList<String>();
+	private List<JFile> found = new ArrayList<JFile>();
 	
 	private Matcher<String> contains(final String[] matchs) {
 		return new BaseMatcher<String>() {
@@ -33,7 +33,7 @@ public class ZipReportAssert extends ZipReportAction {
 				for (String match : matchs) {
 						if(src.contains(match)) {
 							log.debug("Match: "+match+" with "+src);
-							found.add(src);
+//							found.add(src);
 							return true;
 						}
 				}
@@ -46,8 +46,17 @@ public class ZipReportAssert extends ZipReportAction {
 		};
 	}
 
-	public List<String> getFound() {
+	public List<JFile> getFound() {
 		return found;
+	}
+	public List<JFile> getFoundFiles() {
+		List<JFile> foundFiles = new ArrayList<JFile>();
+		for(JFile f: getFound()) {
+			if(!f.isDirectory()) {
+				foundFiles.add(f);
+			}
+		}
+		return foundFiles;
 	}
 	public ZipReportAssert setPath(String multiPaths) {
 		paths = Util.toArray(multiPaths);
@@ -79,6 +88,7 @@ public class ZipReportAssert extends ZipReportAction {
 		for (JFile f : extractFiles) {
 			if (exts != null) {
 				assertThat(f.getExt(), contains(exts));
+				found.add(f);
 			}
 			if (names != null) {
 				// don't verify extension
@@ -88,15 +98,19 @@ public class ZipReportAssert extends ZipReportAction {
 					name = name.substring(0, i);
 				}
 				assertThat(name, contains(names));
+				found.add(f);
 			}
 			if(start > 0) {
 				if(f.getLastModified() >= start && (end == 0 ||f.getLastModified() < end)) {
-					found.add(f.getPath());
 					assertTrue(true);
+					found.add(f);
 				} else {
 					assertTrue(false);
 				}
-				
+			}
+			if(exts == null && names == null && start <= 0) {
+				// default - accept all files
+				found.add(f);
 			}
 		}
 	}

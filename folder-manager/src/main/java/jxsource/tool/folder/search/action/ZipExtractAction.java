@@ -25,6 +25,7 @@ public class ZipExtractAction implements Action {
 	private Filter filter;
 	private ZipReportAction reportAction;
 	private CollectionAction ca = new CollectionAction();
+	private boolean buildTree;
 	private boolean cache;
 
 	public void proc(JFile f) {
@@ -38,6 +39,7 @@ public class ZipExtractAction implements Action {
 				ZipSearchEngine engin = new ZipSearchEngine();
 				engin.addAction(ca);
 				engin.setFilter(filter);
+				engin.buildTree(buildTree);
 				engin.search(in);
 				if(reportAction != null) {
 					reportAction.report(url, ca.getFiles());
@@ -75,6 +77,15 @@ public class ZipExtractAction implements Action {
 
 	public ZipExtractAction setCache(boolean cache) {
 		this.cache = cache;
+		return this;
+	}
+
+	public boolean isBuildTree() {
+		return buildTree;
+	}
+
+	public ZipExtractAction buildTree(boolean buildTree) {
+		this.buildTree = buildTree;
 		return this;
 	}
 
