@@ -26,12 +26,12 @@ import jxsource.tool.folder.search.zip.ZipSearchTemplate.ZipSearchTemplateBuilde
 
 public class ZipSearchTemplateTest {
 	private Logger log = LogManager.getLogger(ZipSearchTemplateTest.class);
-	ZipReportAssert zipReportAssert;
+	AssertZipReport zipReportAssert;
 	ZipSearchTemplateBuilder builder;
 	
 	@Before
 	public void init() {
-		zipReportAssert = new ZipReportAssert();
+		zipReportAssert = new AssertZipReport();
 		builder = ZipSearchTemplate.getBuilder();
 	}
 	@Test

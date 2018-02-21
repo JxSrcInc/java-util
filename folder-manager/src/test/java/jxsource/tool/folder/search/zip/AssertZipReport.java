@@ -17,8 +17,8 @@ import jxsource.tool.folder.search.zip.ZipReportAction;
 
 import static org.junit.Assert.*;
 
-public class ZipReportAssert extends ZipReportAction {
-	private static Logger log = LogManager.getLogger(ZipReportAssert.class);
+public class AssertZipReport extends ZipReportAction {
+	private static Logger log = LogManager.getLogger(AssertZipReport.class);
 	private String url;
 	private String[] paths;
 	private String[] names;
@@ -58,25 +58,25 @@ public class ZipReportAssert extends ZipReportAction {
 		}
 		return foundFiles;
 	}
-	public ZipReportAssert setPath(String multiPaths) {
+	public AssertZipReport setPath(String multiPaths) {
 		paths = Util.toArray(multiPaths);
 		return this;
 	}
 
-	public ZipReportAssert setName(String multiNames) {
+	public AssertZipReport setName(String multiNames) {
 		names = Util.toArray(multiNames);
 		return this;
 	}
 
-	public ZipReportAssert setExt(String multiExts) {
+	public AssertZipReport setExt(String multiExts) {
 		exts = Util.toArray(multiExts);
 		return this;
 	}
-	public ZipReportAssert setStart(long start) {
+	public AssertZipReport setStart(long start) {
 		this.start = start;
 		return this;
 	}
-	public ZipReportAssert setEnd(long end) {
+	public AssertZipReport setEnd(long end) {
 		this.end = end;
 		return this;
 	}

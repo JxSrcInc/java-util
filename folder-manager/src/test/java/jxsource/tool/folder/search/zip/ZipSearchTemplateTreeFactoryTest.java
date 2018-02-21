@@ -9,18 +9,19 @@ import jxsource.tool.folder.search.zip.ZipSearchTemplate.ZipSearchTemplateBuilde
 
 public class ZipSearchTemplateTreeFactoryTest {
 	private Logger log = LogManager.getLogger(ZipSearchTemplateTreeFactoryTest.class);
-	ZipReportAssert zipReportAssert;
+	AssertZipReport zipReportAssert;
 	ZipSearchTemplateBuilder builder;
 	
 	@Before
 	public void init() {
-		zipReportAssert = new ZipReportAssert();
+		zipReportAssert = new AssertZipReport();
 		builder = ZipSearchTemplate.getBuilder().buildTree(true);
 	}
 	@Test
 	public void defaultTemplateTest() {
 		ZipSearchTemplate zst = builder
-//				.setZipReport(new ZipReportPrinter())
+				.buildTree(true)
+				.setZipReport(new TreeZipReport())
 				.build();
 		zst.search();
 	}

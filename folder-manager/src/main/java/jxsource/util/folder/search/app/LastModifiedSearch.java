@@ -9,7 +9,7 @@ import jxsource.tool.folder.search.action.CollectionAction;
 import jxsource.tool.folder.search.action.FilePrintAction;
 import jxsource.tool.folder.search.filter.pathfilter.ExtFilter;
 import jxsource.tool.folder.search.filter.pathfilter.TimeFilter;
-import jxsource.tool.folder.search.zip.ZipReportAssert;
+import jxsource.tool.folder.search.zip.AssertZipReport;
 import jxsource.tool.folder.search.zip.ZipReportPrinter;
 import jxsource.tool.folder.search.zip.ZipSearchTemplate;
 

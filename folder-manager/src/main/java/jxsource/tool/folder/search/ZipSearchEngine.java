@@ -3,6 +3,8 @@ package jxsource.tool.folder.search;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
 import java.util.zip.ZipInputStream;
@@ -32,16 +34,11 @@ import jxsource.tool.folder.search.filter.pathfilter.ExtFilter;
 public class ZipSearchEngine extends SearchEngine {
 	private static Logger log = LogManager.getLogger(ZipSearchEngine.class);
 	private FileManager fileManager = FileManagerHolder.get();
-	private boolean buildTree;
-	
+	private List<JFile> trees;
 	/**
 	 * true will create a normalized tree
 	 * false will have better performance 
 	 */
-	public ZipSearchEngine buildTree(boolean buildTree) {
-		this.buildTree = buildTree;
-		return this;
-	}
 	public void search(ZipInputStream zis) throws ZipException, IOException {
 		ZipEntry entry;
 		JFile parentNode = null;
@@ -49,8 +46,6 @@ public class ZipSearchEngine extends SearchEngine {
 		while ((entry = zis.getNextEntry()) != null) {
 			JFile currNode = new ZipFile(entry, zis);
 			fileManager.add(currNode);
-			if(buildTree) {
-			}
 			log.debug("zip search: "+currNode.getPath());
 			consum(currNode);
 //			if(consum(currNode) == Filter.ACCEPT && !currNode.isDirectory() && cache) {
@@ -59,23 +54,27 @@ public class ZipSearchEngine extends SearchEngine {
 		}
 
 		zis.close();
-		if(buildTree) {
-		ObjectMapper mapper = new ObjectMapper();
-		for(JFile f: fileManager.buildTrees()) {
-			JsonNode node = f.convertToJson();
-			log.debug(f.getPath()+" ****************************************************");
-			log.debug(mapper.writerWithDefaultPrettyPrinter().writeValueAsString(node));
+	}
+	public List<JFile> getTrees() {
+		if(trees == null) {
+			trees = new ArrayList<JFile>(fileManager.buildTrees());				
 		}
-		}
+		return trees;
 	}
 	
 	public static void main(String...args) {
 		try {
 			ZipInputStream in = new ZipInputStream(new FileInputStream("test-data.jar"));
 			ZipSearchEngine engin = new ZipSearchEngine();
-			engin.buildTree(true);
-//			engin.addAction(new FilePrintAction());
 			engin.search(in);
+				ObjectMapper mapper = new ObjectMapper();
+				for(JFile f: engin.getTrees()) {
+					JsonNode node = f.convertToJson();
+					System.out.println(f.getPath()+" ****************************************************");
+					System.out.println(mapper.writerWithDefaultPrettyPrinter().writeValueAsString(node));
+				}
+
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

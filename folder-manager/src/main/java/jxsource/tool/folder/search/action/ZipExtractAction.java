@@ -37,12 +37,12 @@ public class ZipExtractAction implements Action {
 			try {
 				ZipInputStream in = new ZipInputStream(new FileInputStream(f.getPath()));
 				ZipSearchEngine engin = new ZipSearchEngine();
-				engin.addAction(ca);
 				engin.setFilter(filter);
-				engin.buildTree(buildTree);
+				// just collect all entries
+				engin.addAction(ca);					
 				engin.search(in);
 				if(reportAction != null) {
-					reportAction.report(url, ca.getFiles());
+					reportAction.report(url, buildTree?engin.getTrees():ca.getFiles());
 				}
 			} catch (Exception e) {
 				throw new RuntimeException("Error when extracting "+url, e);
