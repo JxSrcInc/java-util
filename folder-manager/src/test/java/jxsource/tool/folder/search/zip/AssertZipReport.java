@@ -9,8 +9,9 @@ import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 
-import jxsource.tool.folder.file.AbstractJFile;
-import jxsource.tool.folder.file.JFile;
+import jxsource.tool.folder.node.AbstractNode;
+import jxsource.tool.folder.node.JFile;
+import jxsource.tool.folder.node.Node;
 import jxsource.tool.folder.search.filter.Filter;
 import jxsource.tool.folder.search.util.Util;
 import jxsource.tool.folder.search.zip.ZipReportAction;
@@ -52,7 +53,7 @@ public class AssertZipReport extends ZipReportAction {
 	public List<JFile> getFoundFiles() {
 		List<JFile> foundFiles = new ArrayList<JFile>();
 		for(JFile f: getFound()) {
-			if(!f.isDirectory()) {
+			if(!f.isArray()) {
 				foundFiles.add(f);
 			}
 		}
@@ -82,10 +83,12 @@ public class AssertZipReport extends ZipReportAction {
 	}
 
 	@Override
-	public void report(String url, List<JFile> extractFiles) {
+	public void report(String url, List<Node> extractFiles) {
 //		assertTrue(extractFiles.size() > 0);
 		log.debug("find "+extractFiles.size()+" entries in "+url);
-		for (JFile f : extractFiles) {
+		for (Node node : extractFiles) {
+			// TODO: Node/JFile
+			JFile f = (JFile) node;
 			if (exts != null) {
 				assertThat(f.getExt(), contains(exts));
 				found.add(f);

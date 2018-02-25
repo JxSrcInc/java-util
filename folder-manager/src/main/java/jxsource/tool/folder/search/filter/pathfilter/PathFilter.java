@@ -1,6 +1,6 @@
 package jxsource.tool.folder.search.filter.pathfilter;
 
-import jxsource.tool.folder.file.JFile;
+import jxsource.tool.folder.node.JFile;
 import jxsource.tool.folder.search.filter.Filter;
 import jxsource.tool.folder.search.match.Match;
 import jxsource.tool.folder.search.match.MatchFactory;
@@ -22,7 +22,7 @@ public class PathFilter extends Filter{
 		// Modified to allow accept File if the file is in accepted path
 		switch(pfp.start(file)) {
 		case Filter.PASS:
-			if(file.isDirectory()) {
+			if(file.isArray()) {
 				return Filter.PASS;
 			} else {
 				return Filter.ACCEPT;

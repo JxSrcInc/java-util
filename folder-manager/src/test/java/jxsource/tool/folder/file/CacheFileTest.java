@@ -10,6 +10,8 @@ import java.io.InputStream;
 
 import org.junit.Test;
 
+import jxsource.tool.folder.node.CacheFile;
+import jxsource.tool.folder.node.SysFile;
 import jxsource.tool.folder.search.util.Util;
 
 public class CacheFileTest {

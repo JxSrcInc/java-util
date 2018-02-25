@@ -3,7 +3,7 @@ package jxsource.tool.folder.search.filter.pathfilter;
 import java.util.HashSet;
 import java.util.Set;
 
-import jxsource.tool.folder.file.JFile;
+import jxsource.tool.folder.node.JFile;
 import jxsource.tool.folder.search.filter.Filter;
 
 /**
@@ -13,7 +13,7 @@ public class NameFilter extends FullNameFilter {
 	
 	@Override
 	public int getStatus(JFile file) {
-		if(file.isDirectory()) {
+		if(file.isArray()) {
 			return Filter.PASS;
 		}
 		String name = file.getName();

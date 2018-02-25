@@ -1,4 +1,4 @@
-package jxsource.tool.folder.file;
+package jxsource.tool.folder.node;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,35 +17,35 @@ import jxsource.tool.folder.search.util.TreeFactory;
  * it is thread-local instance
  * 
  */
-public class FileManager {
+public class NodeManager {
 	// key: JFile path, value: JFile
-	private Map<String, JFile> map = new HashMap<String, JFile>();
+	private Map<String, Node> map = new HashMap<String, Node>();
 	
-	FileManager() {
+	NodeManager() {
 		
 	}
-	public void add(JFile file) {
+	public void add(Node file) {
 		map.put(file.getPath(), file);
 	}
-	public JFile get(String path) {
+	public Node get(String path) {
 		return map.get(path);
 	}
-	public Map<String, JFile> getFiles() {
+	public Map<String, Node> getFiles() {
 		return map;
 	}
 	public void reset() {
 		map.clear();
 	}
 	
-	public Set<JFile> buildTrees() {
-		List<JFile> list = new ArrayList<JFile>(map.size());
-		for(JFile f: map.values()) {
+	public Set<Node> buildTrees() {
+		List<Node> list = new ArrayList<Node>(map.size());
+		for(Node f: map.values()) {
 			list.add(f);
 		}
 		// added code below to normalize ZipFiles creation.
-		Set<JFile> trees = new HashSet<JFile>();
-		for(JFile f: TreeFactory.build().createTrees(list)) {
-			JFile tree = addSegmentToRoot(f);
+		Set<Node> trees = new HashSet<Node>();
+		for(Node f: TreeFactory.build().createTrees(list)) {
+			Node tree = addSegmentToRoot(f);
 //			ObjectMapper mapper = new ObjectMapper();
 //			try {
 //				System.out.println("new Tree ##############################");
@@ -66,7 +66,7 @@ public class FileManager {
 	 * @param f
 	 * @return
 	 */
-	private JFile addSegmentToRoot(JFile f) {
+	private Node addSegmentToRoot(Node f) {
 //		ObjectMapper mapper = new ObjectMapper();
 //		try {
 //			System.out.println("addSegmentToRoot ------------------");
@@ -83,18 +83,18 @@ public class FileManager {
 			return f;
 		}
 		if(map.containsKey(f.getParentPath())) {
-			JFile parent = map.get(f.getParentPath());
+			Node parent = map.get(f.getParentPath());
 			if(!parent.getChildren().contains(f)) {
 				parent.addChild(f);
 			}
 			return parent;
 		}
-		int i = f.getPath().lastIndexOf(f.getFileSeparator());
+		int i = f.getPath().lastIndexOf(f.getPathSeparator());
 		if(i > 0) {
 			String parentPath = f.getPath().substring(0, i);
-			XFile xFile = new XFile(f.getFileSeparator());
+			NodeImpl xFile = new NodeImpl();
 			xFile.setPath(parentPath);
-			xFile.setDirectory(true);
+			xFile.setArray(true);
 			xFile.addChild(f);
 			f.setParent(xFile);
 			map.put(parentPath, xFile);

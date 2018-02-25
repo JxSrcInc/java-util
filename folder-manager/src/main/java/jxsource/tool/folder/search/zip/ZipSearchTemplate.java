@@ -6,7 +6,7 @@ import java.io.FileNotFoundException;
 import java.util.Set;
 import java.util.zip.ZipInputStream;
 
-import jxsource.tool.folder.file.AbstractJFile;
+import jxsource.tool.folder.node.AbstractNode;
 import jxsource.tool.folder.search.SysSearchEngine;
 import jxsource.tool.folder.search.ZipSearchEngine;
 import jxsource.tool.folder.search.action.Action;

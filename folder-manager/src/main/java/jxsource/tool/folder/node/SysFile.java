@@ -1,4 +1,4 @@
-package jxsource.tool.folder.file;
+package jxsource.tool.folder.node;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -13,12 +13,14 @@ import org.apache.logging.log4j.Logger;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-public class SysFile extends AbstractJFile{
+public class SysFile extends AbstractNode implements JFile{
 	private static Logger log = LogManager.getLogger(SysFile.class);
 	private File file;
 	private InputStream in;
 	public SysFile(File file) {
-		super(System.getProperty("file.separator").charAt(0));
+//		super(System.getProperty("file.separator").charAt(0));
+//		super('/');
+		char fileSeparator = System.getProperty("file.separator").charAt(0);
 		String path = file.getPath();
 		if(path.length()>=2 && path.charAt(0)=='.' && path.charAt(1)==fileSeparator) {
 			if(path.length()>2) {
@@ -29,9 +31,15 @@ public class SysFile extends AbstractJFile{
 		} 
 		setPath(path);
 		setLength(file.length());
-		setDirectory(file.isDirectory());
+		setArray(file.isDirectory());
 		this.file = file;
 		lastModified = file.lastModified();
+	}
+
+	@Override
+	public void setPath(String path) {
+		path = path.replaceAll("\\\\", "/");
+		super.setPath(path);
 	}
 
 	public InputStream getInputStream() throws IOException {

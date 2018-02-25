@@ -16,7 +16,8 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import jxsource.tool.folder.cachefile.SysCacheEngine;
-import jxsource.tool.folder.file.JFile;
+import jxsource.tool.folder.node.JFile;
+import jxsource.tool.folder.node.Node;
 import jxsource.tool.folder.search.action.CollectionAction;
 
 public class TreeFactoryTest {
@@ -31,9 +32,9 @@ public class TreeFactoryTest {
 		engin.search(new File(root));
 		List<JFile> files = ca.getFiles();
 		ObjectMapper mapper = new ObjectMapper();
-		Set<JFile> roots = TreeFactory.build().createTrees(files);
+		Set<Node> roots = TreeFactory.build().createTrees(Util.convertJFileToNode(files));
 		assertThat(roots.size(), is(1));
-		JFile rootFile = TreeFactory.build().createTree(files);
+		Node rootFile = TreeFactory.build().createTree(Util.convertJFileToNode(files));
 		
 		assertThat(rootFile.getChildren().size(), is(3));
 		JsonNode node = rootFile.convertToJson();

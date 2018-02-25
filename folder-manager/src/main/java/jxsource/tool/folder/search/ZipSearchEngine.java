@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
 import java.util.zip.ZipInputStream;
@@ -15,12 +16,14 @@ import org.apache.logging.log4j.Logger;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import jxsource.tool.folder.file.AbstractJFile;
-import jxsource.tool.folder.file.CacheFile;
-import jxsource.tool.folder.file.FileManager;
-import jxsource.tool.folder.file.FileManagerHolder;
-import jxsource.tool.folder.file.JFile;
-import jxsource.tool.folder.file.ZipFile;
+import jxsource.tool.folder.node.AbstractNode;
+import jxsource.tool.folder.node.CacheFile;
+import jxsource.tool.folder.node.JFile;
+import jxsource.tool.folder.node.NodeManager;
+import jxsource.tool.folder.node.NodeManagerHolder;
+import jxsource.tool.folder.node.Node;
+import jxsource.tool.folder.node.Node;
+import jxsource.tool.folder.node.ZipFile;
 import jxsource.tool.folder.search.action.FilePrintAction;
 import jxsource.tool.folder.search.filter.Filter;
 import jxsource.tool.folder.search.filter.pathfilter.ExtFilter;
@@ -33,15 +36,15 @@ import jxsource.tool.folder.search.filter.pathfilter.ExtFilter;
  */
 public class ZipSearchEngine extends SearchEngine {
 	private static Logger log = LogManager.getLogger(ZipSearchEngine.class);
-	private FileManager fileManager = FileManagerHolder.get();
-	private List<JFile> trees;
+	private NodeManager fileManager = NodeManagerHolder.get();
+	private List<Node> trees;
 	/**
 	 * true will create a normalized tree
 	 * false will have better performance 
 	 */
 	public void search(ZipInputStream zis) throws ZipException, IOException {
 		ZipEntry entry;
-		JFile parentNode = null;
+		Node parentNode = null;
 		boolean ok = true;
 		while ((entry = zis.getNextEntry()) != null) {
 			JFile currNode = new ZipFile(entry, zis);
@@ -52,12 +55,16 @@ public class ZipSearchEngine extends SearchEngine {
 //					currNode = new CacheFile(currNode);
 //			}
 		}
-
+		getTrees();
 		zis.close();
 	}
-	public List<JFile> getTrees() {
+	public List<Node> getTrees() {
 		if(trees == null) {
-			trees = new ArrayList<JFile>(fileManager.buildTrees());				
+			Set<Node> set = fileManager.buildTrees();
+			trees = new ArrayList<Node>(set.size());	
+			for(Node node: set) {
+				trees.add((Node)node);
+			}
 		}
 		return trees;
 	}
@@ -68,7 +75,7 @@ public class ZipSearchEngine extends SearchEngine {
 			ZipSearchEngine engin = new ZipSearchEngine();
 			engin.search(in);
 				ObjectMapper mapper = new ObjectMapper();
-				for(JFile f: engin.getTrees()) {
+				for(Node f: engin.getTrees()) {
 					JsonNode node = f.convertToJson();
 					System.out.println(f.getPath()+" ****************************************************");
 					System.out.println(mapper.writerWithDefaultPrettyPrinter().writeValueAsString(node));

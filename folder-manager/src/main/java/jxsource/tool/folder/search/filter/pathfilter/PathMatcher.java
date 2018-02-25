@@ -7,7 +7,7 @@ import java.util.StringTokenizer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import jxsource.tool.folder.file.JFile;
+import jxsource.tool.folder.node.JFile;
 import jxsource.tool.folder.search.filter.Filter;
 import jxsource.tool.folder.search.match.AnyMatch;
 import jxsource.tool.folder.search.match.Match;
@@ -65,7 +65,7 @@ public class PathMatcher {
 		case NotMatch:
 			return Filter.REJECT;
 		case Unknown:
-			if(file.isDirectory()) {
+			if(file.isArray()) {
 				return Filter.PASS;
 			} else {
 				return Filter.REJECT;

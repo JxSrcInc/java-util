@@ -4,12 +4,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
-import jxsource.tool.folder.file.JFile;
+import jxsource.tool.folder.node.JFile;
+import jxsource.tool.folder.node.Node;
 
 public class Util {
 	public static final String[] archiveTypes = new String[] {
@@ -42,7 +45,7 @@ public class Util {
 		return sb.toString();
 	}
 	public static String getFileSeparator(JFile f) {
-		String fileSeparator = ""+f.getFileSeparator();
+		String fileSeparator = ""+f.getPathSeparator();
 		if(fileSeparator.equals("\\"))
 			fileSeparator += '\\';
 		return fileSeparator;
@@ -65,5 +68,21 @@ public class Util {
 		} catch (JsonProcessingException e) {
 			throw new RuntimeException("Error when convert to JSON for file "+file.getPath(), e);
 		}
+	}
+	public static List<JFile> convertNodeToJFile(List<Node> nodes) {
+		List<JFile> files = new ArrayList<JFile>();
+		for(Node f: nodes) {
+			if(f == null || f instanceof JFile) {
+				nodes.add((JFile)f);
+			}
+		}
+		return files;
+	}
+	public static List<Node> convertJFileToNode(List<JFile> files) {
+		List<Node> nodes = new ArrayList<Node>();
+		for(JFile f: files) {
+			nodes.add(f);
+		}
+		return nodes;
 	}
 }

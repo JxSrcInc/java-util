@@ -6,7 +6,7 @@ import java.io.InputStream;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import jxsource.tool.folder.file.JFile;
+import jxsource.tool.folder.node.JFile;
 import jxsource.tool.folder.search.filter.Filter;
 
 public abstract class ContentFilter extends Filter {
@@ -14,7 +14,7 @@ public abstract class ContentFilter extends Filter {
 
 	@Override
 	public int getStatus(JFile file) {
-		if (file.isDirectory()) {
+		if (file.isArray()) {
 			// a safe way to handle directory
 			return PASS;
 		}

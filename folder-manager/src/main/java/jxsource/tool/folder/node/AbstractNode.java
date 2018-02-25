@@ -1,4 +1,4 @@
-package jxsource.tool.folder.file;
+package jxsource.tool.folder.node;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,13 +14,13 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import jxsource.tool.folder.search.util.Util;
 
-public abstract class AbstractJFile implements JFile{
+public abstract class AbstractNode implements Node{
 	public static final String Root = "";
 	protected String name;
 	protected String path;
 	protected long length;
 	protected boolean directory;
-	protected char fileSeparator;
+	protected char fileSeparator = '/';
 	protected List<Node> children; 
 	protected long lastModified;
 	protected String parentPath;
@@ -34,9 +34,9 @@ public abstract class AbstractJFile implements JFile{
 	 *    It may be set by TreeFactory
 	 */
 	protected Node parent;
-	protected AbstractJFile(char fileSeparator) {
-		this.fileSeparator = fileSeparator;
-	}
+//	protected AbstractJFile(char fileSeparator) {
+//		this.fileSeparator = fileSeparator;
+//	}
 
 	private ObjectNode initJsonNode(ObjectNode node) {
 		node.put("path", path.replaceAll("\\\\", "/"));
@@ -96,7 +96,7 @@ public abstract class AbstractJFile implements JFile{
 //		}
 //		return path.substring(0, index);
 	}
-	public char getFileSeparator() {
+	public char getPathSeparator() {
 		return fileSeparator;
 	}
 	public void setChildren(List<Node> children) {
@@ -129,10 +129,10 @@ public abstract class AbstractJFile implements JFile{
 	public void setLength(long length) {
 		this.length = length;
 	}
-	public boolean isDirectory() {
+	public boolean isArray() {
 		return directory;
 	}
-	public void setDirectory(boolean directory) {
+	public void setArray(boolean directory) {
 		this.directory = directory;
 	}
 	public String getExt() {
@@ -164,7 +164,7 @@ public abstract class AbstractJFile implements JFile{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		AbstractJFile other = (AbstractJFile) obj;
+		AbstractNode other = (AbstractNode) obj;
 		if (path == null) {
 			if (other.path != null)
 				return false;
@@ -173,7 +173,7 @@ public abstract class AbstractJFile implements JFile{
 		return true;
 	}
 	@Override
-	public int compareTo(JFile o) {
+	public int compareTo(Node o) {
 		if(o == null) {
 			return -1;
 		}

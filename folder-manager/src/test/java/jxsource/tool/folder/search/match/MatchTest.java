@@ -18,7 +18,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import org.junit.Test;
 
-import jxsource.tool.folder.file.AbstractJFile;
+import jxsource.tool.folder.node.AbstractNode;
 import jxsource.tool.folder.search.hamcrestMatcher.MatcherFactory;
 import jxsource.tool.folder.search.match.AnyMatch;
 import jxsource.tool.folder.search.match.Match;

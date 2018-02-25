@@ -1,6 +1,6 @@
 package jxsource.tool.folder.search.filter;
 
-import jxsource.tool.folder.file.JFile;
+import jxsource.tool.folder.node.JFile;
 
 /**
  * getStatus() method determines the argument (JFile) is 

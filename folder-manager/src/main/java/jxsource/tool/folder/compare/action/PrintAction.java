@@ -1,6 +1,6 @@
 package jxsource.tool.folder.compare.action;
 
-import jxsource.tool.folder.file.Node;
+import jxsource.tool.folder.node.Node;
 
 public class PrintAction implements Action
 {

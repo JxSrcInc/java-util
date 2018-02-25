@@ -15,8 +15,8 @@ import org.hamcrest.Matcher;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import jxsource.tool.folder.file.AbstractJFile;
-import jxsource.tool.folder.file.JFile;
+import jxsource.tool.folder.node.AbstractNode;
+import jxsource.tool.folder.node.JFile;
 import jxsource.tool.folder.search.action.CollectionAction;
 import jxsource.tool.folder.search.filter.Filter;
 import jxsource.tool.folder.search.filter.pathfilter.ExtFilter;
@@ -31,7 +31,7 @@ public class SysSearchEnginTest {
 		   return new BaseMatcher<JFile>() {
 		      public boolean matches(final Object item) {
 		         final JFile f = (JFile) item;
-		         return exts.indexOf(f.getExt()) >= 0 || f.isDirectory();
+		         return exts.indexOf(f.getExt()) >= 0 || f.isArray();
 		      }
 		   
 		      public void describeTo(final Description description) {
@@ -39,7 +39,7 @@ public class SysSearchEnginTest {
 		      }
 		      public void describeMismatch(final Object item, final
 		Description description) {
-		         description.appendText("was").appendValue(((AbstractJFile) item).getName());
+		         description.appendText("was").appendValue(((AbstractNode) item).getName());
 		     }
 		   };
 		}

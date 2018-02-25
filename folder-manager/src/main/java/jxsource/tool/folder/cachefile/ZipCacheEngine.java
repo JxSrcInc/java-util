@@ -10,10 +10,10 @@ import java.util.zip.ZipInputStream;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import jxsource.tool.folder.file.AbstractJFile;
-import jxsource.tool.folder.file.CacheFile;
-import jxsource.tool.folder.file.JFile;
-import jxsource.tool.folder.file.ZipFile;
+import jxsource.tool.folder.node.AbstractNode;
+import jxsource.tool.folder.node.CacheFile;
+import jxsource.tool.folder.node.JFile;
+import jxsource.tool.folder.node.ZipFile;
 import jxsource.tool.folder.search.ZipSearchEngine;
 import jxsource.tool.folder.search.action.Action;
 import jxsource.tool.folder.search.action.CacheFileAction;

@@ -6,8 +6,8 @@ import org.junit.Test;
 
 import jxsource.tool.folder.compare.action.PrintAction;
 import jxsource.tool.folder.compare.comparator.PathDiffer;
-import jxsource.tool.folder.file.JFile;
-import jxsource.tool.folder.file.SysFile;
+import jxsource.tool.folder.node.JFile;
+import jxsource.tool.folder.node.SysFile;
 
 public class CompareEngineTest {
 

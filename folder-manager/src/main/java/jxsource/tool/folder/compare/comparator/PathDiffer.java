@@ -1,6 +1,6 @@
 package jxsource.tool.folder.compare.comparator;
 
-import jxsource.tool.folder.file.Node;
+import jxsource.tool.folder.node.Node;
 
 public class PathDiffer extends Differ{
 

@@ -3,7 +3,7 @@ package jxsource.tool.folder.search.filter.pathfilter;
 import java.util.HashSet;
 import java.util.Set;
 
-import jxsource.tool.folder.file.AbstractJFile;
+import jxsource.tool.folder.node.AbstractNode;
 import jxsource.tool.folder.search.filter.Filter;
 
 /**

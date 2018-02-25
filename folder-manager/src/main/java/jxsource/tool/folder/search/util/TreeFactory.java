@@ -9,8 +9,8 @@ import java.util.Set;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import jxsource.tool.folder.file.JFile;
-import jxsource.tool.folder.file.XFile;
+import jxsource.tool.folder.node.JFile;
+import jxsource.tool.folder.node.Node;
 
 public class TreeFactory {
 	Logger log = LogManager.getLogger(TreeFactory.class);
@@ -20,34 +20,34 @@ public class TreeFactory {
 	private static final int Child = -1;
 	private static final int Duplicate = -2;
 	// working path
-	private List<JFile> path = new ArrayList<JFile>();
+	private List<Node> path = new ArrayList<Node>();
 	// created trees
-	private Set<JFile> trees = new HashSet<JFile>();
-	private List<JFile> src;
+	private Set<Node> trees = new HashSet<Node>();
+	private List<Node> src;
 
 	public static TreeFactory build() {
 		return new TreeFactory();
 	}
-	public Set<JFile> createTrees(List<JFile> src) {
+	public Set<Node> createTrees(List<Node> src) {
 		path.clear();
 		trees.clear();
-		this.src = new ArrayList<JFile>(src);
+		this.src = new ArrayList<Node>(src);
 		Collections.sort(this.src);
 		proc();
 		return trees;
 	}
 
 	// return the first tree if src contains multiple trees
-	public JFile createTree(final List<JFile> src) {
-		JFile[] trees = createTrees(src).toArray(new JFile[0]);
+	public Node createTree(final List<Node> src) {
+		Node[] trees = createTrees(src).toArray(new Node[0]);
 		return (trees.length==0?null:trees[0]);
 	}
 
-	private int relation(JFile file) {
+	private int relation(Node file) {
 		if(trees.size() == 0) {
 			return Root;
 		} 
-		JFile last = path.get(path.size()-1);
+		Node last = path.get(path.size()-1);
 		if(file.getParentPath().equals(last.getPath())) {
 			return Child;
 		}
@@ -61,11 +61,11 @@ public class TreeFactory {
 		return OnPath;
 	}
 	// return parent on the current path or null;
-	private JFile findParent(JFile file) {
+	private Node findParent(Node file) {
 
 		String parent = file.getParentPath();
 		for(int i=path.size()-1; i>-1; i--) {
-			JFile pathNode = path.get(path.size()-1);
+			Node pathNode = path.get(path.size()-1);
 			if(pathNode.getPath().equals(parent)) {
 				return pathNode;
 			} else {
@@ -74,26 +74,29 @@ public class TreeFactory {
 		}
 		return null;
 	}
-	private void addRoot(JFile root) {
+	private void addRoot(Node root) {
 		path.clear();
 		path.add(root);
 		trees.add(root);
+	}
+	private boolean isArray(Node file) {
+		return file.isArray();
 	}
 	private void proc() {
 		if(src.size() == 0) {
 			return;
 		}
-		JFile file = src.remove(0);
+		Node file = src.remove(0);
 		log.debug("trees="+trees.size()+", file="+file.getPath()+", "+
 				"parent="+(path.size()==0?"\\":path.get(path.size()-1).getPath()));
 		switch(relation(file)) {
 		case Child:
-			JFile _parent = path.get(path.size()-1);
+			Node _parent = path.get(path.size()-1);
 			if(file.getParent() == null) {
 				file.setParent(_parent);
 			}
 			_parent.addChild(file);
-			if(file.isDirectory()) {
+			if(isArray(file)) {
 				path.add(file);
 			}
 			break;
@@ -101,7 +104,7 @@ public class TreeFactory {
 			path.remove(path.size()-1);
 			if(path.size() > 0) {
 				path.get(path.size()-1).addChild(file);
-				if(file.isDirectory()) {
+				if(isArray(file)) {
 					path.add(file);
 				}
 			} else {
@@ -112,7 +115,7 @@ public class TreeFactory {
 			addRoot(file);
 			break;
 		case OnPath:
-			JFile parent = findParent(file);
+			Node parent = findParent(file);
 			if(parent != null) {
 				parent.addChild(file);
 				path.add(file);

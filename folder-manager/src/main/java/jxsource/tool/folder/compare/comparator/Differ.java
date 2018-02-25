@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import jxsource.tool.folder.file.Node;
+import jxsource.tool.folder.node.Node;
 
 public abstract class Differ {
 

@@ -1,4 +1,4 @@
-package jxsource.tool.folder.file;
+package jxsource.tool.folder.node;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -25,13 +25,13 @@ public class CacheFile implements JFile{
 			throw new RuntimeException("Error when loading content for "+cache.getPath(), e);
 		}
 		// register the file in CacheFileManager
-		FileManagerHolder.get().add(this);
+		NodeManagerHolder.get().add(this);
 	}
 	
 	// Wrap the same method of T - JFile method
-	public char getFileSeparator() {
+	public char getPathSeparator() {
 
-		return cache.getFileSeparator();
+		return cache.getPathSeparator();
 	}
 	// Wrap the same method of T - JFile method
 	public String getName() {
@@ -59,13 +59,13 @@ public class CacheFile implements JFile{
 	}
 
 	// Wrap the same method of T - JFile method
-	public boolean isDirectory() {
-		return cache.isDirectory();
+	public boolean isArray() {
+		return cache.isArray();
 	}
 
 	// Wrap the same method of T - JFile method
-	public void setDirectory(boolean directory) {
-		cache.setDirectory(directory);
+	public void setArray(boolean directory) {
+		cache.setArray(directory);
 	}
 
 	// Wrap the same method of T - JFile method
@@ -151,7 +151,7 @@ public class CacheFile implements JFile{
 		return true;
 	}
 	@Override
-	public int compareTo(JFile o) {
+	public int compareTo(Node o) {
 		if(o == null) {
 			return -1;
 		}

@@ -6,7 +6,7 @@ import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 
-import jxsource.tool.folder.file.AbstractJFile;
+import jxsource.tool.folder.node.AbstractNode;
 import jxsource.tool.folder.search.util.Util;
 
 public class MatcherFactory {

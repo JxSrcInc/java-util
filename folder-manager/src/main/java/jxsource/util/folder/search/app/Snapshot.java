@@ -3,7 +3,7 @@ package jxsource.util.folder.search.app;
 import java.io.File;
 import java.text.ParseException;
 
-import jxsource.tool.folder.file.SysFile;
+import jxsource.tool.folder.node.SysFile;
 import jxsource.tool.folder.search.SysSearchEngine;
 import jxsource.tool.folder.search.action.Action;
 import jxsource.tool.folder.search.action.CollectionAction;

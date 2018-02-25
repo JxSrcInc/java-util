@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import jxsource.tool.folder.file.SysFile;
+import jxsource.tool.folder.node.SysFile;
 import jxsource.tool.folder.search.action.CollectionAction;
 import jxsource.tool.folder.search.filter.Filter;
 import jxsource.tool.folder.search.filter.pathfilter.PathFilter;

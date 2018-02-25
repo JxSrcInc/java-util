@@ -1,7 +1,7 @@
 package jxsource.tool.folder.search.action;
 
-import jxsource.tool.folder.file.JFile;
+import jxsource.tool.folder.node.Node;
 
 public interface Action {
-	public void proc(JFile file);
+	public void proc(Node file);
 }

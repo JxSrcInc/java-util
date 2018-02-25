@@ -7,7 +7,7 @@ import java.util.Date;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import jxsource.tool.folder.file.JFile;
+import jxsource.tool.folder.node.JFile;
 import jxsource.tool.folder.search.filter.Filter;
 
 public class TimeFilter extends AbstractFilter{
@@ -29,7 +29,7 @@ public class TimeFilter extends AbstractFilter{
 		
 	}
 	public int getStatus(JFile f) {
-		if(f.isDirectory()) {
+		if(f.isArray()) {
 			return Filter.PASS;
 		}
 		log.debug(f.getPath()+", "+sdfDate.format(new Date(f.getLastModified())));

@@ -27,7 +27,7 @@
     <Logger name="jxsource.tool.folder.search.zip" level="debug" additivity="false">
     	<Appender-ref ref="sysout"/>
     </Logger>
-    <Logger name="jxsource.tool.folder.search.util" level="info" additivity="false">
+    <Logger name="jxsource.tool.folder.search.util" level="debug" additivity="false">
     	<Appender-ref ref="sysout"/>
     </Logger>
     <Logger name="jxsource.tool.folder.search" level="info" additivity="false">

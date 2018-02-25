@@ -13,7 +13,7 @@ import java.util.Iterator;
 import jxsource.tool.folder.compare.Result.Bind;
 import jxsource.tool.folder.compare.action.Action;
 import jxsource.tool.folder.compare.comparator.Differ;
-import jxsource.tool.folder.file.Node;
+import jxsource.tool.folder.node.Node;
 
 public class CompareEngine {
 	private static Logger log = LogManager.getLogger(CompareEngine.class);

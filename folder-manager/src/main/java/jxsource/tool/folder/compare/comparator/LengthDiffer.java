@@ -1,7 +1,7 @@
 package jxsource.tool.folder.compare.comparator;
 
-import jxsource.tool.folder.file.JFile;
-import jxsource.tool.folder.file.Node;
+import jxsource.tool.folder.node.JFile;
+import jxsource.tool.folder.node.Node;
 
 public class LengthDiffer extends Differ {
 

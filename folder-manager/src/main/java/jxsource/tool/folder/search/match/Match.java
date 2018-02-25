@@ -1,6 +1,6 @@
 package jxsource.tool.folder.search.match;
 
-import jxsource.tool.folder.file.AbstractJFile;
+import jxsource.tool.folder.node.AbstractNode;
 
 public abstract class Match {
 	protected boolean ignoreCase;

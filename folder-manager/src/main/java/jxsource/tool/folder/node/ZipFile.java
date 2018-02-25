@@ -1,4 +1,4 @@
-package jxsource.tool.folder.file;
+package jxsource.tool.folder.node;
 
 import java.io.File;
 import java.io.IOException;
@@ -7,12 +7,12 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-public class ZipFile extends AbstractJFile{
+public class ZipFile extends AbstractNode implements JFile {
 	private ZipInputStream zis;
 	private ZipEntry zipEntry;
 	
 	public ZipFile(ZipEntry zipEntry, ZipInputStream zis) { 
-		super('/'); // set fileSeparator as '/'
+//		super('/'); // set fileSeparator as '/'
 		this.zipEntry = zipEntry;
 		String path = zipEntry.getName();
 		// in zip, the last char of path is '/' if zipEntry is not file
@@ -22,7 +22,7 @@ public class ZipFile extends AbstractJFile{
 		}
 		setPath(path);
 		setLength(zipEntry.getSize());
-		setDirectory(zipEntry.isDirectory());
+		setArray(zipEntry.isDirectory());
 		lastModified = zipEntry.getLastModifiedTime().toMillis();
 		this.zis = zis;
 	}

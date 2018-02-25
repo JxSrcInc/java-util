@@ -1,6 +1,6 @@
 package jxsource.tool.folder.search.filter.pathfilter;
 
-import jxsource.tool.folder.file.JFile;
+import jxsource.tool.folder.node.JFile;
 import jxsource.tool.folder.search.filter.Filter;
 
 public class ExtFilter extends AbstractFilter{
@@ -17,7 +17,7 @@ public class ExtFilter extends AbstractFilter{
 	}
 	
 	public int getStatus(JFile f) {
-		if(f.isDirectory()) {
+		if(f.isArray()) {
 			return Filter.PASS;
 		}
 		String name = f.getName();

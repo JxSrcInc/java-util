@@ -7,7 +7,8 @@ import java.util.zip.ZipInputStream;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import jxsource.tool.folder.file.JFile;
+import jxsource.tool.folder.node.JFile;
+import jxsource.tool.folder.node.Node;
 import jxsource.tool.folder.search.ZipSearchEngine;
 import jxsource.tool.folder.search.filter.Filter;
 import jxsource.tool.folder.search.util.Util;
@@ -28,9 +29,10 @@ public class ZipExtractAction implements Action {
 	private boolean buildTree;
 	private boolean cache;
 
-	public void proc(JFile f) {
+	public void proc(Node f) {
 		// skip all non-archive files.
-		if (Util.isArchive(f)) {
+		// TODO: JFile
+		if (Util.isArchive((JFile)f)) {
 			log.debug("search "+f.getPath());
 			String url = f.getPath();
 			ca.reset();
@@ -42,7 +44,7 @@ public class ZipExtractAction implements Action {
 				engin.addAction(ca);					
 				engin.search(in);
 				if(reportAction != null) {
-					reportAction.report(url, buildTree?engin.getTrees():ca.getFiles());
+					reportAction.report(url, buildTree?engin.getTrees():ca.getNodes());
 				}
 			} catch (Exception e) {
 				throw new RuntimeException("Error when extracting "+url, e);
