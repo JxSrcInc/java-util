@@ -1,6 +1,5 @@
 package jxsource.tool.folder.search.action;
 
-import jxsource.tool.folder.node.NodeManagerHolder;
 import jxsource.tool.folder.node.JFile;
 import jxsource.tool.folder.node.Node;
 import jxsource.tool.folder.search.util.Util;

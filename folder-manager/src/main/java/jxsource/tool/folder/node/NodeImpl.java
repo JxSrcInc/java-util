@@ -1,9 +1,5 @@
 package jxsource.tool.folder.node;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-
 public class NodeImpl extends AbstractNode {
 
 	private Object content;

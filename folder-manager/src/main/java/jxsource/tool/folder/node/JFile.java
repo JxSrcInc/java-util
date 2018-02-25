@@ -3,8 +3,6 @@ package jxsource.tool.folder.node;
 import java.io.IOException;
 import java.io.InputStream;
 
-import com.fasterxml.jackson.databind.JsonNode;
-
 public interface JFile extends Node {
 	public long getLength();
 	public void setLength(long length);

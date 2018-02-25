@@ -7,9 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import jxsource.tool.folder.search.util.TreeFactory;
 
 /**
@@ -46,14 +43,6 @@ public class NodeManager {
 		Set<Node> trees = new HashSet<Node>();
 		for(Node f: TreeFactory.build().createTrees(list)) {
 			Node tree = addSegmentToRoot(f);
-//			ObjectMapper mapper = new ObjectMapper();
-//			try {
-//				System.out.println("new Tree ##############################");
-//				System.out.println(mapper.writerWithDefaultPrettyPrinter().writeValueAsString(tree.convertToJson()));
-//			} catch (JsonProcessingException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
 			trees.add(tree);
 		}
 		return trees;
@@ -67,14 +56,6 @@ public class NodeManager {
 	 * @return
 	 */
 	private Node addSegmentToRoot(Node f) {
-//		ObjectMapper mapper = new ObjectMapper();
-//		try {
-//			System.out.println("addSegmentToRoot ------------------");
-//			System.out.println(mapper.writerWithDefaultPrettyPrinter().writeValueAsString(f.convertToJson()));
-//		} catch (JsonProcessingException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
 		if(f.getPath().equals(f.getName())) {
 			// root sibling
 			if(!map.containsKey(f.getPath())) {
@@ -92,13 +73,13 @@ public class NodeManager {
 		int i = f.getPath().lastIndexOf(f.getPathSeparator());
 		if(i > 0) {
 			String parentPath = f.getPath().substring(0, i);
-			NodeImpl xFile = new NodeImpl();
-			xFile.setPath(parentPath);
-			xFile.setArray(true);
-			xFile.addChild(f);
-			f.setParent(xFile);
-			map.put(parentPath, xFile);
-			return addSegmentToRoot(xFile);
+			NodeImpl node = new NodeImpl();
+			node.setPath(parentPath);
+			node.setArray(true);
+			node.addChild(f);
+			f.setParent(node);
+			map.put(parentPath, node);
+			return addSegmentToRoot(node);
 		} else {
 			// this shouldn't happen
 			throw new RuntimeException(f.getPath()+" dose not miss path to root");

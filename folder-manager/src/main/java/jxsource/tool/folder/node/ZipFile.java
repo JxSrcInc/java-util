@@ -1,6 +1,5 @@
 package jxsource.tool.folder.node;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -12,7 +11,6 @@ public class ZipFile extends AbstractNode implements JFile {
 	private ZipEntry zipEntry;
 	
 	public ZipFile(ZipEntry zipEntry, ZipInputStream zis) { 
-//		super('/'); // set fileSeparator as '/'
 		this.zipEntry = zipEntry;
 		String path = zipEntry.getName();
 		// in zip, the last char of path is '/' if zipEntry is not file

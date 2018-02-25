@@ -1,18 +1,12 @@
 package jxsource.tool.folder.node;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-
-import jxsource.tool.folder.search.util.Util;
 
 public abstract class AbstractNode implements Node{
 	public static final String Root = "";
@@ -34,9 +28,6 @@ public abstract class AbstractNode implements Node{
 	 *    It may be set by TreeFactory
 	 */
 	protected Node parent;
-//	protected AbstractJFile(char fileSeparator) {
-//		this.fileSeparator = fileSeparator;
-//	}
 
 	private ObjectNode initJsonNode(ObjectNode node) {
 		node.put("path", path.replaceAll("\\\\", "/"));
@@ -90,11 +81,6 @@ public abstract class AbstractNode implements Node{
 			}
 		}
 		return parentPath;
-//		int index = path.indexOf(name);
-//		if(index > 0) {
-//			index--;
-//		}
-//		return path.substring(0, index);
 	}
 	public char getPathSeparator() {
 		return fileSeparator;
@@ -139,10 +125,6 @@ public abstract class AbstractNode implements Node{
 		int i = name.lastIndexOf('.');
 		return name.substring(i+1);
 	}
-//	@Override
-//	public String toString() {
-//		return path + ',' + length;
-//	}
 	
 	@Override
 	public int hashCode() {

@@ -1,10 +1,5 @@
 package jxsource.tool.folder.compare.comparator;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
 import jxsource.tool.folder.node.Node;
 
 public abstract class Differ {

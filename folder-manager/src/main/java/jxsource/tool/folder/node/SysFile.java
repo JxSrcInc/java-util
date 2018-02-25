@@ -5,21 +5,16 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class SysFile extends AbstractNode implements JFile{
 	private static Logger log = LogManager.getLogger(SysFile.class);
 	private File file;
 	private InputStream in;
 	public SysFile(File file) {
-//		super(System.getProperty("file.separator").charAt(0));
-//		super('/');
 		char fileSeparator = System.getProperty("file.separator").charAt(0);
 		String path = file.getPath();
 		if(path.length()>=2 && path.charAt(0)=='.' && path.charAt(1)==fileSeparator) {

@@ -1,6 +1,5 @@
 package jxsource.tool.folder.search;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,17 +15,11 @@ import org.apache.logging.log4j.Logger;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import jxsource.tool.folder.node.AbstractNode;
-import jxsource.tool.folder.node.CacheFile;
 import jxsource.tool.folder.node.JFile;
+import jxsource.tool.folder.node.Node;
 import jxsource.tool.folder.node.NodeManager;
 import jxsource.tool.folder.node.NodeManagerHolder;
-import jxsource.tool.folder.node.Node;
-import jxsource.tool.folder.node.Node;
 import jxsource.tool.folder.node.ZipFile;
-import jxsource.tool.folder.search.action.FilePrintAction;
-import jxsource.tool.folder.search.filter.Filter;
-import jxsource.tool.folder.search.filter.pathfilter.ExtFilter;
 
 /**
  * It supports both ZipFile and CacheFile<ZipFile>
@@ -51,11 +44,8 @@ public class ZipSearchEngine extends SearchEngine {
 			fileManager.add(currNode);
 			log.debug("zip search: "+currNode.getPath());
 			consum(currNode);
-//			if(consum(currNode) == Filter.ACCEPT && !currNode.isDirectory() && cache) {
-//					currNode = new CacheFile(currNode);
-//			}
 		}
-		getTrees();
+//		getTrees();
 		zis.close();
 	}
 	public List<Node> getTrees() {

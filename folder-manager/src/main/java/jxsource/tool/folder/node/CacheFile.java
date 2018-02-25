@@ -165,7 +165,9 @@ public class CacheFile implements JFile{
 
 	@Override
 	public void setContent(Object content) {
-		cache.setContent(content);
+		if(content instanceof byte[]) {
+			this.content = (byte[]) content;
+		}
 	}
 
 	@Override
