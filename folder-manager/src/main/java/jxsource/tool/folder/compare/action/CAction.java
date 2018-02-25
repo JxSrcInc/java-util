@@ -3,9 +3,9 @@ package jxsource.tool.folder.compare.action;
 import java.util.Map;
 import java.util.Set;
 
-import jxsource.tool.folder.compare.CFile;
 import jxsource.tool.folder.compare.Result;
+import jxsource.tool.folder.file.Node;
 
 public interface CAction {
-	public void proc(CFile src, CFile target);
+	public void proc(Node src, Node target);
 }

@@ -13,24 +13,25 @@ import java.util.Iterator;
 import jxsource.tool.folder.compare.Result.Bind;
 import jxsource.tool.folder.compare.action.CAction;
 import jxsource.tool.folder.compare.comparator.Differ;
+import jxsource.tool.folder.file.Node;
 
 public class CompareEngine {
 	private static Logger log = LogManager.getLogger(CompareEngine.class);
 	private Differ differ;
 	private CAction action;
-	private Comparator<CFile> comparator = (CFile o1, CFile o2) -> o1.getPath().compareTo(o2.getPath());
+	private Comparator<Node> comparator = (Node o1, Node o2) -> o1.getPath().compareTo(o2.getPath());
 
 	public CompareEngine(Differ differ, CAction action) {
 		this.differ = differ;
 		this.action = action;
 	}
-	private void fire(CFile src, CFile compareTo) {
+	private void fire(Node src, Node compareTo) {
 		if(action != null) {
 			action.proc(src, compareTo);			
 		}
 	}
 	// recursive function
-	public void compare(CFile src, CFile compareTo) {
+	public void compare(Node src, Node compareTo) {
 		log.debug("compare\n\tsrc = "+ src+"\n\tcompareTo = "+compareTo);
 
 		if(differ.diff(src, compareTo)) {
@@ -39,7 +40,7 @@ public class CompareEngine {
 			fire(src, compareTo);
 			// no more further process
 		} else {
-			if(src.isDirectory() && compareTo.isDirectory()) {
+			if(src.getChildren().size() == compareTo.getChildren().size()) {
 				// both are directories, compare children
 				Result result = compareNodes(src, compareTo);
 				Iterator<Bind> diff = result.getDiff().iterator();
@@ -47,11 +48,11 @@ public class CompareEngine {
 					Bind child = diff.next();
 					fire(child.src, child.compareTo);
 				}
-				Iterator<CFile> missing = result.getMissing().iterator();
+				Iterator<Node> missing = result.getMissing().iterator();
 				while(missing.hasNext()) {
 					fire(missing.next(), null);
 				}
-				Iterator<CFile> extra = result.getMissing().iterator();
+				Iterator<Node> extra = result.getMissing().iterator();
 				while(extra.hasNext()) {
 					fire(null, extra.next());
 				}
@@ -66,16 +67,16 @@ public class CompareEngine {
 			}
 		}
 	}
-	public Result compareNodes(CFile src, CFile compareTo) {
-		List<CFile> sList = src.listFiles();
+	public Result compareNodes(Node src, Node compareTo) {
+		List<Node> sList = src.getChildren();
 		Collections.sort(sList, comparator);
-		List<CFile> cList = compareTo.listFiles();
+		List<Node> cList = compareTo.getChildren();
 		Collections.sort(cList, comparator);
 		Result r = new Result();
-		Iterator<CFile> sIter = sList.iterator();
-		Iterator<CFile> cIter = cList.iterator();
-		CFile sChild = null; 
-		CFile cChild = null;
+		Iterator<Node> sIter = sList.iterator();
+		Iterator<Node> cIter = cList.iterator();
+		Node sChild = null; 
+		Node cChild = null;
 		if(sIter.hasNext()) {
 			sChild = sIter.next();
 		}
@@ -85,10 +86,10 @@ public class CompareEngine {
 		return recursiveCall(sIter, cIter, sChild, cChild, r);
 	}
 	
-	public Result recursiveCall(Iterator<CFile> sIter,
-			Iterator<CFile> cIter,
-			CFile sChild,
-			CFile cChild,
+	public Result recursiveCall(Iterator<Node> sIter,
+			Iterator<Node> cIter,
+			Node sChild,
+			Node cChild,
 			Result r) {
 		if(sChild == null && cChild == null) {
 			// complete
@@ -114,9 +115,9 @@ public class CompareEngine {
 			} else {
 				r.addSame(bind);
 			}
-			CFile sNext = null;
+			Node sNext = null;
 			if(sIter.hasNext()) sNext = sIter.next();
-			CFile cNext = null;
+			Node cNext = null;
 			if(cIter.hasNext()) cNext = cIter.next();
 			Result _r = recursiveCall(sIter, cIter, sNext, cNext, r);
 			return _r;

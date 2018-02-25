@@ -23,5 +23,20 @@ public class XFile extends AbstractJFile{
 		// TODO Auto-generated method stub
 		return 0;
 	}
+	@Override
+	public void setName(String name) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public Object getContent() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public void setContent(Object node) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

@@ -21,7 +21,7 @@ public abstract class AbstractJFile implements JFile{
 	protected long length;
 	protected boolean directory;
 	protected char fileSeparator;
-	protected List<JFile> children; 
+	protected List<Node> children; 
 	protected long lastModified;
 	protected String parentPath;
 	private static ObjectMapper mapper = new ObjectMapper();
@@ -33,7 +33,7 @@ public abstract class AbstractJFile implements JFile{
 	 *  - parent may not be setup when creating this JFile. e.g. ZipFile
 	 *    It may be set by TreeFactory
 	 */
-	protected JFile parent;
+	protected Node parent;
 	protected AbstractJFile(char fileSeparator) {
 		this.fileSeparator = fileSeparator;
 	}
@@ -52,27 +52,28 @@ public abstract class AbstractJFile implements JFile{
 		node = initJsonNode(node);
 		if(children != null) {
 			ArrayNode childrenNode = node.putArray("children");//node.arrayNode();
-			for(JFile child: children) {
+			for(Node child: children) {
 				childrenNode.add(child.convertToJson());
 			}
 		}
 		return node;
 	}
-	public void addChild(JFile child) {
+	@Override
+	public void addChild(Node child) {
 		// children may be null
 		// because it is lazy load for performance consideration
 		if(children == null) {
-			children = new ArrayList<JFile>();
+			children = new ArrayList<Node>();
 		}
 		if(!children.contains(child)) {
 			children.add(child);
 		}
 	}
-	public void setParent(JFile parent) {
+	public void setParent(Node parent) {
 		this.parent = parent;
 	}
 	// see parent definition for meaning of returned NULL value
-	public JFile getParent() {
+	public Node getParent() {
 		return parent;
 	}
 	public String getParentPath() {
@@ -98,14 +99,17 @@ public abstract class AbstractJFile implements JFile{
 	public char getFileSeparator() {
 		return fileSeparator;
 	}
-	public void setChildren(List<JFile> children) {
+	public void setChildren(List<Node> children) {
 		this.children = children;
 	}
-	public List<JFile> getChildren() {
+	public List<Node> getChildren() {
 		return children;
 	}
 	public String getName() {
 		return name;
+	}
+	public void setName(String name) {
+		setPath(name);
 	}
 	public String getPath() {
 		return path;

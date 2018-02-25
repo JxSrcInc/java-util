@@ -1,5 +1,6 @@
 package jxsource.tool.folder.file;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -8,9 +9,11 @@ import java.util.zip.ZipInputStream;
 
 public class ZipFile extends AbstractJFile{
 	private ZipInputStream zis;
+	private ZipEntry zipEntry;
 	
 	public ZipFile(ZipEntry zipEntry, ZipInputStream zis) { 
 		super('/'); // set fileSeparator as '/'
+		this.zipEntry = zipEntry;
 		String path = zipEntry.getName();
 		// in zip, the last char of path is '/' if zipEntry is not file
 		// so remove it
@@ -44,12 +47,25 @@ public class ZipFile extends AbstractJFile{
 	}
 
 	@Override
-	public List<JFile> getChildren() {
+	public List<Node> getChildren() {
 		if(children == null) {
 			throw new RuntimeException("Children in zip@"+path+" has not been set. Use TreeFactory to setup.");
 		} else {
 			return super.getChildren();
 		}
+	}
+
+	@Override
+	public Object getContent() {
+		return zipEntry;
+	}
+
+	@Override
+	public void setContent(Object content) {
+		if(content instanceof ZipEntry && zipEntry == null) {
+			zipEntry = (ZipEntry) content;
+		}
+		
 	}
 	
 }

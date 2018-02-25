@@ -5,18 +5,16 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import jxsource.tool.folder.compare.CFile;
+import jxsource.tool.folder.file.Node;
 
 public abstract class Differ {
 
 	protected Differ next;
 
-	protected abstract boolean isDiff(CFile src, CFile compareTo);
+	protected abstract boolean isDiff(Node src, Node compareTo);
 
-	public boolean diff(CFile src, CFile compareTo) {
-		if (src.isDirectory() && !compareTo.isDirectory()) {
-			return true;
-		} else if (!src.isDirectory() && compareTo.isDirectory()) {
+	public boolean diff(Node src, Node compareTo) {
+		if (src.getChildren().size() != compareTo.getChildren().size()) {
 			return true;
 		} else if (isDiff(src, compareTo)) {
 			return true;

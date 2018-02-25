@@ -1,18 +1,18 @@
 package jxsource.tool.folder.compare.comparator;
 
-import jxsource.tool.folder.compare.CFile;
+import jxsource.tool.folder.file.JFile;
+import jxsource.tool.folder.file.Node;
 
 public class LengthDiffer extends Differ {
 
 	@Override
-	protected boolean isDiff(CFile src, CFile compareTo) {
-		if (!src.isDirectory() && !compareTo.isDirectory()) {
-			return src.getLength() != compareTo.getLength();
-		} else if (src.isDirectory() && compareTo.isDirectory()) {
-			return true;
-		} else {
-			return false;
+	protected boolean isDiff(Node src, Node compareTo) {
+		if (src.getChildren().size() == 0 && compareTo.getChildren().size() == 0) {
+			if(src instanceof JFile && compareTo instanceof JFile) {
+				return ((JFile)src).getLength() != ((JFile)compareTo).getLength();
+			}
 		}
+		return false;
 	}
 
 }

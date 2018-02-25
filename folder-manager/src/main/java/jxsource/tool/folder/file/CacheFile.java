@@ -118,12 +118,12 @@ public class CacheFile implements JFile{
 	}
 
 	@Override
-	public List<JFile> getChildren() {
+	public List<Node> getChildren() {
 		return cache.getChildren();
 	}
 
 	@Override
-	public void setChildren(List<JFile> children) {
+	public void setChildren(List<Node> children) {
 		cache.setChildren(children);
 	}
 
@@ -159,27 +159,39 @@ public class CacheFile implements JFile{
 	}
 
 	@Override
-	public void setParent(JFile parent) {
-		cache.setParent(parent);
+	public void setName(String name) {
+		cache.setName(name);
 	}
 
 	@Override
-	public JFile getParent() {
+	public void setContent(Object content) {
+		cache.setContent(content);
+	}
+
+	@Override
+	public Node getParent() {
 		return cache.getParent();
 	}
-	@Override 
-	public String getParentPath() {
-		return cache.getParentPath();
+
+	@Override
+	public void setParent(Node node) {
+		cache.setParent(node);
+		
 	}
 
 	@Override
-	public void addChild(JFile child) {
+	public void addChild(Node child) {
 		cache.addChild(child);
-		
+	}
+
+	@Override
+	public String getParentPath() {
+		return cache.getParentPath();
 	}
 
 	@Override
 	public JsonNode convertToJson() {
 		return cache.convertToJson();
 	}
+
 }

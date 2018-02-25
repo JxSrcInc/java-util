@@ -64,10 +64,10 @@ public class SysFile extends AbstractJFile{
 	 * SysFile always uses file system's children
 	 */
 	@Override
-	public List<JFile> getChildren() {
+	public List<Node> getChildren() {
 		if(children == null) {
 			File[] files = file.listFiles();
-			children = new ArrayList<JFile>();
+			children = new ArrayList<Node>();
 			if(files != null) {
 			for(int i=0; i<files.length; i++) {
 				JFile child = new SysFile(files[i]);
@@ -76,6 +76,19 @@ public class SysFile extends AbstractJFile{
 			}
 			}
 		}
-		return children; 
+		return super.getChildren();//children.toArray(new JFile[children.size()]); 
+	}
+
+	@Override
+	public Object getContent() {
+		return file;
+	}
+
+	@Override
+	public void setContent(Object content) {
+		if(content instanceof File && file == null) {
+			file = (File) content;
+		}
+		
 	}	
 }
