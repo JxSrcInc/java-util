@@ -11,17 +11,17 @@ import java.util.Comparator;
 import java.util.Iterator;
 
 import jxsource.tool.folder.compare.Result.Bind;
-import jxsource.tool.folder.compare.action.CAction;
+import jxsource.tool.folder.compare.action.Action;
 import jxsource.tool.folder.compare.comparator.Differ;
 import jxsource.tool.folder.file.Node;
 
 public class CompareEngine {
 	private static Logger log = LogManager.getLogger(CompareEngine.class);
 	private Differ differ;
-	private CAction action;
+	private Action action;
 	private Comparator<Node> comparator = (Node o1, Node o2) -> o1.getPath().compareTo(o2.getPath());
 
-	public CompareEngine(Differ differ, CAction action) {
+	public CompareEngine(Differ differ, Action action) {
 		this.differ = differ;
 		this.action = action;
 	}
