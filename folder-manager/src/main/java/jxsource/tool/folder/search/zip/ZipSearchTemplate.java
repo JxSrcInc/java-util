@@ -13,6 +13,7 @@ import jxsource.tool.folder.search.action.Action;
 import jxsource.tool.folder.search.action.CollectionAction;
 import jxsource.tool.folder.search.action.ZipExtractAction;
 import jxsource.tool.folder.search.filter.Filter;
+import jxsource.tool.folder.search.filter.FilterFactory;
 import jxsource.tool.folder.search.filter.pathfilter.ExtFilter;
 import jxsource.tool.folder.search.filter.pathfilter.ZipFilter;
 /**
@@ -85,5 +86,14 @@ public class ZipSearchTemplate {
 			return new ZipSearchTemplate(rootDir, sysFilter, zipFilter, 
 					zipReport, cache, buildTree);
 		}
+	}
+	
+	public static void main(String...args) {
+		ZipSearchTemplate t = ZipSearchTemplate.getBuilder()
+				.setRootDir("C:\\Users\\JiangJxSrc\\.m2\\repository\\org\\springframework")
+				.setZipFilter(FilterFactory.create(FilterFactory.Name, "Controller"))
+				.setZipReport(new ZipReportPrinter())
+				.build();
+		t.search();
 	}
 }

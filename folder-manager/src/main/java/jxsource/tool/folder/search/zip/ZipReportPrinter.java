@@ -13,6 +13,7 @@ public class ZipReportPrinter extends ZipReportAction {
 		System.out.println(url + " ------------------");
 		for(Node f: extractFiles)
 		System.out.println("ZipReportPrinter: "+f);
+		System.out.println();
 	}
 
 }

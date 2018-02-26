@@ -10,7 +10,11 @@ import jxsource.tool.folder.search.filter.Filter;
 public abstract class SearchEngine {
 	private Set<Action> actions = new HashSet<Action>();
 	private Filter filter;
+	private int count;
 
+	public int getSearchedCount() {
+		return count;
+	}
 	public void setFilter(Filter filter) {
 		this.filter = filter;
 	}
@@ -36,6 +40,7 @@ public abstract class SearchEngine {
 	 * 		false inform search engine to stop process its children
 	 */
 	protected int consum(JFile file) {
+		count++;
 		int status = Filter.ACCEPT;
 		if(filter != null) {
 			status = filter.accept(file);

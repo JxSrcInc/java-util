@@ -13,9 +13,19 @@ import jxsource.tool.folder.search.filter.Filter;
  */
 public abstract class AbstractFilter extends Filter {
 
-	private boolean ignoreCase = true;
-	private boolean like = false;
-	
+	protected boolean ignoreCase = true;
+	protected boolean like = false;
+	protected Set<String> matchs = new HashSet<String>();
+
+	public void add(String[] matchs) {
+		for(String match: matchs) {
+			this.matchs.add(match.trim());
+		}
+	}
+	public void add(String multiMatch) {
+		add(multiMatch.split(","));
+	}
+
 	public boolean isIgnoreCase() {
 		return ignoreCase;
 	}

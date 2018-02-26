@@ -16,6 +16,9 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import jxsource.tool.folder.search.filter.Filter;
+import jxsource.tool.folder.search.filter.FilterFactory;
+import jxsource.tool.folder.search.filter.FilterProperties;
+import jxsource.tool.folder.search.filter.pathfilter.AbstractFilter;
 import jxsource.tool.folder.search.filter.pathfilter.ExtFilter;
 import jxsource.tool.folder.search.filter.pathfilter.FullNameFilter;
 import jxsource.tool.folder.search.filter.pathfilter.NameFilter;
@@ -49,7 +52,7 @@ public class ZipSearchTemplateTest {
 	@Test
 	public void extFilterTest() {
 		ZipSearchTemplate zst = builder
-			.setZipFilter(new ExtFilter("class"))
+			.setZipFilter(FilterFactory.create(FilterFactory.Ext, "class"))
 			.setZipReport(zipReportAssert.setExt("class"))
 			.build();
 		zst.search();		
@@ -57,7 +60,7 @@ public class ZipSearchTemplateTest {
 	@Test
 	public void fullnameFilterTest() {
 		ZipSearchTemplate zst = builder
-				.setZipFilter(new FullNameFilter().add("Filter.class"))
+				.setZipFilter(FilterFactory.create(FilterFactory.FullName, "Filter.class"))
 				.setZipReport(zipReportAssert.setName("Filter")) // ZipReportAssert removes extension from name 
 				.build();
 			zst.search();		
@@ -65,23 +68,25 @@ public class ZipSearchTemplateTest {
 	@Test
 	public void nameFilterTest() {
 		ZipSearchTemplate zst = builder
-				.setZipFilter(new NameFilter().add("Filter"))
+				.setZipFilter(FilterFactory.create(FilterFactory.Name, "Filter"))
 				.setZipReport(zipReportAssert.setName("Filter"))
 				.build();
 			zst.search();		
 	}
 	@Test
 	public void ignoreCaseNameFilterTest() {
+		Filter filter = FilterFactory.create(FilterFactory.Name, "filter", FilterProperties.setIgnoreCase(true));
 		ZipSearchTemplate zst = builder
-				.setZipFilter(new NameFilter().add("filter").setIgnoreCase(true))
+				.setZipFilter(filter)
 				.setZipReport(zipReportAssert.setName("Filter"))
 				.build();
 			zst.search();		
 	}	
 	@Test
 	public void likeNameFilterTest() {
+		Filter filter = FilterFactory.create(FilterFactory.Name, "Da", FilterProperties.setLike(true));
 		ZipSearchTemplate zst = builder
-				.setZipFilter(new NameFilter().add("Da").setLike(true))
+				.setZipFilter(filter)
 				.setZipReport(zipReportAssert.setName("Data"))
 				.build();
 			zst.search();		
@@ -92,7 +97,7 @@ public class ZipSearchTemplateTest {
 	@Test
 	public void pathAndNameFilterTest() {
 		Filter filter = new PathFilter("test-data");
-		filter.setNext(new NameFilter().add("Data"));
+		filter.setNext(FilterFactory.create(FilterFactory.Name, "Data"));
 		ZipSearchTemplate zst = builder
 				.setZipFilter(filter)
 				.setZipReport(zipReportAssert.setName("Data"))

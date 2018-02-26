@@ -4,7 +4,7 @@ import jxsource.tool.folder.search.util.Util;
 
 public class ZipFilter extends ExtFilter{
 	public ZipFilter() {
-		super(Util.archiveTypes);
+		super.add(Util.archiveTypes);
 	}
 
 }

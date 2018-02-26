@@ -13,6 +13,7 @@ public class CollectionAction implements Action{
 	
 	public void reset() {
 		files.clear();
+		nodes.clear();
 	}
 	public String getUrl() {
 		return url;

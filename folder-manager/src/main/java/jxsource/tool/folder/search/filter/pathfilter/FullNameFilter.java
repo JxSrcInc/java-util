@@ -10,17 +10,6 @@ import jxsource.tool.folder.search.filter.Filter;
  * String match must be full file name including extension
  */
 public class FullNameFilter extends AbstractFilter {
-	protected Set<String> matchs = new HashSet<String>();
-	
-	public FullNameFilter add(String[] matchs) {
-		for(String match: matchs) {
-			this.matchs.add(match.trim());
-		}
-		return this;
-	}
-	public FullNameFilter add(String multiMatch) {
-		return add(multiMatch.split(","));
-	}
 	@Override
 	public int getStatus(JFile file) {
 		if(file.isArray()) {

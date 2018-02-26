@@ -9,10 +9,12 @@ import org.apache.logging.log4j.Logger;
 
 import jxsource.tool.folder.node.JFile;
 import jxsource.tool.folder.node.Node;
+import jxsource.tool.folder.node.NodeManagerHolder;
 import jxsource.tool.folder.search.ZipSearchEngine;
 import jxsource.tool.folder.search.filter.Filter;
 import jxsource.tool.folder.search.util.Util;
 import jxsource.tool.folder.search.zip.ZipReportAction;
+import jxsource.tool.folder.search.zip.ZipReportPrinter;
 
 /**
  * Action apply to zip file found in Sys search
@@ -43,8 +45,14 @@ public class ZipExtractAction implements Action {
 				// just collect all entries
 				engin.addAction(ca);					
 				engin.search(in);
+				if(ca.getFiles().size() > 0) {
+				System.out.println("searched: "+f.getPath()+", find: "+ca.getFiles().size());
+//				new ZipReportPrinter().report(url, buildTree?engin.getTrees():ca.getNodes());
+//				NodeManagerHolder.get().reset();
+//				}
 				if(reportAction != null) {
 					reportAction.report(url, buildTree?engin.getTrees():ca.getNodes());
+				}
 				}
 			} catch (Exception e) {
 				throw new RuntimeException("Error when extracting "+url, e);

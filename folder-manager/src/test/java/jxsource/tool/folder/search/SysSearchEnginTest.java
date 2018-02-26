@@ -19,6 +19,8 @@ import jxsource.tool.folder.node.AbstractNode;
 import jxsource.tool.folder.node.JFile;
 import jxsource.tool.folder.search.action.CollectionAction;
 import jxsource.tool.folder.search.filter.Filter;
+import jxsource.tool.folder.search.filter.FilterFactory;
+import jxsource.tool.folder.search.filter.FilterProperties;
 import jxsource.tool.folder.search.filter.pathfilter.ExtFilter;
 import jxsource.tool.folder.search.filter.pathfilter.FullNameFilter;
 import jxsource.tool.folder.search.filter.pathfilter.NameFilter;
@@ -51,7 +53,7 @@ public class SysSearchEnginTest {
 		CollectionAction ca = new CollectionAction();
 		ca.setUrl(root);
 		engin.addAction(ca);
-		engin.setFilter(new ExtFilter("java, class"));
+		engin.setFilter(FilterFactory.create(FilterFactory.Ext, "java, class"));
 		engin.search(new File(root));
 		assertThat(root, is(ca.getUrl()));
 		List<JFile> files = ca.getFiles();
@@ -68,7 +70,7 @@ public class SysSearchEnginTest {
 		CollectionAction ca = new CollectionAction();
 		ca.setUrl(root);
 		engin.addAction(ca);
-		engin.setFilter(new ExtFilter("jaVa, Class").setIgnoreCase(true));
+		engin.setFilter(FilterFactory.create(FilterFactory.Ext, "jaVa, Class", FilterProperties.setIgnoreCase(true)));
 		engin.search(new File(root));
 		assertThat(root, is(ca.getUrl()));
 		List<JFile> files = ca.getFiles();
@@ -84,7 +86,8 @@ public class SysSearchEnginTest {
 		CollectionAction ca = new CollectionAction();
 		ca.setUrl(root);
 		engin.addAction(ca);
-		engin.setFilter(new ExtFilter("jaV").setIgnoreCase(true).setLike(true));
+		engin.setFilter(FilterFactory.create(FilterFactory.Ext, "jaV",
+				 FilterProperties.setIgnoreCase(true).set(FilterProperties.Like,true)));
 		engin.search(new File(root));
 		assertThat(root, is(ca.getUrl()));
 		List<JFile> files = ca.getFiles();
@@ -131,7 +134,7 @@ public class SysSearchEnginTest {
 		CollectionAction ca = new CollectionAction();
 		ca.setUrl(root);
 		engin.addAction(ca);
-		engin.setFilter(new FullNameFilter().add("Data.java"));
+		engin.setFilter(FilterFactory.create(FilterFactory.FullName, "Data.java"));
 		engin.search(new File(root));
 		assertThat(root, is(ca.getUrl()));
 		List<JFile> files = ca.getFiles();
@@ -145,7 +148,7 @@ public class SysSearchEnginTest {
 		CollectionAction ca = new CollectionAction();
 		ca.setUrl(root);
 		engin.addAction(ca);
-		engin.setFilter(new NameFilter().add("Data"));
+		engin.setFilter(FilterFactory.create(FilterFactory.Name, "Data"));
 		engin.search(new File(root));
 		assertThat(root, is(ca.getUrl()));
 		List<JFile> files = ca.getFiles();
@@ -163,7 +166,7 @@ public class SysSearchEnginTest {
 		Filter filter = new PathFilter("**/src");
 		filter.setReject(true);
 		engin.setFilter(filter);
-		filter.setNext(new NameFilter().add("Data"));
+		filter.setNext(FilterFactory.create(FilterFactory.Name, "Data"));
 		engin.search(new File(root));
 		List<JFile> files = ca.getFiles();
 		assertThat(files, hasSize(1));
