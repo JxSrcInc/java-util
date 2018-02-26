@@ -120,7 +120,7 @@ public class ZipSearchTemplateTest {
 	@Test
 	public void timeFilterTest() throws ParseException {
 		ZipSearchTemplate zst = builder
-				.setZipFilter(new TimeFilter("2001-01-01 00:00:00", "2030-01-01 00:00:00"))
+				.setZipFilter(FilterFactory.create(FilterFactory.Time, "2001-01-01 00:00:00,2030-01-01 00:00:00"))
 				.setZipReport(zipReportAssert.setStart(TimeFilter.convert("2001-01-01 00:00:00")))
 				.build();
 			zst.search();		

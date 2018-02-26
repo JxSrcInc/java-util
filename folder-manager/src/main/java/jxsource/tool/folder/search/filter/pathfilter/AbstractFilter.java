@@ -1,6 +1,8 @@
 package jxsource.tool.folder.search.filter.pathfilter;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import jxsource.tool.folder.node.AbstractNode;
@@ -15,7 +17,7 @@ public abstract class AbstractFilter extends Filter {
 
 	protected boolean ignoreCase = true;
 	protected boolean like = false;
-	protected Set<String> matchs = new HashSet<String>();
+	protected List<String> matchs = new ArrayList<String>();
 
 	public void add(String[] matchs) {
 		for(String match: matchs) {

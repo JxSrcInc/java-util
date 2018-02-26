@@ -91,7 +91,7 @@ public class ZipSearchTemplate {
 	public static void main(String...args) {
 		ZipSearchTemplate t = ZipSearchTemplate.getBuilder()
 				.setRootDir("C:\\Users\\JiangJxSrc\\.m2\\repository\\org\\springframework")
-				.setZipFilter(FilterFactory.create(FilterFactory.Name, "Controller"))
+				.setZipFilter(FilterFactory.create(FilterFactory.Name, "RestController"))
 				.setZipReport(new ZipReportPrinter())
 				.build();
 		t.search();

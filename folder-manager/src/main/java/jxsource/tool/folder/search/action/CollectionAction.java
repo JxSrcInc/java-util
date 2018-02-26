@@ -26,9 +26,9 @@ public class CollectionAction implements Action{
 		files.add((JFile)f);
 		nodes.add(f);
 	}
-	public List<JFile> getFiles() {
-		return files;
-	}
+//	public List<JFile> getFiles() {
+//		return files;
+//	}
 	public List<Node> getNodes() {
 		return nodes;
 	}

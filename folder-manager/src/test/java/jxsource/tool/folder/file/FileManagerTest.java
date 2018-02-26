@@ -31,7 +31,7 @@ public class FileManagerTest {
 //		engin.setCache(true);
 		engin.search(new File(root));
 		assertThat(root, is(ca.getUrl()));
-		List<JFile> files = ca.getFiles();
+		List<Node> files = ca.getNodes();
 		Map<String, Node> cacheFiles = fileManager.getFiles();
 		int count = 0;
 		for(Node f: files) {

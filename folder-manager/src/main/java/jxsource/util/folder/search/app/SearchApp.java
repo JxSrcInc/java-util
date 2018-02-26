@@ -7,6 +7,7 @@ import jxsource.tool.folder.search.SysSearchEngine;
 import jxsource.tool.folder.search.action.Action;
 import jxsource.tool.folder.search.action.CollectionAction;
 import jxsource.tool.folder.search.action.FilePrintAction;
+import jxsource.tool.folder.search.filter.Filter;
 import jxsource.tool.folder.search.filter.FilterFactory;
 import jxsource.tool.folder.search.filter.FilterProperties;
 import jxsource.tool.folder.search.filter.pathfilter.ExtFilter;
@@ -20,22 +21,54 @@ public class SearchApp {
 	private String filterType;
 	private String filterValue;
 	private boolean like;
-	
+	protected Filter filter;
+
+	protected void init(String[] args) {
+		for(String arg: args) {
+			int i = arg.indexOf('=');
+			if(i > 0) {
+				String key = arg.substring(0,i).trim();
+				String value = arg.substring(i+1).trim();
+				switch(key) {
+				case "Root":
+					setRoot(value);
+					break;
+				case "FilterType":
+					setFilterType(value);
+					break;
+				case "FilterValue":
+					setFilterValue(value);
+					break;
+				case "FilterLike":
+					setFilterLike(value);
+					break;
+					default:
+//						System.out.println("Parameters:\n"+ 
+//					"\tRoot=<Root value>\n"+
+//					"\tFilterLike=<true|false>\n"+
+//					"\tFilterType=<FilterType value>\n"+
+//					"\tFilterValue=<FilterValue value>\n");
+				}
+			}
+		}
+
+		FilterProperties filterProps = new FilterProperties();
+		if(like) {
+			filterProps.set(FilterProperties.Like, true);
+		}
+		filter = FilterFactory.create(filterType, filterValue, filterProps);
+	}
 	public void run() {
 		System.out.println("Search: "+root);
 		SysSearchEngine engin = new SysSearchEngine();
 		engin.addAction(new FilePrintAction());
 		CollectionAction ca = new CollectionAction();
 		ca.setUrl(root);
-		FilterProperties filterProps = new FilterProperties();
-		if(like) {
-			filterProps.set(FilterProperties.Like, true);
-		}
 		engin.addAction(ca);
-			engin.setFilter(FilterFactory.create(filterType, filterValue, filterProps));
+			engin.setFilter(filter);
 			engin.search(new File(root));
 			System.out.println("searched "+engin.getSearchedCount());
-			System.out.println("find "+ca.getFiles().size());
+			System.out.println("find "+ca.getNodes().size());
 	}
 	public SearchApp setRoot(String root) {
 		this.root = root;
@@ -59,33 +92,7 @@ public class SearchApp {
 	}
 	public static void main(String[] args) {
 		SearchApp app = new SearchApp();
-		for(String arg: args) {
-			int i = arg.indexOf('=');
-			if(i > 0) {
-				String key = arg.substring(0,i).trim();
-				String value = arg.substring(i+1).trim();
-				switch(key) {
-				case "Root":
-					app.setRoot(value);
-					break;
-				case "FilterType":
-					app.setFilterType(value);
-					break;
-				case "FilterValue":
-					app.setFilterValue(value);
-					break;
-				case "FilterLike":
-					app.setFilterLike(value);
-					break;
-					default:
-						System.out.println("Parameters:\n"+ 
-					"\tRoot=<Root value>\n"+
-					"\tFilterLike=<true|false>\n"+
-					"\tFilterType=<FilterType value>\n"+
-					"\tFilterValue=<FilterValue value>\n");
-				}
-			}
-		}
+		app.init(args);
 		app.run();
 		System.out.println("complete");
 		

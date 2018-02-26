@@ -30,11 +30,11 @@ public class TreeFactoryTest {
 		ca.setUrl(root);
 		engin.addAction(ca);
 		engin.search(new File(root));
-		List<JFile> files = ca.getFiles();
+		List<Node> files = ca.getNodes();
 		ObjectMapper mapper = new ObjectMapper();
-		Set<Node> roots = TreeFactory.build().createTrees(Util.convertJFileToNode(files));
+		Set<Node> roots = TreeFactory.build().createTrees(files);
 		assertThat(roots.size(), is(1));
-		Node rootFile = TreeFactory.build().createTree(Util.convertJFileToNode(files));
+		Node rootFile = TreeFactory.build().createTree(files);
 		
 		assertThat(rootFile.getChildren().size(), is(3));
 		JsonNode node = rootFile.convertToJson();

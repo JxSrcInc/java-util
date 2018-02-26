@@ -3,10 +3,12 @@ package jxsource.tool.folder.search.filter;
 import java.util.HashMap;
 import java.util.Map;
 
+import jxsource.tool.folder.search.filter.contentfilter.SimpleContentFilter;
 import jxsource.tool.folder.search.filter.pathfilter.AbstractFilter;
 import jxsource.tool.folder.search.filter.pathfilter.ExtFilter;
 import jxsource.tool.folder.search.filter.pathfilter.FullNameFilter;
 import jxsource.tool.folder.search.filter.pathfilter.NameFilter;
+import jxsource.tool.folder.search.filter.pathfilter.TimeFilter;
 
 public class FilterFactory {
 	
@@ -30,6 +32,9 @@ public class FilterFactory {
 			break;
 		case FullName:
 			filter = new FullNameFilter();
+			break;
+		case Time:
+			filter = new TimeFilter();
 			break;
 			default:
 				throw new RuntimeException("Invalid Filter type: "+type);

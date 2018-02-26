@@ -45,8 +45,8 @@ public class ZipExtractAction implements Action {
 				// just collect all entries
 				engin.addAction(ca);					
 				engin.search(in);
-				if(ca.getFiles().size() > 0) {
-				System.out.println("searched: "+f.getPath()+", find: "+ca.getFiles().size());
+				if(ca.getNodes().size() > 0) {
+				log.debug("searched: "+f.getPath()+", find: "+ca.getNodes().size());
 //				new ZipReportPrinter().report(url, buildTree?engin.getTrees():ca.getNodes());
 //				NodeManagerHolder.get().reset();
 //				}
@@ -60,8 +60,8 @@ public class ZipExtractAction implements Action {
 		}
 	}
 
-	public List<JFile> getResult() {
-		return ca.getFiles();
+	public List<Node> getResult() {
+		return ca.getNodes();
 	}
 	public Filter getFilter() {
 		return filter;

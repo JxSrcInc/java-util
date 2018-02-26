@@ -14,14 +14,6 @@ public class TimeFilter extends AbstractFilter{
 	private static Logger log = LogManager.getLogger(TimeFilter.class);
     private static SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//dd/MM/yyyy
 	private long start, end;
-	public TimeFilter(String start) throws ParseException {
-		this.start = convert(start);
-	}
-	public TimeFilter(String start, String end) throws ParseException {
-		
-		this.start = convert(start);
-		this.end = convert(end);
-	}
 	
 	public static long convert(String time) throws ParseException {
 	    Date date = sdfDate.parse(time);
@@ -29,6 +21,17 @@ public class TimeFilter extends AbstractFilter{
 		
 	}
 	public int getStatus(JFile f) {
+		if(start == 0) {
+			try {
+				start = convert(matchs.get(0));
+				if(matchs.size()>2) {
+					end = convert(matchs.get(1));
+				}
+			} catch (ParseException e) {
+				log.error("Invalid time: "+matchs);
+				e.printStackTrace();
+			}
+		}
 		if(f.isArray()) {
 			return Filter.PASS;
 		}
