@@ -40,12 +40,12 @@ public abstract class SearchEngine {
 	 * 		false inform search engine to stop process its children
 	 */
 	protected int consum(JFile file) {
-		count++;
 		int status = Filter.ACCEPT;
 		if(filter != null) {
 			status = filter.accept(file);
 		}
 		if(status == Filter.ACCEPT) {
+			count++;
 			for (Action action : actions) {
 			action.proc(file);
 			}	

@@ -1,4 +1,4 @@
-package jxsource.util.folder.search.app;
+package jxsource.tool.folder.search.app;
 
 import java.io.File;
 import java.text.ParseException;
