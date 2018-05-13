@@ -21,16 +21,16 @@ public class ClassReflection {
 		}		
 	}
 	private void procClass(Class<?> cl) {
-		classRefs.add(cl.getName());
+		classRefs.add(cl.getName().replaceAll("\\.","/"));
 		for(Class<?> c:cl.getDeclaredClasses()) {
-			classRefs.add(c.getName());
+			classRefs.add(c.getName().replaceAll("\\.", "/"));
 		}
 		for(Method m: cl.getDeclaredMethods()) {
 			for(Class<?> argType: m.getParameterTypes()) {
-				String type = argType.getName();
+				String type = argType.getName().replaceAll("\\.", "/");
 				procType(type);
 			}
-			procType(m.getReturnType().getName());
+			procType(m.getReturnType().getName().replaceAll("\\.", "/"));
 		}
 		if(cl.getSuperclass() != null) {
 			procClass(cl.getSuperclass());

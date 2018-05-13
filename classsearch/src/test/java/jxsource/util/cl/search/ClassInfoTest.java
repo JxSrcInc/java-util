@@ -18,7 +18,7 @@ public class ClassInfoTest {
 	static ClassReflection classReflection = new ClassReflection(TestData.class);
 	@BeforeClass
 	public static void init() throws FileNotFoundException, IOException {
-		ClassRegistory cr = ClassRegistory.getInstance();
+		ClassRegistry cr = ClassRegistry.getInstance();
 		cr.addFile("target\\test-classes\\jxsource\\util\\cl\\testdata\\TestData.class");
 		cInfo = cr.getClassInfo("jxsource/util/cl/testdata/TestData");
 		
@@ -28,7 +28,7 @@ public class ClassInfoTest {
 		for(String s: cInfo.getClassRef()) {
 			Set<String> classes = classReflection.getClassRefs();
 			// Add java.io.ByteArrayInputStream that is not used in any method of TestData
-			classes.add("java.io.ByteArrayInputStream");
+			classes.add("java/io/ByteArrayInputStream");
 			assertThat(s,SetMatcher.matchesSet(classes));
 		}
 		

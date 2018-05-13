@@ -13,5 +13,5 @@ public class TestData extends BaseClass {
 	public InputStream get(int b, File file, String...s) {
 		return new ByteArrayInputStream(new byte[1024*8]);
 	}
-	public void set(Boolean b, boolean s) {}
+	public void set(List<Boolean> b, boolean s, float[] f) {}
 }

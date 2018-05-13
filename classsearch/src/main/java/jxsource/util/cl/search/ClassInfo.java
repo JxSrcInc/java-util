@@ -12,11 +12,11 @@ import java.util.Vector;
 
 import jxsource.util.cl.cff.*;
 
-public class ClassInfo
+public class ClassInfo implements IClass
 { String packageName;
 	String srcFile;
 	Set<String> classRef;
-	List<MethodInfo> methods = new ArrayList<MethodInfo>();
+	Set<MethodInfo> methods = new HashSet<MethodInfo>();
 //	MethodRef[] methodRef;
 //	FieldRef[] fieldRef;
 //	MethodInfo[] methodInfo; // method + interface_method
@@ -28,17 +28,26 @@ public class ClassInfo
 		packageName = cff.getClassName();
 		superClass = cff.getSuperClassName();
 		classRef = new HashSet<String>();
-		for(Type t: cff.getReferredType()) {
-			String name = t.getName().replace('/', '.');
-			if(!BaseTypeMapper.isBaseType(name)) {
-				classRef.add(name);
-			}
+//		for(Type t: cff.getReferredType()) {
+//			String name = t.getName();//.replace('/', '.');
+//			if(!BaseTypeMapper.isBaseType(name)) {
+//				classRef.add(name);
+//			}
+//		}
+		for(CONSTANT_Class_Info cci: cff.get_CONSTANT_Class_Info()) {
+			String name = cci.getClassName();
+			classRef.add(name);
 		}
 		List<Method_Info> methods = cff.getMethods();
 		for(Method_Info m: methods) {
 			MethodInfo mInfo = new MethodInfo();
-			String name = m.getName();
-//			List<String> argTypes = Util.parseDescription(m.getDescription());
+			mInfo.setName(m.getName());
+			mInfo.setDescriptor(m.getDescription());
+			List<Type> params = DescriptorParser.build().parse(m.getDescription());
+			Type ret = params.remove(params.size()-1);
+			mInfo.setReturnType(ret);
+			mInfo.setArgTypes(params);
+			this.methods.add(mInfo);
 		}
 ///*
 //		CONSTANT_Class_Info[] cInfo = cff.get_CONSTANT_Class_Info();
@@ -122,5 +131,14 @@ public class ClassInfo
 //		{ e.printStackTrace();
 //		}
 //	}
+@Override
+public Set<MethodInfo> getMethods() {
+	return methods;
+}
+@Override
+public String getPackageName() {
+	// TODO Auto-generated method stub
+	return null;
+}
 		
 }

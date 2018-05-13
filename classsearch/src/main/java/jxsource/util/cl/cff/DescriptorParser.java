@@ -19,7 +19,7 @@ public class DescriptorParser {
 					for(String t: objs)	{	
 						while(t.length() > 0) {
 							String arg = "";
-							if(t.charAt(0) == '[') {
+							while(t.charAt(0) == '[') {
 								arg += t.charAt(0);
 								t = t.substring(1);
 							}
@@ -50,7 +50,7 @@ public class DescriptorParser {
 		public Type getValue(String src)
 		{	
 			Type type = new Type();
-			if(src.charAt(0) == '[') {
+			while(src.charAt(0) == '[') {
 				type.setArray(true);
 				src = src.substring(1);
 			}

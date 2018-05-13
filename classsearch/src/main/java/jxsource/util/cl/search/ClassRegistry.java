@@ -16,30 +16,37 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import jxsource.util.cl.cff.CFFormat;
+import jxsource.util.cl.cff.CONSTANT_Class_Info;
 
-public class ClassRegistory {
-	private static Logger log = LogManager.getLogger(ClassRegistory.class);
+public class ClassRegistry {
+	private static Logger log = LogManager.getLogger(ClassRegistry.class);
 	// key: classpath@uri, value: CFFormat
-	private Map<String, CFFormat> cffRegistory = new ConcurrentHashMap<String, CFFormat>();
+	private Map<String, IClass> cffRegistory = new ConcurrentHashMap<String, IClass>();
 	// key: classpath, value: set of uri - it may be a simple file path
 	private Map<String, Set<String>> uriRegistory = new ConcurrentHashMap<String, Set<String>>();
 	private final String Symbol = "@";
-	private static ClassRegistory me;
+	private static ClassRegistry me;
 
-	private ClassRegistory() {
+	private ClassRegistry() {
 	}
 
-	public static ClassRegistory getInstance() {
+	public static ClassRegistry getInstance() {
 		if (me == null) {
-			me = new ClassRegistory();
+			me = new ClassRegistry();
 		}
 		return me;
 	}
 
 	public synchronized void add(CFFormat cff, String uri) {
 		String classPath = cff.getClassName();
-		cffRegistory.put(classPath + Symbol + uri, cff);
+		ClassInfo classInfo = new ClassInfo(cff, uri);
+		cffRegistory.put(classPath + Symbol + uri, classInfo);
 		addUri(classPath, uri);
+		for(String rci: classInfo.getClassRef()) {
+			if(!rci.equals(cff.getClassName())) {
+				System.out.println("** "+rci);
+			}
+		}
 	}
 
 	private synchronized void addUri(String classPath, String uri) {
@@ -111,7 +118,7 @@ public class ClassRegistory {
 	public Map<String, Set<String>> getUriRegistory() {
 		return this.uriRegistory;
 	}
-	public Map<String, CFFormat> getCFFormatRegistory() {
+	public Map<String, IClass> getCFFormatRegistory() {
 		return this.cffRegistory;
 	}
 	public ClassInfo getClassInfo(String classPath) {
@@ -119,7 +126,7 @@ public class ClassRegistory {
 			return null;
 		}
 		String filePath = uriRegistory.get(classPath).iterator().next();
-		CFFormat cff = cffRegistory.get(classPath+Symbol+filePath);
-		return new ClassInfo(cff, filePath);
+		IClass cff = cffRegistory.get(classPath+Symbol+filePath);
+		return (ClassInfo)cff;
 	}
 }

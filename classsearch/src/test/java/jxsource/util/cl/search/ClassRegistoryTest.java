@@ -13,7 +13,7 @@ public class ClassRegistoryTest {
 
 	@Test
 	public void test() throws FileNotFoundException, IOException {
-		ClassRegistory cr = ClassRegistory.getInstance();
+		ClassRegistry cr = ClassRegistry.getInstance();
 		cr.addDir("target/classes/jxsource/util/cl/cff");
 		for(Set<String> paths: cr.getUriRegistory().values()) {
 			Iterator<String> i = paths.iterator();

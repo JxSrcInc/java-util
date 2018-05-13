@@ -13,6 +13,7 @@ public class MethodInfoFactory extends CFFWrap {
 		MethodInfo m = new MethodInfo();
 		m.setName(_m.getName());
 		String desc = _m.getDescription();
+		m.setDescriptor(desc);
 		if(desc.charAt(0) != '(') {
 			throw new RuntimeException("Invalid Description: "+desc);
 		}
