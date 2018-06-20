@@ -24,13 +24,13 @@
       <AppenderRef ref="syserr"/>
       <AppenderRef ref="fileLogger"/>
     </Root>
-    <Logger name="jxsource.tool.folder.search.zip" level="debug" additivity="false">
+    <Logger name="jxsource.util.folder.search.filter" level="info" additivity="false">
     	<Appender-ref ref="sysout"/>
     </Logger>
-    <Logger name="jxsource.tool.folder.search.util" level="debug" additivity="false">
+    <Logger name="jxsource.util.folder.search.filter.pathfilter" level="info" additivity="false">
     	<Appender-ref ref="sysout"/>
     </Logger>
-    <Logger name="jxsource.tool.folder.search" level="info" additivity="false">
+    <Logger name="jxsource.util.folder.search" level="info" additivity="false">
     	<Appender-ref ref="sysout"/>
        <AppenderRef ref="fileLogger"/>
     </Logger>
@@ -59,7 +59,7 @@
     </Appender>
 
 <Loggers>
-    <logger name="jxsource.tool.folder.search.zip" additivity="false">
+    <logger name="jxsource.util.folder.search.zip" additivity="false">
     	<level value="debug"/>
     	<appender-ref ref="stdout"/>
     	<appender-ref ref="stderr"/>
