@@ -2,124 +2,152 @@ package jxsource.util.folder.compare;
 
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import jxsource.util.folder.compare.Result.Bind;
 import jxsource.util.folder.compare.action.Action;
-import jxsource.util.folder.compare.comparator.Differ;
+import jxsource.util.folder.compare.comparator.LeafDiffer;
 import jxsource.util.folder.node.Node;
 
 public class CompareEngine {
 	private static Logger log = LogManager.getLogger(CompareEngine.class);
-	private Differ differ;
+	private LeafDiffer differ;
 	private Action action;
-	private Comparator<Node> comparator = (Node o1, Node o2) -> o1.getPath().compareTo(o2.getPath());
+	private Comparator<Node> comparator = (Node o1, Node o2) -> o1.getName().compareTo(o2.getName());
 
-	public CompareEngine(Differ differ, Action action) {
+	public CompareEngine setLeafDiffer(LeafDiffer differ) {
 		this.differ = differ;
-		this.action = action;
+		return this;
 	}
-	private void fire(Node src, Node compareTo) {
-		if(action != null) {
-			action.proc(src, compareTo);			
-		}
-	}
-	// recursive function
-	public void compare(Node src, Node compareTo) {
-		log.debug("compare\n\tsrc = "+ src+"\n\tcompareTo = "+compareTo);
 
-		if(differ.diff(src, compareTo)) {
-			// include cases one file and one directory
-			// take action
-			fire(src, compareTo);
-			// no more further process
-		} else {
-			if(src.getChildren().size() == compareTo.getChildren().size()) {
-				// both are directories, compare children
-				Result result = compareNodes(src, compareTo);
-				Iterator<Bind> diff = result.getDiff().iterator();
-				while(diff.hasNext()) {
-					Bind child = diff.next();
-					fire(child.src, child.compareTo);
-				}
-				Iterator<Node> missing = result.getMissing().iterator();
-				while(missing.hasNext()) {
-					fire(missing.next(), null);
-				}
-				Iterator<Node> extra = result.getMissing().iterator();
-				while(extra.hasNext()) {
-					fire(null, extra.next());
-				}
-				Iterator<Bind> same = result.getSame().iterator();
-				while(same.hasNext()) {
-					Bind child = same.next();
-					// recursive call
-					compare(child.src, child.compareTo);
-				}
-			} else {
-				// both are files, do nothing
-			}
-		}
+	public CompareEngine setAction(Action action) {
+		this.action = action;
+		return this;
 	}
-	public Result compareNodes(Node src, Node compareTo) {
+
+	/**
+	 * 
+	 * @param comparableNode
+	 * @return true - two nodes are different false - two nodes are same
+	 */
+	public boolean isDiff(ComparableNode comparableNode) {
+		Node src = comparableNode.getSrc();
+		Node toCompare = comparableNode.getToCompare();
+		log.debug(src.getPath()+","+toCompare.getPath());
+		boolean diff;
+		if (src.isDir() && toCompare.isDir()) {
+			diff = compareChildren(comparableNode);
+		} else if (!src.isDir() && !toCompare.isDir()) {
+			// compare leaf
+			if (!src.getName().equals(toCompare.getName())) {
+				// different name
+				diff = true;
+			} else {
+				// same name, continue to compare other features, like time, length
+				if (differ != null) {
+					diff = differ.diff(src, toCompare);
+				} else {
+					diff = false;
+				}
+			}
+		} else {
+			// mis type: one is leaf and one is not
+			diff = true;
+		}
+		if (diff) {
+			fire(src, toCompare);
+		}
+		return diff;
+	}
+
+	private String getList(List<Node> list) {
+		String s = "";
+		for(Node node: list) {
+			s += node.getName()+',';
+		}
+		return s;
+	}
+	// TODO: not right.
+	private boolean compareChildren(ComparableNode comparableNode) {
+		Node src = comparableNode.getSrc();
+		Node toCompare = comparableNode.getToCompare();
 		List<Node> sList = src.getChildren();
 		Collections.sort(sList, comparator);
-		List<Node> cList = compareTo.getChildren();
+		List<Node> cList = toCompare.getChildren();
 		Collections.sort(cList, comparator);
-		Result r = new Result();
-		Iterator<Node> sIter = sList.iterator();
-		Iterator<Node> cIter = cList.iterator();
-		Node sChild = null; 
-		Node cChild = null;
-		if(sIter.hasNext()) {
-			sChild = sIter.next();
-		}
-		if(cIter.hasNext()) {
-			cChild = cIter.next();
-		}
-		return recursiveCall(sIter, cIter, sChild, cChild, r);
-	}
-	
-	public Result recursiveCall(Iterator<Node> sIter,
-			Iterator<Node> cIter,
-			Node sChild,
-			Node cChild,
-			Result r) {
-		if(sChild == null && cChild == null) {
-			// complete
-			return r;
+		if (sList.size() > 0 && cList.size() > 0) {
+			Node sChild = sList.remove(0);
+			Node cChild = cList.remove(0);
+
+			while (sChild != null && cChild != null) {
+				int status = sChild.getName().compareTo(cChild.getName());
+				if (status < 0) {
+					// sChild is extra
+					comparableNode.addExtra(sChild);
+				} else if (status == 0) {
+					// same
+					ComparableNode comparableChild = new ComparableNode(sChild, cChild);
+					if (isDiff(comparableChild)) {
+						comparableNode.addDiff(comparableChild);
+					} else {
+						comparableNode.addSame(comparableChild);
+					}
+				} else {
+					// cChild is missing
+					comparableNode.addMissing(cChild);
+				}
+				// reset sChild and cChild
+				if(sList.size() > 0) {
+					sChild = sList.remove(0);
+				} else {
+					sChild = null;
+				}
+				if(cList.size() > 0) {
+					cChild = cList.remove(0);
+				} else {
+					cChild = null;
+				}
+			}
+			if(cChild != null) {
+				comparableNode.addMissing(cChild);
+			}
+			if(sChild != null) {
+				comparableNode.addExtra(sChild);
+			}
+			return complete(comparableNode);
 		} else
-		if(sChild == null) {
-			// end src
-			while(cIter.hasNext()) {
-				r.addExtra(cIter.next());
+		if (sList.size() == 0 && cList.size() == 0) {
+			// complete
+			return complete(comparableNode);
+		} else if (cList.size() > 0) {
+			// add missing nodes
+			for (Node child : cList) {
+				comparableNode.addMissing(child);
 			}
-			return r;
-		} else 
-		if(cChild == null) {
-			// end compareTo
-			while(sIter.hasNext()) {
-				r.addMissing(sIter.next());
-			}
-			return r;
+			// complate
+			return true;
+
 		} else {
-			Bind bind = new Result().new Bind(sChild, cChild);
-			if(differ.diff(sChild, cChild)) {
-				r.addDiff(bind);
-			} else {
-				r.addSame(bind);
+			// sList.size) > 0
+			// add extra nodes
+			for (Node child : sList) {
+				comparableNode.addExtra(child);
 			}
-			Node sNext = null;
-			if(sIter.hasNext()) sNext = sIter.next();
-			Node cNext = null;
-			if(cIter.hasNext()) cNext = cIter.next();
-			Result _r = recursiveCall(sIter, cIter, sNext, cNext, r);
-			return _r;
+			// complate
+			return true;
 		}
-		
+	}
+
+	private boolean complete(ComparableNode comparableNode) {
+		return comparableNode.getDiff().size() > 0 || comparableNode.getExtra().size() > 0
+				|| comparableNode.getMissing().size() > 0;
+	}
+
+	private void fire(Node src, Node compareTo) {
+		if (action != null) {
+			action.proc(src, compareTo);
+		}
 	}
 }

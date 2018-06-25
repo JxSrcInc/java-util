@@ -45,7 +45,6 @@ public class ZipSearchTemplateTest {
 				.setZipReport(zipReportAssert)
 				.build();
 			zst.search();		
-		log.error("*** "+zipReportAssert.getFoundFiles());
 		assertThat(zipReportAssert.getFoundFiles().size(), is(1));
 	}		
 	@Test

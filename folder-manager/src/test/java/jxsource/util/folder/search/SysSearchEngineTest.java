@@ -30,7 +30,7 @@ import jxsource.util.folder.search.filter.pathfilter.PathFilter;
 import jxsource.util.folder.search.hamcrestMatcher.IncludeStringMatcher;
 import jxsource.util.folder.search.hamcrestMatcher.MatcherFactory;
 
-public class SysSearchEnginTest {
+public class SysSearchEngineTest {
 	private Matcher<JFile> hasExt(final String exts) {
 		   return new BaseMatcher<JFile>() {
 		      public boolean matches(final Object item) {

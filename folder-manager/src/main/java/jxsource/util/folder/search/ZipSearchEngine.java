@@ -3,7 +3,9 @@ package jxsource.util.folder.search;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.zip.ZipEntry;
@@ -62,7 +64,7 @@ public class ZipSearchEngine extends SearchEngine {
 		ZipInputStream zis = new ZipInputStream(new FileInputStream(f.getPath()));
 		ZipEntry entry;
 		while ((entry = zis.getNextEntry()) != null) {
-			JFile currNode = new ZipFile(f.getPath(), entry, zis);
+			ZipFile currNode = new ZipFile(f.getPath(), entry, zis);
 			nodeManager.add(currNode);
 			log.debug("zip search: "+currNode.getPath());
 		}
@@ -81,6 +83,15 @@ public class ZipSearchEngine extends SearchEngine {
 	public Set<Node> getTrees() {
 		return nodeManager.buildTrees();
 	}
+	
+	public Node getTreeRootNode() {
+		Iterator<Node> i = getTrees().iterator();
+		if(i.hasNext()) {
+			return i.next();
+		} else {
+			return null;
+		}
+	}
 
 	/**
 	 * sample code that displays tree and filtered nodes using Filter and Action
@@ -88,6 +99,7 @@ public class ZipSearchEngine extends SearchEngine {
 	 * @param args
 	 */
 	public static void main(String...args) {
+		System.setProperty(ZipFile.CachePropertyName, ZipFile.Memory);
 		try {
 //			ZipInputStream in = new ZipInputStream(new FileInputStream("test-data.jar"));
 			ZipSearchEngine engine = new ZipSearchEngine();
@@ -97,7 +109,6 @@ public class ZipSearchEngine extends SearchEngine {
 			CollectionAction action = new CollectionAction();
 			engine.addAction(action);
 			engine.search(new SysFile(new File("test-data.jar")));
-//			engin.search(in);
 				ObjectMapper mapper = new ObjectMapper();
 				for(Node f: engine.getTrees()) {
 					JsonNode node = f.convertToJson();
@@ -106,6 +117,15 @@ public class ZipSearchEngine extends SearchEngine {
 			String filteredNodes = "";
 			for(Node node: action.getNodes()) {
 				filteredNodes += '\n'+node.getPath();
+				JFile f = (JFile) node;
+				InputStream in = f.getInputStream();
+				byte[] b = new byte[1024*8];
+				int i = 0;
+				StringBuilder sb = new StringBuilder();
+				while((i=in.read(b)) != -1 ) {
+					sb.append(new String(b,0,i));
+				}
+				log.info(node.getPath()+"\n"+sb.toString());
 			}
 			log.info("filtered nodes:"+filteredNodes);
 		} catch (Exception e) {

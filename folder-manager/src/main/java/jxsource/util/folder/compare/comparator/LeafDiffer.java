@@ -2,16 +2,18 @@ package jxsource.util.folder.compare.comparator;
 
 import jxsource.util.folder.node.Node;
 
-public abstract class Differ {
+public abstract class LeafDiffer {
 
-	protected Differ next;
+	private LeafDiffer next;
 
 	protected abstract boolean isDiff(Node src, Node compareTo);
 
+	public LeafDiffer setNext(LeafDiffer next) {
+		this.next = next;
+		return this;
+	}
 	public boolean diff(Node src, Node compareTo) {
-		if (src.getChildren().size() != compareTo.getChildren().size()) {
-			return true;
-		} else if (isDiff(src, compareTo)) {
+		if (isDiff(src, compareTo)) {
 			return true;
 		} else {
 			// no difference
