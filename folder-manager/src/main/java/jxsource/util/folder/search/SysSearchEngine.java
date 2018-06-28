@@ -55,20 +55,22 @@ public class SysSearchEngine extends SearchEngine {
 	public static void main(String...args) {
 		try {
 			SysSearchEngine engine = new SysSearchEngine();
-			Filter filter = new PathFilter("test-data");
+			Filter filter = new PathFilter("**/.classpath");
 			engine.setFilter(filter);
 			CollectionAction action = new CollectionAction();
 			action.setLeafOnly(false);
 			engine.addAction(action);
-			engine.search(new File("test-data"));
-			Set<Node> set = TreeFactory.build().createTrees(action.getNodes());
-				ObjectMapper mapper = new ObjectMapper();
-				for(Node f: set) {
-					JsonNode node = f.convertToJson();
-					System.out.println(f.getPath()+" ****************************************************");
-					System.out.println(mapper.writerWithDefaultPrettyPrinter().writeValueAsString(node));
-				}
-
+			engine.search(new File("./.."));
+//			Set<Node> set = TreeFactory.build().createTrees(action.getNodes());
+//				ObjectMapper mapper = new ObjectMapper();
+//				for(Node f: set) {
+//					JsonNode node = f.convertToJson();
+//					System.out.println(f.getPath()+" ****************************************************");
+//					System.out.println(mapper.writerWithDefaultPrettyPrinter().writeValueAsString(node));
+//				}
+			for(Node node: action.getNodes()) {
+				System.out.println(node.getAbsolutePath());
+			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
