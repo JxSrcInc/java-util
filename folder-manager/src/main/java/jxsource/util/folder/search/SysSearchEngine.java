@@ -55,12 +55,12 @@ public class SysSearchEngine extends SearchEngine {
 	public static void main(String...args) {
 		try {
 			SysSearchEngine engine = new SysSearchEngine();
-			Filter filter = new PathFilter("**/.classpath");
+			Filter filter = new PathFilter("**/*.java");
 			engine.setFilter(filter);
 			CollectionAction action = new CollectionAction();
 			action.setLeafOnly(false);
 			engine.addAction(action);
-			engine.search(new File("./.."));
+			engine.search(new File("src"));
 //			Set<Node> set = TreeFactory.build().createTrees(action.getNodes());
 //				ObjectMapper mapper = new ObjectMapper();
 //				for(Node f: set) {

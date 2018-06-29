@@ -62,6 +62,8 @@ public class PathMatcher {
 	 *         false
 	 */
 	public String match(Node node) {
+		// create a working list so the original matches can keep its value
+		// because elements in working list will remove from list in match process
 		workingMatches = new ArrayList<NodeMatch>(matches);
 		nodes.clear();
 		String path = node.getPath();
@@ -100,8 +102,7 @@ public class PathMatcher {
 		// remove AnyMatch
 		workingMatches.remove(0);
 		if (workingMatches.size() == 0) {
-//			// clear nodes so when returned, break while loop
-//			nodes.clear();
+			// because matches contains only "**", it is always match
 			return true;
 		}
 		NodeMatch match = workingMatches.remove(0);
@@ -110,6 +111,7 @@ public class PathMatcher {
 		if (index < 0) {
 			return false;
 		} else {
+			// remove first index elements from nodes list
 			for (int i = 0; i <= index; i++) {
 				nodes.remove(0);
 			}
