@@ -45,5 +45,15 @@ public class PathFilter2Test {
 			assertThat(node.getPath().contains("Data"), is(true));
 		}
 	}
+	@Test
+	public void testDir() {
+		// select all trees starting from node "java"
+		engine.setFilter(new PathFilter("**/java"));
+		engine.search(root);
+		assertThat(ca.getNodes().size() == 4, is(true));
+		for(Node node: ca.getNodes()) {
+			assertThat(node.getPath().contains("java"), is(true));
+		}
+	}
 
 }
