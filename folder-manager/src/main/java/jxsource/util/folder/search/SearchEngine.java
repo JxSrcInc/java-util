@@ -44,7 +44,7 @@ public abstract class SearchEngine {
 	 * @return true to allow search engine to process its children
 	 * 		false inform search engine to stop process its children
 	 */
-	protected int consum(Node file) {
+	protected int consume(Node file) {
 		int status = Filter.ACCEPT;
 		if(filter != null) {
 			status = filter.accept(file);

@@ -74,9 +74,12 @@ public class ZipSearchEngine extends SearchEngine {
 		for(Node node: getTrees()) {
 			list.addAll(NodeUtil.convertTreeToList(node));			
 		}
-		
+		// ZipSearchEngine calls consume after tree build
+		// to make PathFilter works. 
+		// Because PathFilter requires a complete tree
+		// but zip file elements may not form a tree
 		for(Node node: list) {
-			consum(node);
+			consume(node);
 		}
 		zis.close();
 	}

@@ -2,6 +2,15 @@ package jxsource.util.folder.compare.comparator;
 
 import jxsource.util.folder.node.Node;
 
+/**
+ * used to diff two leaf nodes
+ * extended class will specify what leaf node property to compare
+ * 
+ * it has the same role of LeafFilter in filter process
+ * 
+ * @author JiangJxSrc
+ *
+ */
 public abstract class LeafDiffer {
 
 	private LeafDiffer next;

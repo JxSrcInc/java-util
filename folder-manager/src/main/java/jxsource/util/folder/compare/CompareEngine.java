@@ -28,13 +28,17 @@ public class CompareEngine {
 	}
 
 	/**
-	 * 
 	 * @param comparableNode
-	 * @return true - two nodes are different false - two nodes are same
+	 * @return true - two nodes are different, false - two nodes are same
 	 */
 	public boolean isDiff(ComparableNode comparableNode) {
 		Node src = comparableNode.getSrc();
 		Node toCompare = comparableNode.getToCompare();
+		// src and toCompare may have different names in the first call
+		// if one of src and toCompare is or both are dir.
+		// but it is ok.
+		// They must have the same name in recursive call - see 
+		// where it is called in compareChildren method
 		log.debug(src.getPath()+","+toCompare.getPath());
 		boolean diff;
 		if (src.isDir() && toCompare.isDir()) {
@@ -53,7 +57,7 @@ public class CompareEngine {
 				}
 			}
 		} else {
-			// mis type: one is leaf and one is not
+			// different node types: one is leaf and one is not
 			diff = true;
 		}
 		if (diff) {
@@ -62,13 +66,6 @@ public class CompareEngine {
 		return diff;
 	}
 
-	private String getList(List<Node> list) {
-		String s = "";
-		for(Node node: list) {
-			s += node.getName()+',';
-		}
-		return s;
-	}
 	// TODO: not right.
 	private boolean compareChildren(ComparableNode comparableNode) {
 		Node src = comparableNode.getSrc();

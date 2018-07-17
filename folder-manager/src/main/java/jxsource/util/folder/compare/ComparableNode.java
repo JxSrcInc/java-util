@@ -5,6 +5,13 @@ import java.util.Set;
 
 import jxsource.util.folder.node.Node;
 
+/**
+ * ComparableNode contains two (folder) Nodes
+ * and compare results of their children
+ * 
+ * @author JiangJxSrc
+ *
+ */
 public class ComparableNode {
 	private Node src;
 	private Node toCompare;

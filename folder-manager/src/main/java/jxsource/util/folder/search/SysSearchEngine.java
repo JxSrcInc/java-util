@@ -39,7 +39,7 @@ public class SysSearchEngine extends SearchEngine {
 	public void search(File file) {
 		SysFile sysFile = new SysFile(file);
 		//NodeManagerHolder.get().add(sysFile);
-		int status = consum(sysFile);
+		int status = consume(sysFile);
 		if (status == Filter.ACCEPT || status == Filter.PASS) {
 			if (file.isDirectory()) {
 				File[] children = file.listFiles();
