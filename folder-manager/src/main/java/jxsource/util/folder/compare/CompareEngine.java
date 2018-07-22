@@ -2,44 +2,70 @@ package jxsource.util.folder.compare;
 
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import jxsource.util.folder.compare.action.Action;
+import jxsource.util.folder.compare.comparator.LastModifiedDiffer;
 import jxsource.util.folder.compare.comparator.LeafDiffer;
+import jxsource.util.folder.compare.comparator.LengthDiffer;
+import jxsource.util.folder.compare.util.ComparePath;
+import jxsource.util.folder.compare.util.Constants;
 import jxsource.util.folder.node.Node;
 
 public class CompareEngine {
 	private static Logger log = LogManager.getLogger(CompareEngine.class);
-	private LeafDiffer differ;
-	private Action action;
+	// default is LengthDiffer
+	private LeafDiffer differ = new LengthDiffer();
+	private Set<Action> actions = new HashSet<Action>();
 	private Comparator<Node> comparator = (Node o1, Node o2) -> o1.getName().compareTo(o2.getName());
+	private String srcRoot;
+	private String compareRoot;
+	private ComparePath srcComparePath;
 
 	public CompareEngine setLeafDiffer(LeafDiffer differ) {
 		this.differ = differ;
 		return this;
 	}
 
-	public CompareEngine setAction(Action action) {
-		this.action = action;
+	public CompareEngine setActions(Set<Action> actions) {
+		if (actions != null) {
+			this.actions = actions;
+		}
 		return this;
+	}
+
+	public CompareEngine addAction(Action action) {
+		this.actions.add(action);
+		return this;
+	}
+
+	public boolean run(ComparableNode comparableNode) {
+		srcRoot = comparableNode.getSrc().getPath();
+		compareRoot = comparableNode.getToCompare().getPath();
+		srcComparePath = ComparePath.build(srcRoot);
+		comparableNode.setComparePath("/");
+		log.debug(Constants.srcSymbol + ": " + srcRoot);
+		log.debug(Constants.cmpSymbol + ": " + compareRoot);
+		return isDiff(comparableNode);
 	}
 
 	/**
 	 * @param comparableNode
 	 * @return true - two nodes are different, false - two nodes are same
 	 */
-	public boolean isDiff(ComparableNode comparableNode) {
+	private boolean isDiff(ComparableNode comparableNode) {
 		Node src = comparableNode.getSrc();
 		Node toCompare = comparableNode.getToCompare();
 		// src and toCompare may have different names in the first call
 		// if one of src and toCompare is or both are dir.
 		// but it is ok.
-		// They must have the same name in recursive call - see 
+		// They must have the same name in recursive call - see
 		// where it is called in compareChildren method
-		log.debug(src.getPath()+","+toCompare.getPath());
 		boolean diff;
 		if (src.isDir() && toCompare.isDir()) {
 			diff = compareChildren(comparableNode);
@@ -52,21 +78,32 @@ public class CompareEngine {
 				// same name, continue to compare other features, like time, length
 				if (differ != null) {
 					diff = differ.diff(src, toCompare);
+					if (diff) {
+						if (differ.getActiveDiffer() instanceof LengthDiffer) {
+							comparableNode.setDiffType(ComparableNode.LengthDiff);
+						} else if (differ.getActiveDiffer() instanceof LastModifiedDiffer) {
+							comparableNode.setDiffType(ComparableNode.LastModifiedDiff);
+						}
+					}
 				} else {
 					diff = false;
 				}
 			}
 		} else {
 			// different node types: one is leaf and one is not
+			comparableNode.setDiffType(ComparableNode.NodeDiff);
 			diff = true;
 		}
 		if (diff) {
-			fire(src, toCompare);
+			fire(comparableNode);
 		}
 		return diff;
 	}
 
-	// TODO: not right.
+	/*
+	 * 1. sort src and toCompare by name 2. compare the first two pair
+	 * 
+	 */
 	private boolean compareChildren(ComparableNode comparableNode) {
 		Node src = comparableNode.getSrc();
 		Node toCompare = comparableNode.getToCompare();
@@ -83,39 +120,59 @@ public class CompareEngine {
 				if (status < 0) {
 					// sChild is extra
 					comparableNode.addExtra(sChild);
+					// reset sChild
+					if (sList.size() > 0) {
+						sChild = sList.remove(0);
+					} else {
+						sChild = null;
+					}
 				} else if (status == 0) {
 					// same
 					ComparableNode comparableChild = new ComparableNode(sChild, cChild);
+					comparableChild.setComparePath(srcComparePath.get(sChild));
 					if (isDiff(comparableChild)) {
 						comparableNode.addDiff(comparableChild);
 					} else {
 						comparableNode.addSame(comparableChild);
 					}
+					// reset sChild and cChild
+					if (sList.size() > 0) {
+						sChild = sList.remove(0);
+					} else {
+						sChild = null;
+					}
+					if (cList.size() > 0) {
+						cChild = cList.remove(0);
+					} else {
+						cChild = null;
+					}
 				} else {
 					// cChild is missing
 					comparableNode.addMissing(cChild);
+
+					// reset cChild
+					if (cList.size() > 0) {
+						cChild = cList.remove(0);
+					} else {
+						cChild = null;
+					}
 				}
-				// reset sChild and cChild
-				if(sList.size() > 0) {
-					sChild = sList.remove(0);
-				} else {
-					sChild = null;
-				}
-				if(cList.size() > 0) {
-					cChild = cList.remove(0);
-				} else {
-					cChild = null;
-				}
-			}
-			if(cChild != null) {
+			} // end while loop
+
+			// when out of loop, at most, one of cChild and sChild is not null
+			if (cChild != null) {
 				comparableNode.addMissing(cChild);
-			}
-			if(sChild != null) {
+				for (Node missingNode : cList) {
+					comparableNode.addMissing(missingNode);
+				}
+			} else if (sChild != null) {
 				comparableNode.addExtra(sChild);
+				for (Node extraNode : sList) {
+					comparableNode.addExtra(extraNode);
+				}
 			}
 			return complete(comparableNode);
-		} else
-		if (sList.size() == 0 && cList.size() == 0) {
+		} else if (sList.size() == 0 && cList.size() == 0) {
 			// complete
 			return complete(comparableNode);
 		} else if (cList.size() > 0) {
@@ -142,9 +199,9 @@ public class CompareEngine {
 				|| comparableNode.getMissing().size() > 0;
 	}
 
-	private void fire(Node src, Node compareTo) {
-		if (action != null) {
-			action.proc(src, compareTo);
+	private void fire(ComparableNode node) {
+		for (Action action : actions) {
+			action.proc(node);
 		}
 	}
 }

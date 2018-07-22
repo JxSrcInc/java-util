@@ -10,8 +10,16 @@ import java.util.zip.ZipException;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import jxsource.util.folder.compare.CompareEngine;
 import jxsource.util.folder.compare.action.PrintAction;
+import jxsource.util.folder.compare.comparator.LastModifiedDiffer;
+import jxsource.util.folder.compare.comparator.LeafDiffer;
+import jxsource.util.folder.compare.comparator.LengthDiffer;
+import jxsource.util.folder.compare.util.JsonUtil;
 import jxsource.util.folder.node.JFile;
 import jxsource.util.folder.node.Node;
 import jxsource.util.folder.node.SysFile;
@@ -23,25 +31,22 @@ public class CompareEngineTest {
 
 	@Test
 	public void testTrue() {
-		CompareEngine engine = new CompareEngine()
-				.setAction(new PrintAction());
+		CompareEngine engine = new CompareEngine();
 		JFile src = new SysFile(new File("./src"));
 		JFile toCompare = new SysFile(new File("./src"));
-		assertThat(engine.isDiff(new ComparableNode(src, toCompare)), is(false));
+		assertThat(engine.run(new ComparableNode(src, toCompare)), is(false));
 	}
 	@Test
 	public void testFalse() {
-		CompareEngine engine = new CompareEngine()
-				.setAction(new PrintAction());
+		CompareEngine engine = new CompareEngine();
 		JFile src = new SysFile(new File("./target"));
 		JFile toCompare = new SysFile(new File("./src"));
-		assertThat(engine.isDiff(new ComparableNode(src, toCompare)), is(true));
+		assertThat(engine.run(new ComparableNode(src, toCompare)), is(true));
 	}
 	@Test
 	public void testZipSys() throws ZipException, IOException {
 		System.setProperty(ZipFile.CachePropertyName, ZipFile.Memory);
-		CompareEngine engine = new CompareEngine()
-				.setAction(new PrintAction());
+		CompareEngine engine = new CompareEngine();
 		JFile src = new SysFile(new File("test-data"));
 		ZipSearchEngine zipEngine = new ZipSearchEngine();
 		zipEngine.search(new SysFile(new File("test-data.jar")));
@@ -53,7 +58,21 @@ public class CompareEngineTest {
 			}
 		}
 		JFile toCompare = (JFile)root;
-		assertThat(engine.isDiff(new ComparableNode(src, toCompare)), is(false));
+		assertThat(engine.run(new ComparableNode(src, toCompare)), is(false));
 	}
-
+	@Test
+	public void print() throws JsonProcessingException {
+		LeafDiffer differ = new LengthDiffer();
+		differ.setNext(new LastModifiedDiffer());
+		CompareEngine engine = new CompareEngine()
+				.setLeafDiffer(differ);
+		JFile src = new SysFile(new File("test-data"));
+		JFile toCompare = new SysFile(new File("test-compare"));
+		ComparableNode comparableNode = new ComparableNode(src, toCompare);
+		assertThat(engine.run(comparableNode), is(true));
+		
+		ObjectMapper mapper = new ObjectMapper();
+		JsonNode jsonNode = JsonUtil.build().convertToJson(comparableNode);
+		System.out.println(mapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonNode));
+	}
 }

@@ -14,6 +14,15 @@ import jxsource.util.folder.node.Node;
 public abstract class LeafDiffer {
 
 	private LeafDiffer next;
+	private LeafDiffer activeDiffer;
+	
+	public LeafDiffer getActiveDiffer() {
+		if(activeDiffer == null) {
+			return this;
+		} else {
+			return activeDiffer;
+		}
+	}
 
 	protected abstract boolean isDiff(Node src, Node compareTo);
 
@@ -27,6 +36,7 @@ public abstract class LeafDiffer {
 		} else {
 			// no difference
 			if (next != null) {
+				activeDiffer = next;
 				return next.diff(src, compareTo);
 			} else {
 				return false;
