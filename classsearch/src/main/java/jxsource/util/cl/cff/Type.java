@@ -3,6 +3,7 @@ package jxsource.util.cl.cff;
 public class Type {
 	private String name;
 	private boolean array;
+	// array dimension - number of '[' in parameter or return
 	private int dimension;
 	
 	public Type setName(String name) {

@@ -7,6 +7,12 @@ import java.util.Set;
 import jxsource.util.cl.cff.BaseTypeMapper;
 import jxsource.util.cl.cff.DescriptorParser;
 
+/**
+ * Use Java Reflection to find out all classes referred in a class
+ * 
+ * @author JiangJxSrc
+ *
+ */
 public class ClassReflection {
 	Set<String> classRefs = new HashSet<String>();
 	public ClassReflection(Class<?> cl) {
@@ -21,15 +27,21 @@ public class ClassReflection {
 		}		
 	}
 	private void procClass(Class<?> cl) {
+		// parameter class
 		classRefs.add(cl.getName().replaceAll("\\.","/"));
+		// interfaces ?
 		for(Class<?> c:cl.getDeclaredClasses()) {
 			classRefs.add(c.getName().replaceAll("\\.", "/"));
 		}
+		// all types defined in all methods
+		// include prime type and object type
 		for(Method m: cl.getDeclaredMethods()) {
+			// method parameters
 			for(Class<?> argType: m.getParameterTypes()) {
 				String type = argType.getName().replaceAll("\\.", "/");
 				procType(type);
 			}
+			// return
 			procType(m.getReturnType().getName().replaceAll("\\.", "/"));
 		}
 		if(cl.getSuperclass() != null) {

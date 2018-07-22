@@ -18,6 +18,13 @@ import org.apache.logging.log4j.Logger;
 import jxsource.util.cl.cff.CFFormat;
 import jxsource.util.cl.cff.CONSTANT_Class_Info;
 
+/**
+ * a class may be loaded from different class files, jars or uris.
+ * it may be loaded as a real class or just a referred class
+ * 
+ * @author JiangJxSrc
+ *
+ */
 public class ClassRegistry {
 	private static Logger log = LogManager.getLogger(ClassRegistry.class);
 	// key: classpath@uri, value: CFFormat
@@ -44,13 +51,13 @@ public class ClassRegistry {
 		addUri(classPath, uri);
 		for(String rci: classInfo.getClassRef()) {
 			if(!rci.equals(cff.getClassName())) {
-				System.out.println("** "+rci);
+				log.debug(classPath+" refer: "+rci);
 			}
 		}
 	}
 
 	private synchronized void addUri(String classPath, String uri) {
-		log.debug(classPath+" - "+uri);
+		log.debug("Register class: "+classPath+" - "+uri);
 		Set<String> uriSet = uriRegistory.get(classPath);
 		if (uriSet == null) {
 			uriSet = new HashSet<String>();

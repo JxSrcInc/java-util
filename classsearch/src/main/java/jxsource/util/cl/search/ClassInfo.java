@@ -12,39 +12,64 @@ import java.util.Vector;
 
 import jxsource.util.cl.cff.*;
 
+/**
+ * Internal object of a class file or CFFormat wrap
+ * 
+ * It provides some easier use APIs than CFFormat class 
+ * @author JiangJxSrc
+ *
+ */
 public class ClassInfo implements IClass
 { String packageName;
 	String srcFile;
-	Set<String> classRef;
+	// It does not contain prime types, like int, boolean, ...
+	Set<Type> types = new HashSet<Type>();
+	// classRef is a set of Type.getName(). See addType method.
+	// it may have a small size than types because types may have two
+	// elements with the same name but different dimension
+	// or name of Type is "void"
+	Set<String> classRef = new HashSet<String>();
 	Set<MethodInfo> methods = new HashSet<MethodInfo>();
 //	MethodRef[] methodRef;
 //	FieldRef[] fieldRef;
 //	MethodInfo[] methodInfo; // method + interface_method
 //	FieldInfo[] fieldInfo;
 	String superClass;
-//
+
+	public Set<Type> getTypes() {
+		return types;
+	}
+	private void addType(Type type) {
+		types.add(type);
+		classRef.add(type.getName());
+	}
 	public ClassInfo(CFFormat cff, String file)
 	{	srcFile = file;
 		packageName = cff.getClassName();
 		superClass = cff.getSuperClassName();
-		classRef = new HashSet<String>();
-//		for(Type t: cff.getReferredType()) {
-//			String name = t.getName();//.replace('/', '.');
-//			if(!BaseTypeMapper.isBaseType(name)) {
-//				classRef.add(name);
-//			}
-//		}
-		for(CONSTANT_Class_Info cci: cff.get_CONSTANT_Class_Info()) {
-			String name = cci.getClassName();
-			classRef.add(name);
+		for(Type t: cff.getReferredType()) {
+			String name = t.getName();//.replace('/', '.');
+			if(!BaseTypeMapper.isBaseType(name)) {
+				addType(t);
+			}
 		}
+		// create methods
 		List<Method_Info> methods = cff.getMethods();
 		for(Method_Info m: methods) {
 			MethodInfo mInfo = new MethodInfo();
 			mInfo.setName(m.getName());
 			mInfo.setDescriptor(m.getDescription());
 			List<Type> params = DescriptorParser.build().parse(m.getDescription());
+			for(Type type: params) {
+				String name = type.getName();
+				if(!BaseTypeMapper.isBaseType(name)) {
+					addType(type);
+				}				
+			}
 			Type ret = params.remove(params.size()-1);
+			if(!ret.getName().equals("void")) {
+				addType(ret);
+			}
 			mInfo.setReturnType(ret);
 			mInfo.setArgTypes(params);
 			this.methods.add(mInfo);
