@@ -1,10 +1,19 @@
 package jxsource.util.folder.compare;
 
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.containsString;
 import static org.junit.Assert.assertThat;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.PrintStream;
+import java.util.Arrays;
+import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -12,6 +21,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jxsource.util.folder.compare.action.AdditionReport;
+import jxsource.util.folder.compare.action.BaseReport;
 import jxsource.util.folder.compare.action.LenDiffReport;
 import jxsource.util.folder.compare.action.MissingReport;
 import jxsource.util.folder.compare.action.NodeReport;
@@ -19,67 +29,115 @@ import jxsource.util.folder.compare.action.TimeDiffReport;
 import jxsource.util.folder.compare.comparator.LastModifiedDiffer;
 import jxsource.util.folder.compare.comparator.LeafDiffer;
 import jxsource.util.folder.compare.comparator.LengthDiffer;
+import jxsource.util.folder.compare.util.Constants;
 import jxsource.util.folder.compare.util.JsonUtil;
 import jxsource.util.folder.node.JFile;
 import jxsource.util.folder.node.SysFile;
+import jxsource.util.folder.node.ZipCacheTest;
 
 public class CompareReportTest {
+	private Logger log = LogManager.getLogger(ZipCacheTest.class);
+	private PrintStream printer;
+	private ByteArrayOutputStream out;
+	private String[] expect;
+	
+	@Before
+	public void init() {
+		out = new ByteArrayOutputStream();
+		printer = new PrintStream(out);
+	}
+
+	@After
+	public void verify() {
+		printer.close();
+		String result = out.toString();
+		log.debug(result);
+		for(String expect: this.expect) {
+			assertThat(result, containsString(expect));
+		}
+	}
 
 	@Test
 	public void testLen() {
 		LeafDiffer differ = new LengthDiffer();
+		LenDiffReport report = new LenDiffReport();
+		report.setPrintStream(printer);
 		CompareEngine engine = new CompareEngine()
+				.addAction(report)
 				.setLeafDiffer(differ);
 		JFile src = new SysFile(new File("test-data"));
 		JFile toCompare = new SysFile(new File("test-compare"));
 		ComparableNode comparableNode = new ComparableNode(src, toCompare);
 		
 		assertThat(engine.run(comparableNode), is(true));
+		expect = new String[] {
+				String.format(Constants.diffPrintFormat,"/src/_pom_.txt","diff-len",Constants.srcSymbol,"51",Constants.cmpSymbol,"0")
+				};
 	}
 	@Test
 	public void testTime() {
 		LeafDiffer differ = new LastModifiedDiffer();
+		TimeDiffReport report = new TimeDiffReport();
+		report.setPrintStream(printer);
 		CompareEngine engine = new CompareEngine()
-				.addAction(new TimeDiffReport())
+				.addAction(report)
 				.setLeafDiffer(differ);
 		JFile src = new SysFile(new File("test-data"));
 		JFile toCompare = new SysFile(new File("test-compare"));
 		ComparableNode comparableNode = new ComparableNode(src, toCompare);
 		
 		assertThat(engine.run(comparableNode), is(true));
+		expect = new String[] {"/src/main/java/Data.java","diff-time"};
 	}
 	@Test
 	public void testMissing() {
+		MissingReport report = new MissingReport();
+		report.setPrintStream(printer);
 		CompareEngine engine = new CompareEngine()
-				.addAction(new MissingReport());
+				.addAction(report);
 		JFile src = new SysFile(new File("test-data"));
 		JFile toCompare = new SysFile(new File("test-compare"));
 		ComparableNode comparableNode = new ComparableNode(src, toCompare);
 		
 		assertThat(engine.run(comparableNode), is(true));
+		expect = new String[] {
+				String.format(Constants.arrayPrintFormat,"/src/main/java",Constants.srcSymbol+".missing","Date.java")};
 	}
 	@Test
 	public void testAddition() {
+		AdditionReport report = new AdditionReport();
+		report.setPrintStream(printer);
 		CompareEngine engine = new CompareEngine()
-				.addAction(new AdditionReport());
+				.addAction(report);
 		JFile src = new SysFile(new File("test-data"));
 		JFile toCompare = new SysFile(new File("test-compare"));
 		ComparableNode comparableNode = new ComparableNode(src, toCompare);
 		
 		assertThat(engine.run(comparableNode), is(true));
+		expect = new String[] {
+				String.format(Constants.arrayPrintFormat,"/src",Constants.srcSymbol+".addition","test"),
+				String.format(Constants.arrayPrintFormat,"/",Constants.srcSymbol+".addition","resources, xyz")};
 	}
 	@Test
 	public void testNode() {
 		LeafDiffer differ = new LengthDiffer();
 		differ.setNext(new LastModifiedDiffer());
+		BaseReport report = new NodeReport();
+		report.setPrintStream(printer);
 		CompareEngine engine = new CompareEngine()
 				.setLeafDiffer(differ)
-				.addAction(new NodeReport());
+				.addAction(report);
 		JFile src = new SysFile(new File("test-data"));
 		JFile toCompare = new SysFile(new File("test-compare"));
 		ComparableNode comparableNode = new ComparableNode(src, toCompare);
 		
 		assertThat(engine.run(comparableNode), is(true));
+		expect = new String[] {
+//				String.format(Constants.diffPrintFormat,"/src/_pom_.txt","diff-len",Constants.srcSymbol,"51",Constants.cmpSymbol,"0"),
+				String.format(Constants.arrayPrintFormat,"/src/main/java",Constants.srcSymbol+".missing","Date.java"),
+				String.format(Constants.arrayPrintFormat,"/src",Constants.srcSymbol+".addition","test"),
+				String.format(Constants.arrayPrintFormat,"/",Constants.srcSymbol+".addition","resources, xyz"),
+				"/src/main/java/Data.java","diff-time"};
 	}
 
 

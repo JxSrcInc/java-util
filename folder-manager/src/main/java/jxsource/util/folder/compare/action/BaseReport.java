@@ -11,4 +11,7 @@ public abstract class BaseReport implements Action{
 	protected BaseReport() {
 		printer = System.out;
 	}
+	public void setPrintStream(PrintStream printer) {
+		this.printer = printer;
+	}
 }
