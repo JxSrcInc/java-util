@@ -11,6 +11,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class SysFile extends AbstractNode implements JFile{
+	private static final long serialVersionUID = 1L;
 	private static Logger log = LogManager.getLogger(SysFile.class);
 	private File file;
 	private InputStream in;
@@ -67,8 +68,7 @@ public class SysFile extends AbstractNode implements JFile{
 	 */
 	@Override
 	public List<Node> getChildren() {
-//		if(this.children == null) {
-//			children = new ArrayList<Node>();
+		if(children.size() == 0) {
 			File[] files = file.listFiles();
 			if(files != null) {
 				for(int i=0; i<files.length; i++) {
@@ -77,9 +77,8 @@ public class SysFile extends AbstractNode implements JFile{
 					children.add(child);
 				}
 			}
-			return children;
-//		}
-//		return children;//super.getChildren();//children.toArray(new JFile[children.size()]); 
+		}
+		return children;
 	}
 
 	@Override

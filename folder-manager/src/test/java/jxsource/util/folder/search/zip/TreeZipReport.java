@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jxsource.util.folder.node.JFile;
 import jxsource.util.folder.node.Node;
+import jxsource.util.folder.search.util.Util;
 import jxsource.util.folder.search.zip.ZipReportAction;
 
 public class TreeZipReport extends ZipReportAction{
@@ -20,7 +21,7 @@ public class TreeZipReport extends ZipReportAction{
 		log.debug("url: "+url);
 		ObjectMapper mapper = new ObjectMapper();
 		for(Node f: trees) {
-			JsonNode node = f.convertToJson();
+			JsonNode node = Util.convertToJson(f);
 			log.debug(f.getPath()+" ****************************************************");
 			try {
 				log.debug(mapper.writerWithDefaultPrettyPrinter().writeValueAsString(node));

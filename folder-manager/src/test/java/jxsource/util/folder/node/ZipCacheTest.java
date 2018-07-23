@@ -36,14 +36,14 @@ public class ZipCacheTest {
 		engine.setFilter(filter);
 		CollectionAction action = new CollectionAction();
 		engine.addAction(action);
-		engine.search(new SysFile(new File("test-data.jar")));
+		engine.search(new SysFile(new File("testdata/test-data.jar")));
 		List<Node> zipResults = action.getNodes();
 
 		SysSearchEngine sysEngine = new SysSearchEngine();
 		sysEngine.setFilter(filter);
 		CollectionAction sysAction = new CollectionAction();
 		sysEngine.addAction(sysAction);
-		sysEngine.search(new File("test-data"));
+		sysEngine.search(new File("testdata/test-data"));
 		List<Node> sysResults = action.getNodes();
 		
 		assertThat(sysResults.size()==zipResults.size(), is(true));

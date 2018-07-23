@@ -56,6 +56,10 @@ public class NodeManager {
 	 * @return
 	 */
 	private Node addSegmentToRoot(Node f) {
+		if(!(f instanceof ZipFile)) {
+			throw new RuntimeException(getClass().getName()+".addSegmentToRoot() "
+					+ "method only supports ZipFile as input parameter. But it is "+f.getClass().getName());
+		}
 		if(f.getPath().equals(f.getName())) {
 			// root sibling
 			if(!map.containsKey(f.getPath())) {
@@ -73,7 +77,7 @@ public class NodeManager {
 		int i = f.getPath().lastIndexOf(f.getPathSeparator());
 		if(i > 0) {
 			String parentPath = f.getPath().substring(0, i);
-			NodeImpl node = new NodeImpl();
+			ZipFile node = new ZipFile();
 			node.setPath(parentPath);
 			node.setArray(true);
 			node.addChild(f);

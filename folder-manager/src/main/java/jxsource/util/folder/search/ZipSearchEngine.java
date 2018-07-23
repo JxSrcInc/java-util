@@ -114,7 +114,7 @@ public class ZipSearchEngine extends SearchEngine {
 			engine.search(new SysFile(new File("test-data.jar")));
 				ObjectMapper mapper = new ObjectMapper();
 				for(Node f: engine.getTrees()) {
-					JsonNode node = f.convertToJson();
+					JsonNode node = Util.convertToJson(f);
 					log.info(f.getPath()+'\n'+mapper.writerWithDefaultPrettyPrinter().writeValueAsString(node));
 				}
 			String filteredNodes = "";

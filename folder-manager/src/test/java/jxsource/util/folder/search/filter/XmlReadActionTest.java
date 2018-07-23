@@ -15,7 +15,7 @@ public class XmlReadActionTest {
 
 	@Test
 	public void test() {
-		String root = "./test-data";
+		String root = "./testdata/test-data";
 		SysSearchEngine engin = new SysSearchEngine();
 		engin.addAction(new XmlReadAction());
 		engin.setFilter(FilterFactory.create(FilterFactory.FullName, "pom.xml"));

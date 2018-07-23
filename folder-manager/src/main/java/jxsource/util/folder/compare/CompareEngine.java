@@ -1,5 +1,6 @@
 package jxsource.util.folder.compare;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -44,21 +45,21 @@ public class CompareEngine {
 		return this;
 	}
 
-	public boolean run(ComparableNode comparableNode) {
+	public boolean isDiff(ComparableNode comparableNode) {
 		srcRoot = comparableNode.getSrc().getPath();
 		compareRoot = comparableNode.getToCompare().getPath();
 		srcComparePath = ComparePath.build(srcRoot);
 		comparableNode.setComparePath("/");
 		log.debug(Constants.srcSymbol + ": " + srcRoot);
 		log.debug(Constants.cmpSymbol + ": " + compareRoot);
-		return isDiff(comparableNode);
+		return _isDiff(comparableNode);
 	}
 
 	/**
 	 * @param comparableNode
 	 * @return true - two nodes are different, false - two nodes are same
 	 */
-	private boolean isDiff(ComparableNode comparableNode) {
+	private boolean _isDiff(ComparableNode comparableNode) {
 		Node src = comparableNode.getSrc();
 		Node toCompare = comparableNode.getToCompare();
 		// src and toCompare may have different names in the first call
@@ -107,9 +108,9 @@ public class CompareEngine {
 	private boolean compareChildren(ComparableNode comparableNode) {
 		Node src = comparableNode.getSrc();
 		Node toCompare = comparableNode.getToCompare();
-		List<Node> sList = src.getChildren();
+		List<Node> sList = new ArrayList<Node>(src.getChildren());
 		Collections.sort(sList, comparator);
-		List<Node> cList = toCompare.getChildren();
+		List<Node> cList = new ArrayList<Node>(toCompare.getChildren());
 		Collections.sort(cList, comparator);
 		if (sList.size() > 0 && cList.size() > 0) {
 			Node sChild = sList.remove(0);
@@ -130,7 +131,7 @@ public class CompareEngine {
 					// same
 					ComparableNode comparableChild = new ComparableNode(sChild, cChild);
 					comparableChild.setComparePath(srcComparePath.get(sChild));
-					if (isDiff(comparableChild)) {
+					if (_isDiff(comparableChild)) {
 						comparableNode.addDiff(comparableChild);
 					} else {
 						comparableNode.addSame(comparableChild);

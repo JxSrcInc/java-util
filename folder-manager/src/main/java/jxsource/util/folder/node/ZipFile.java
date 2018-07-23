@@ -9,6 +9,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 public class ZipFile extends AbstractNode implements JFile {
+	private static final long serialVersionUID = 1L;
 	public static final String CachePropertyName = "jxsource.util.folder.zipfile.cache";
 	public static final String NoCache = "NoCache";
 	public static final String Memory = "Memory";
@@ -25,6 +26,9 @@ public class ZipFile extends AbstractNode implements JFile {
 		}
 	}
 
+	public ZipFile() {
+		
+	}
 	public ZipFile(String uri, ZipEntry zipEntry, ZipInputStream zis) {
 		this.zipEntry = zipEntry;
 		String path = zipEntry.getName();
