@@ -26,6 +26,7 @@ import jxsource.util.folder.node.SysFile;
 import jxsource.util.folder.node.ZipFile;
 import jxsource.util.folder.search.ZipSearchEngine;
 import jxsource.util.folder.search.util.NodeUtil;
+import jxsource.util.folder.search.util.Util;
 
 public class CompareEngineTest {
 
@@ -64,7 +65,7 @@ public class CompareEngineTest {
 //		System.out.println(jsonReport);
 		JFile jarFile = (JFile)jar;
 		ComparableNode cmpNode = new ComparableNode(src, jarFile);
-		String jsonStr  = new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(jarFile.convertToJson());
+		String jsonStr  = new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(Util.convertToJson(jarFile));
 		System.out.println(jsonStr);
 		
 		System.out.println(engine.isDiff(cmpNode));

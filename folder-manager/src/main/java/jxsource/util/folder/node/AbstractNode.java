@@ -44,27 +44,6 @@ public abstract class AbstractNode implements Node, Serializable {
 		return absolutePath;
 	}
 
-	
-	private ObjectNode initJsonNode(ObjectNode node) {
-		node.put("path", path.replaceAll("\\\\", "/"));
-		node.put("name", name);
-		node.put("dir", directory);
-		node.put("len", length);
-		node.put("time",lastModified);
-		return node;
-	}
-
-	public JsonNode convertToJson() {
-		ObjectNode node = mapper.createObjectNode();
-		node = initJsonNode(node);
-		if(children != null) {
-			ArrayNode childrenNode = node.putArray("children");//node.arrayNode();
-			for(Node child: children) {
-				childrenNode.add(child.convertToJson());
-			}
-		}
-		return node;
-	}
 	@Override
 	public void addChild(Node child) {
 		// children may be null
@@ -74,6 +53,12 @@ public abstract class AbstractNode implements Node, Serializable {
 		}
 		if(!children.contains(child)) {
 			children.add(child);
+		}
+		// Added to fix bug when TreeFactory adds child in case directory is not initialed 
+		// in real Node/JFile instance. For example, in testing, a real java.io.File is created 
+		// in fly and does not exist in file system
+		if(!directory) {
+			directory = true;
 		}
 	}
 	public void setParent(Node parent) {

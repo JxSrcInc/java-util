@@ -116,4 +116,22 @@ public class Util {
 		}
 		return nodes;
 	}
+	public static JsonNode convertToJson(Node src) {
+		ObjectNode node = mapper.createObjectNode();
+		node.put("path", src.getPath().replaceAll("\\\\", "/"));
+		node.put("name", src.getName());
+		node.put("dir", src.isDir());
+		if(src instanceof JFile) {
+			node.put("len", ((JFile)src).getLength());
+			node.put("time",((JFile)src).getLastModified());
+		}
+		List<Node> children = src.getChildren();
+		if(children != null) {
+			ArrayNode childrenNode = node.putArray("children");//node.arrayNode();
+			for(Node child: children) {
+				childrenNode.add(Util.convertToJson(child));
+			}
+		}
+		return node;
+	}
 }

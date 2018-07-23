@@ -32,7 +32,7 @@ public class ZipCacheTest {
 	@Test
 	public void test() throws ZipException, IOException {
 		ZipSearchEngine engine = new ZipSearchEngine();
-		Filter filter = new PathFilter("testdata/test-data/src");
+		Filter filter = new PathFilter("test-data/src");
 		engine.setFilter(filter);
 		CollectionAction action = new CollectionAction();
 		engine.addAction(action);

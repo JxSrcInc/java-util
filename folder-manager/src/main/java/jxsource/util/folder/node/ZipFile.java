@@ -26,6 +26,9 @@ public class ZipFile extends AbstractNode implements JFile {
 		}
 	}
 
+	public ZipFile() {
+		
+	}
 	public ZipFile(String uri, ZipEntry zipEntry, ZipInputStream zis) {
 		this.zipEntry = zipEntry;
 		String path = zipEntry.getName();

@@ -29,6 +29,5 @@ public interface Node extends Comparable<Node>{
 	public void setArray(boolean directory);
 	public int hashCode();
 	public boolean equals(Object node);
-	public JsonNode convertToJson();
 
 }

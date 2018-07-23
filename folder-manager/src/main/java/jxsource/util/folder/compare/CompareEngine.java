@@ -1,5 +1,6 @@
 package jxsource.util.folder.compare;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -107,9 +108,9 @@ public class CompareEngine {
 	private boolean compareChildren(ComparableNode comparableNode) {
 		Node src = comparableNode.getSrc();
 		Node toCompare = comparableNode.getToCompare();
-		List<Node> sList = src.getChildren();
+		List<Node> sList = new ArrayList<Node>(src.getChildren());
 		Collections.sort(sList, comparator);
-		List<Node> cList = toCompare.getChildren();
+		List<Node> cList = new ArrayList<Node>(toCompare.getChildren());
 		Collections.sort(cList, comparator);
 		if (sList.size() > 0 && cList.size() > 0) {
 			Node sChild = sList.remove(0);

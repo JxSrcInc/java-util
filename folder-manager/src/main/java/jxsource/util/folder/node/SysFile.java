@@ -68,8 +68,7 @@ public class SysFile extends AbstractNode implements JFile{
 	 */
 	@Override
 	public List<Node> getChildren() {
-//		if(this.children == null) {
-//			children = new ArrayList<Node>();
+		if(children.size() == 0) {
 			File[] files = file.listFiles();
 			if(files != null) {
 				for(int i=0; i<files.length; i++) {
@@ -78,9 +77,8 @@ public class SysFile extends AbstractNode implements JFile{
 					children.add(child);
 				}
 			}
-			return children;
-//		}
-//		return children;//super.getChildren();//children.toArray(new JFile[children.size()]); 
+		}
+		return children;
 	}
 
 	@Override
