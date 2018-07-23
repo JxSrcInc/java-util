@@ -40,7 +40,7 @@ public class CompareReportTest {
 	private PrintStream printer;
 	private ByteArrayOutputStream out;
 	private String[] expect;
-	
+
 	@Before
 	public void init() {
 		out = new ByteArrayOutputStream();
@@ -51,9 +51,20 @@ public class CompareReportTest {
 	public void verify() {
 		printer.close();
 		String result = out.toString();
-		log.debug(result);
-		for(String expect: this.expect) {
-			assertThat(result, containsString(expect));
+		// log.debug(result);
+		for (String expect : this.expect) {
+			String[] values = expect.split("@");
+			boolean ok = false;
+			for (String value : values) {
+				if (result.contains(value)) {
+					ok = true;
+					break;
+				}
+			}
+			log.debug(ok);
+			log.debug(result + "," + expect);
+			assertThat(ok, is(true));
+			// assertThat(result, containsString(expect));
 		}
 	}
 
@@ -62,83 +73,80 @@ public class CompareReportTest {
 		LeafDiffer differ = new LengthDiffer();
 		LenDiffReport report = new LenDiffReport();
 		report.setPrintStream(printer);
-		CompareEngine engine = new CompareEngine()
-				.addAction(report)
-				.setLeafDiffer(differ);
-		JFile src = new SysFile(new File("test-data"));
-		JFile toCompare = new SysFile(new File("test-compare"));
+		CompareEngine engine = new CompareEngine().addAction(report).setLeafDiffer(differ);
+		JFile src = new SysFile(new File("testdata/test-data"));
+		JFile toCompare = new SysFile(new File("testdata/test-compare"));
 		ComparableNode comparableNode = new ComparableNode(src, toCompare);
-		
-		assertThat(engine.run(comparableNode), is(true));
-		expect = new String[] {
-				String.format(Constants.diffPrintFormat,"/src/_pom_.txt","diff-len",Constants.srcSymbol,"51",Constants.cmpSymbol,"0")
-				};
+
+		assertThat(engine.isDiff(comparableNode), is(true));
+		expect = new String[] { String.format(Constants.diffPrintFormat, "/src/_pom_.txt", "diff-len",
+				Constants.srcSymbol, "51", Constants.cmpSymbol, "0") };
 	}
+
 	@Test
 	public void testTime() {
 		LeafDiffer differ = new LastModifiedDiffer();
 		TimeDiffReport report = new TimeDiffReport();
 		report.setPrintStream(printer);
-		CompareEngine engine = new CompareEngine()
-				.addAction(report)
-				.setLeafDiffer(differ);
-		JFile src = new SysFile(new File("test-data"));
-		JFile toCompare = new SysFile(new File("test-compare"));
+		CompareEngine engine = new CompareEngine().addAction(report).setLeafDiffer(differ);
+		JFile src = new SysFile(new File("testdata/test-data"));
+		JFile toCompare = new SysFile(new File("testdata/test-compare"));
 		ComparableNode comparableNode = new ComparableNode(src, toCompare);
-		
-		assertThat(engine.run(comparableNode), is(true));
-		expect = new String[] {"/src/main/java/Data.java","diff-time"};
+
+		assertThat(engine.isDiff(comparableNode), is(true));
+		expect = new String[] { "/src/main/java/Data.java", "diff-time" };
 	}
+
 	@Test
 	public void testMissing() {
 		MissingReport report = new MissingReport();
 		report.setPrintStream(printer);
-		CompareEngine engine = new CompareEngine()
-				.addAction(report);
-		JFile src = new SysFile(new File("test-data"));
-		JFile toCompare = new SysFile(new File("test-compare"));
+		CompareEngine engine = new CompareEngine().addAction(report);
+		JFile src = new SysFile(new File("testdata/test-data"));
+		JFile toCompare = new SysFile(new File("testdata/test-compare"));
 		ComparableNode comparableNode = new ComparableNode(src, toCompare);
-		
-		assertThat(engine.run(comparableNode), is(true));
-		expect = new String[] {
-				String.format(Constants.arrayPrintFormat,"/src/main/java",Constants.srcSymbol+".missing","Date.java")};
+
+		assertThat(engine.isDiff(comparableNode), is(true));
+		expect = new String[] { String.format(Constants.arrayPrintFormat, "/src/main/java",
+				Constants.srcSymbol + ".missing", "Date.java") };
 	}
+
 	@Test
 	public void testAddition() {
 		AdditionReport report = new AdditionReport();
 		report.setPrintStream(printer);
-		CompareEngine engine = new CompareEngine()
-				.addAction(report);
-		JFile src = new SysFile(new File("test-data"));
-		JFile toCompare = new SysFile(new File("test-compare"));
+		CompareEngine engine = new CompareEngine().addAction(report);
+		JFile src = new SysFile(new File("testdata/test-data"));
+		JFile toCompare = new SysFile(new File("testdata/test-compare"));
 		ComparableNode comparableNode = new ComparableNode(src, toCompare);
-		
-		assertThat(engine.run(comparableNode), is(true));
+
+		assertThat(engine.isDiff(comparableNode), is(true));
 		expect = new String[] {
-				String.format(Constants.arrayPrintFormat,"/src",Constants.srcSymbol+".addition","test"),
-				String.format(Constants.arrayPrintFormat,"/",Constants.srcSymbol+".addition","resources, xyz")};
+				String.format(Constants.arrayPrintFormat, "/src", Constants.srcSymbol + ".addition", "test"),
+				String.format(Constants.arrayPrintFormat, "/", Constants.srcSymbol + ".addition", "resources, xyz")
+						+ "@" + String.format(Constants.arrayPrintFormat, "/", Constants.srcSymbol + ".addition", "xyz, resources") };
 	}
+
 	@Test
 	public void testNode() {
 		LeafDiffer differ = new LengthDiffer();
 		differ.setNext(new LastModifiedDiffer());
 		BaseReport report = new NodeReport();
 		report.setPrintStream(printer);
-		CompareEngine engine = new CompareEngine()
-				.setLeafDiffer(differ)
-				.addAction(report);
-		JFile src = new SysFile(new File("test-data"));
-		JFile toCompare = new SysFile(new File("test-compare"));
+		CompareEngine engine = new CompareEngine().setLeafDiffer(differ).addAction(report);
+		JFile src = new SysFile(new File("testdata/test-data"));
+		JFile toCompare = new SysFile(new File("testdata/test-compare"));
 		ComparableNode comparableNode = new ComparableNode(src, toCompare);
-		
-		assertThat(engine.run(comparableNode), is(true));
-		expect = new String[] {
-//				String.format(Constants.diffPrintFormat,"/src/_pom_.txt","diff-len",Constants.srcSymbol,"51",Constants.cmpSymbol,"0"),
-				String.format(Constants.arrayPrintFormat,"/src/main/java",Constants.srcSymbol+".missing","Date.java"),
-				String.format(Constants.arrayPrintFormat,"/src",Constants.srcSymbol+".addition","test"),
-				String.format(Constants.arrayPrintFormat,"/",Constants.srcSymbol+".addition","resources, xyz"),
-				"/src/main/java/Data.java","diff-time"};
-	}
 
+		assertThat(engine.isDiff(comparableNode), is(true));
+		expect = new String[] {
+				// String.format(Constants.diffPrintFormat,"/src/_pom_.txt","diff-len",Constants.srcSymbol,"51",Constants.cmpSymbol,"0"),
+				String.format(Constants.arrayPrintFormat, "/src/main/java", Constants.srcSymbol + ".missing",
+						"Date.java"),
+				String.format(Constants.arrayPrintFormat, "/src", Constants.srcSymbol + ".addition", "test"),
+				String.format(Constants.arrayPrintFormat, "/", Constants.srcSymbol + ".addition", "resources, xyz")
+				+ "@" + String.format(Constants.arrayPrintFormat, "/", Constants.srcSymbol + ".addition", "xyz, resources"),
+				"/src/main/java/Data.java", "diff-time" };
+	}
 
 }

@@ -44,21 +44,21 @@ public class CompareEngine {
 		return this;
 	}
 
-	public boolean run(ComparableNode comparableNode) {
+	public boolean isDiff(ComparableNode comparableNode) {
 		srcRoot = comparableNode.getSrc().getPath();
 		compareRoot = comparableNode.getToCompare().getPath();
 		srcComparePath = ComparePath.build(srcRoot);
 		comparableNode.setComparePath("/");
 		log.debug(Constants.srcSymbol + ": " + srcRoot);
 		log.debug(Constants.cmpSymbol + ": " + compareRoot);
-		return isDiff(comparableNode);
+		return _isDiff(comparableNode);
 	}
 
 	/**
 	 * @param comparableNode
 	 * @return true - two nodes are different, false - two nodes are same
 	 */
-	private boolean isDiff(ComparableNode comparableNode) {
+	private boolean _isDiff(ComparableNode comparableNode) {
 		Node src = comparableNode.getSrc();
 		Node toCompare = comparableNode.getToCompare();
 		// src and toCompare may have different names in the first call
@@ -130,7 +130,7 @@ public class CompareEngine {
 					// same
 					ComparableNode comparableChild = new ComparableNode(sChild, cChild);
 					comparableChild.setComparePath(srcComparePath.get(sChild));
-					if (isDiff(comparableChild)) {
+					if (_isDiff(comparableChild)) {
 						comparableNode.addDiff(comparableChild);
 					} else {
 						comparableNode.addSame(comparableChild);

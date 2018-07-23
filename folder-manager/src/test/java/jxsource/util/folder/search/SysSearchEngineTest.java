@@ -50,7 +50,7 @@ public class SysSearchEngineTest {
 
 	@Test
 	public void extTest() {
-		String root = "./test-data";
+		String root = "./testdata/test-data";
 		SysSearchEngine engin = new SysSearchEngine();
 		CollectionAction ca = new CollectionAction();
 		ca.setUrl(root);
@@ -67,7 +67,7 @@ public class SysSearchEngineTest {
 
 	@Test
 	public void extIgnoreCaseTest() {
-		String root = "./test-data";
+		String root = "./testdata/test-data";
 		SysSearchEngine engin = new SysSearchEngine();
 		CollectionAction ca = new CollectionAction();
 		ca.setUrl(root);
@@ -83,7 +83,7 @@ public class SysSearchEngineTest {
 	}
 	@Test
 	public void extIgnoreCaseLikeTest() {
-		String root = "./test-data";
+		String root = "./testdata/test-data";
 		SysSearchEngine engin = new SysSearchEngine();
 		CollectionAction ca = new CollectionAction();
 		ca.setUrl(root);
@@ -101,7 +101,7 @@ public class SysSearchEngineTest {
 
 	@Test
 	public void includeFilterTest() {
-		String root = "./test-data";
+		String root = "./testdata/test-data";
 		SysSearchEngine engin = new SysSearchEngine();
 		CollectionAction ca = new CollectionAction();
 		ca.setUrl(root);
@@ -116,7 +116,7 @@ public class SysSearchEngineTest {
 
 	@Test
 	public void rejectFilterTest() {
-		String root = "./test-data";
+		String root = "./testdata/test-data";
 		SysSearchEngine engin = new SysSearchEngine();
 		CollectionAction ca = new CollectionAction();
 		ca.setUrl(root);
@@ -133,7 +133,7 @@ public class SysSearchEngineTest {
 
 	@Test
 	public void fullNameTest() {
-		String root = "./test-data";
+		String root = "./testdata/test-data";
 		SysSearchEngine engin = new SysSearchEngine();
 		CollectionAction ca = new CollectionAction();
 		ca.setUrl(root);
@@ -147,7 +147,7 @@ public class SysSearchEngineTest {
 
 	@Test
 	public void nameTest() {
-		String root = "./test-data";
+		String root = "./testdata/test-data";
 		SysSearchEngine engin = new SysSearchEngine();
 		CollectionAction ca = new CollectionAction();
 		ca.setUrl(root);
@@ -162,7 +162,7 @@ public class SysSearchEngineTest {
 
 	@Test
 	public void rejectAndNameFilterTest() {
-		String root = "./test-data";
+		String root = "./testdata/test-data";
 		SysSearchEngine engin = new SysSearchEngine();
 		CollectionAction ca = new CollectionAction();
 		ca.setUrl(root);

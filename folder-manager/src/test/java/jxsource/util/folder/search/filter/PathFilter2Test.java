@@ -15,7 +15,7 @@ import jxsource.util.folder.search.action.CollectionAction;
 import jxsource.util.folder.search.filter.pathfilter.PathFilter;
 
 public class PathFilter2Test {
-	File root = new File("test-data");
+	File root = new File("testdata/test-data");
 	SysSearchEngine engine = new SysSearchEngine();
 	CollectionAction ca = new CollectionAction();
 	boolean ready = false;
@@ -30,10 +30,10 @@ public class PathFilter2Test {
 	}
 	@Test
 	public void testRoot() {
-		engine.setFilter(new PathFilter("test-data/resources"));
+		engine.setFilter(new PathFilter("testdata/test-data/resources"));
 		engine.search(root);
 		for(Node node: ca.getNodes()) {
-			assertThat(node.getPath().contains("test-data/resources"), is(true));
+			assertThat(node.getPath().contains("testdata/test-data/resources"), is(true));
 		}
 	}
 	@Test

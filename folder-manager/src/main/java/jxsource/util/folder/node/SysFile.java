@@ -11,6 +11,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class SysFile extends AbstractNode implements JFile{
+	private static final long serialVersionUID = 1L;
 	private static Logger log = LogManager.getLogger(SysFile.class);
 	private File file;
 	private InputStream in;

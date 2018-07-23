@@ -19,7 +19,7 @@ import jxsource.util.folder.search.filter.pathfilter.PathFilter;
 
 public class PathFilterRejectTest {
 	static Logger log = LogManager.getLogger(PathFilterRejectTest.class);
-	File root = new File("test-data");
+	File root = new File("testdata/test-data");
 	SysSearchEngine engine = new SysSearchEngine();
 	CollectionAction ca = new CollectionAction();
 	boolean ready = false;
@@ -34,12 +34,12 @@ public class PathFilterRejectTest {
 	}
 	@Test
 	public void test() {
-		PathFilter filter = new PathFilter("test-data/resources"); 
+		PathFilter filter = new PathFilter("testdata/test-data/resources"); 
 		filter.setReject(true);
 		engine.setFilter(filter);
 		engine.search(root);
 		for(Node node: ca.getNodes()) {
-			assertThat(!node.getPath().contains("test-data/resources"), is(true));
+			assertThat(!node.getPath().contains("testdata/test-data/resources"), is(true));
 		}
 	}
 	@Test

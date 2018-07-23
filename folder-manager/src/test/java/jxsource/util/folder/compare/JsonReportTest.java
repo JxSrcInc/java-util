@@ -19,6 +19,7 @@ import jxsource.util.folder.node.JFile;
 import jxsource.util.folder.node.SysFile;
 
 public class JsonReportTest {
+	private final String outPath = "";
 	@Test
 	public void jsonReportTest() throws JsonProcessingException {
 		LeafDiffer differ = new LengthDiffer();
@@ -28,11 +29,11 @@ public class JsonReportTest {
 		JFile src = new SysFile(new File("test-data"));
 		JFile toCompare = new SysFile(new File("test-compare"));
 		ComparableNode comparableNode = new ComparableNode(src, toCompare);
-		assertThat(engine.run(comparableNode), is(true));
+		assertThat(engine.isDiff(comparableNode), is(true));
 		
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode jsonNode = JsonUtil.build().convertToJson(comparableNode);
-		System.out.println(mapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonNode));
+		String jsonReport  =mapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonNode);
 	}
 
 }

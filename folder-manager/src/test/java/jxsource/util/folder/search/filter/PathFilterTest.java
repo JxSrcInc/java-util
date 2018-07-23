@@ -17,7 +17,7 @@ import jxsource.util.folder.search.filter.pathfilter.PathFilter;
 
 public class PathFilterTest {
 	
-	File root = new File("test-data");
+	File root = new File("testdata/test-data");
 	SysSearchEngine engine = new SysSearchEngine();
 	CollectionAction ca = new CollectionAction();
 	boolean ready = false;
@@ -31,32 +31,32 @@ public class PathFilterTest {
 	}
 	@Test
 	public void testRoot() {
-		engine.setFilter(new PathFilter("test-data"));
+		engine.setFilter(new PathFilter("testdata/test-data"));
 		engine.search(root);
 		assertThat(ca.getNodes().size(), is(5));
 	}
 	@Test
 	public void testSrc() {
-		engine.setFilter(new PathFilter("test-data/src"));
+		engine.setFilter(new PathFilter("testdata/test-data/src"));
 		engine.search(root);
 		assertThat(ca.getNodes().size(), is(2));
 	}
 	@Test
 	public void testXyz() {
-		engine.setFilter(new PathFilter("test-data/xyz"));
+		engine.setFilter(new PathFilter("testdata/test-data/xyz"));
 		engine.search(root);
 		assertThat(ca.getNodes().size(), is(1));
 	}
 
 	@Test
 	public void endFoundTest() {
-		engine.setFilter(new PathFilter("test-data/src/main/java/*.java"));
+		engine.setFilter(new PathFilter("testdata/test-data/src/main/java/*.java"));
 		engine.search(root);
 		assertThat(ca.getNodes().size(), is(1));
 	}
 	@Test
 	public void endNotFoundTest() {
-		engine.setFilter(new PathFilter("test-data/src/main/*.java"));
+		engine.setFilter(new PathFilter("testdata/test-data/src/main/*.java"));
 		engine.search(root);
 		assertThat(ca.getNodes().size(), is(0));
 	}
