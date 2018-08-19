@@ -16,14 +16,13 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import jxsource.util.folder.search.filter.Filter;
-import jxsource.util.folder.search.filter.FilterFactory;
-import jxsource.util.folder.search.filter.FilterProperties;
-import jxsource.util.folder.search.filter.pathfilter.AbstractFilter;
-import jxsource.util.folder.search.filter.pathfilter.ExtFilter;
-import jxsource.util.folder.search.filter.pathfilter.FullNameFilter;
-import jxsource.util.folder.search.filter.pathfilter.NameFilter;
+import jxsource.util.folder.search.filter.leaffilter.ExtFilter;
+import jxsource.util.folder.search.filter.leaffilter.FilterFactory;
+import jxsource.util.folder.search.filter.leaffilter.FilterProperties;
+import jxsource.util.folder.search.filter.leaffilter.FullNameFilter;
+import jxsource.util.folder.search.filter.leaffilter.NameFilter;
+import jxsource.util.folder.search.filter.leaffilter.TimeFilter;
 import jxsource.util.folder.search.filter.pathfilter.PathFilter;
-import jxsource.util.folder.search.filter.pathfilter.TimeFilter;
 import jxsource.util.folder.search.zip.ZipSearchTemplate;
 import jxsource.util.folder.search.zip.ZipSearchTemplate.ZipSearchTemplateBuilder;
 

@@ -1,4 +1,4 @@
-package jxsource.util.folder.search.filter.contentfilter;
+package jxsource.util.folder.search.filter.leaffilter;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,7 +11,7 @@ import jxsource.util.folder.search.util.Util;
  * @author JiangJxSrc
  *
  */
-public class SimpleContentFilter extends ContentFilter{
+public class SimpleContentFilter extends CachedContentFilter{
 	private Pattern p;
 	private String match;
 	private boolean wordMatch;
@@ -28,8 +28,8 @@ public class SimpleContentFilter extends ContentFilter{
 		return this;
 	}
 	@Override
-	public boolean accept(InputStream in) throws IOException {
-		String content = Util.getContent(in);
+	public boolean accept(StringBuilder sb) {
+		String content = sb.toString();
 		if(wordMatch) {
 			return p.matcher(content).matches();
 		} else {

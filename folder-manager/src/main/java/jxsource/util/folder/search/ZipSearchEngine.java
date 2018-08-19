@@ -25,7 +25,7 @@ import jxsource.util.folder.node.SysFile;
 import jxsource.util.folder.node.ZipFile;
 import jxsource.util.folder.search.action.CollectionAction;
 import jxsource.util.folder.search.filter.Filter;
-import jxsource.util.folder.search.filter.FilterFactory;
+import jxsource.util.folder.search.filter.leaffilter.FilterFactory;
 import jxsource.util.folder.search.filter.pathfilter.PathFilter;
 import jxsource.util.folder.search.util.NodeUtil;
 import jxsource.util.folder.search.util.Util;

@@ -49,9 +49,11 @@ public abstract class SearchEngine {
 		if(filter != null) {
 			status = filter.accept(file);
 		}
+		if(file.isDir()) {
+			count++;			
+		}
 		log.debug(Filter.getStatusName(status)+", "+file.getPath());
 		if(status == Filter.ACCEPT) {
-			count++;
 			for (Action action : actions) {
 			action.proc(file);
 			}	

@@ -4,11 +4,10 @@ import jxsource.util.folder.node.JFile;
 import jxsource.util.folder.node.Node;
 
 /**
- * getStatus() method determines the argument (JFile) is 1. ACCEPT, which
- * results in search engine to fire actions and continue to search its children
- * 2. PASS, which results in search engine to continue to search its children
- * but not fire actions 3. REJECT, which results in search engine stops to
- * search its children
+ * getStatus() method determines the argument (JFile) is 
+ * 1. ACCEPT, which results in search engine to fire actions and continue to search its children
+ * 2. PASS, which results in search engine to continue to search its children but not fire actions 
+ * 3. REJECT, which results in search engine stops to search its children
  * 
  * Setting reject to true reverse above process -- change ACCEPT to REJECT and
  * REJECT to ACCEPT. However, the reject filter does not support "next" filter
@@ -23,8 +22,12 @@ public abstract class Filter {
 	/**
 	 * search child nodes but not invoke actions.
 	 * <p>
-	 * case uses PASS: PathFilter: a/match Path 1: a/match Path 2: a/b search engine
-	 * need pass on JFile a because search engine cannot distinguish the path is
+	 * case uses PASS: 
+	 * 	PathFilter: a/match 
+	 * 	Path 1: a/match 
+	 * 	Path 2: a/b 
+	 * search engine need to return PASS when processing JFile a, 
+	 * because search engine cannot distinguish the path is
 	 * Path 1 or Path 2
 	 */
 	public static final int PASS = 0;

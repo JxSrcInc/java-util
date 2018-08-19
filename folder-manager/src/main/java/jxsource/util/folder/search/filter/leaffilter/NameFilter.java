@@ -1,4 +1,4 @@
-package jxsource.util.folder.search.filter.pathfilter;
+package jxsource.util.folder.search.filter.leaffilter;
 
 import jxsource.util.folder.node.JFile;
 import jxsource.util.folder.node.Node;
@@ -9,6 +9,7 @@ import jxsource.util.folder.search.filter.Filter;
  */
 public class NameFilter extends LeafFilter {
 	
+	NameFilter(){}
 	@Override
 	protected int _getStatus(Node file) {
 		String name = file.getName();
@@ -16,11 +17,16 @@ public class NameFilter extends LeafFilter {
 		if(i > 0) {
 			name = name.substring(0, i);
 		}
-		for(String match: matchs) {
-			if(_accept(name, match)) {
-				return Filter.ACCEPT;
-			}
+		if(stringMatcher.match(name)) {
+			return Filter.ACCEPT;
 		}
+
+		
+//		for(String match: matchs) {
+//			if(contains(name, match)) {
+//				return Filter.ACCEPT;
+//			}
+//		}
 		return Filter.REJECT;
 	}
 

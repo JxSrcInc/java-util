@@ -20,12 +20,15 @@ import jxsource.util.folder.node.SysFile;
 
 public class Util {
 	static ObjectMapper mapper = new ObjectMapper();
-	public static final String[] archiveTypes = new String[] {
-			"jar", "zip"
-	};
+//	public static final String[] archiveTypes = new String[] {
+//			"jar", "zip"
+//	};
+	public static final String archiveTypes = "jar,zip";
+	
 	public static boolean isArchive(JFile f) {
-		for(int i=0; i<archiveTypes.length; i++) {
-			if(archiveTypes[i].equals(f.getExt().toLowerCase())) {
+		String[] types = archiveTypes.split(",");
+		for(int i=0; i<types.length; i++) {
+			if(types[i].equals(f.getExt().toLowerCase())) {
 				return true;
 			}
 		}
@@ -39,7 +42,7 @@ public class Util {
 		return array;
 	}
 	// not thread safe
-	public static String getContent(InputStream in) throws IOException {
+	public static StringBuilder getContent(InputStream in) throws IOException {
 		StringBuilder sb = new StringBuilder();
 		Reader r = new InputStreamReader(in);
 		char[] cbuf = new char[1024*8];
@@ -47,7 +50,7 @@ public class Util {
 		while((i=r.read(cbuf)) != -1) {
 			sb.append(cbuf,0,i);
 		}
-		return sb.toString();
+		return sb;
 	}
 	public static String getFileSeparator(JFile f) {
 		String fileSeparator = ""+f.getPathSeparator();

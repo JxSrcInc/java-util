@@ -7,9 +7,9 @@ import org.junit.Test;
 import jxsource.util.folder.search.SysSearchEngine;
 import jxsource.util.folder.search.action.CollectionAction;
 import jxsource.util.folder.search.action.XmlReadAction;
-import jxsource.util.folder.search.filter.FilterFactory;
-import jxsource.util.folder.search.filter.pathfilter.ExtFilter;
-import jxsource.util.folder.search.filter.pathfilter.FullNameFilter;
+import jxsource.util.folder.search.filter.leaffilter.ExtFilter;
+import jxsource.util.folder.search.filter.leaffilter.FilterFactory;
+import jxsource.util.folder.search.filter.leaffilter.FullNameFilter;
 
 public class XmlReadActionTest {
 

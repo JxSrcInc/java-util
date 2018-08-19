@@ -9,7 +9,7 @@ import java.io.InputStream;
 
 import org.junit.Test;
 
-import jxsource.util.folder.search.filter.contentfilter.SimpleContentFilter;
+import jxsource.util.folder.search.filter.leaffilter.SimpleContentFilter;
 
 public class ContentFilterTest {
 

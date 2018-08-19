@@ -9,8 +9,8 @@ import jxsource.util.folder.search.SysSearchEngine;
 import jxsource.util.folder.search.action.CollectionAction;
 import jxsource.util.folder.search.action.FilePrintAction;
 import jxsource.util.folder.search.filter.Filter;
-import jxsource.util.folder.search.filter.FilterFactory;
-import jxsource.util.folder.search.filter.FilterProperties;
+import jxsource.util.folder.search.filter.leaffilter.FilterFactory;
+import jxsource.util.folder.search.filter.leaffilter.FilterProperties;
 
 public class SearchApp {
 	private static Logger log = LogManager.getLogger(SearchApp.class);

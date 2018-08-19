@@ -1,4 +1,4 @@
-package jxsource.util.folder.search.filter.pathfilter;
+package jxsource.util.folder.search.filter.leaffilter;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -13,12 +13,16 @@ import jxsource.util.folder.search.filter.Filter;
  * @author JiangJxSrc
  *
  */
-public abstract class AbstractFilter extends Filter {
+public class StringMatcher {
 
 	protected boolean ignoreCase = true;
 	protected boolean like = false;
+	protected boolean exclude = false;
 	protected List<String> matchs = new ArrayList<String>();
 
+	public List<String> getMatchList() {
+		return matchs;
+	}
 	public void add(String[] matchs) {
 		for(String match: matchs) {
 			this.matchs.add(match.trim());
@@ -31,18 +35,39 @@ public abstract class AbstractFilter extends Filter {
 	public boolean isIgnoreCase() {
 		return ignoreCase;
 	}
-	public AbstractFilter setIgnoreCase(boolean ignoreCase) {
+	public StringMatcher setIgnoreCase(boolean ignoreCase) {
 		this.ignoreCase = ignoreCase;
 		return this;
 	}
 	public boolean isLike() {
 		return like;
 	}
-	public AbstractFilter setLike(boolean like) {
+	public StringMatcher setLike(boolean like) {
 		this.like = like;
 		return this;
 	}
-	protected boolean _accept(String src, String match) {
+	
+	public boolean isExclude() {
+		return exclude;
+	}
+	public void setExclude(boolean exclude) {
+		this.exclude = exclude;
+	}
+	public boolean match(String src) {
+		for(String match: matchs) {
+			if(contains(src, match)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	/**
+	 * if src contains match
+	 * @param src
+	 * @param match
+	 * @return
+	 */
+	protected boolean contains(String src, String match) {
 		if(ignoreCase) {
 			src = src.toLowerCase();
 			match = match.toLowerCase();

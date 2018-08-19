@@ -1,7 +1,7 @@
 package jxsource.util.folder.search.app;
 
 import jxsource.util.folder.search.filter.Filter;
-import jxsource.util.folder.search.filter.contentfilter.SimpleContentFilter;
+import jxsource.util.folder.search.filter.leaffilter.SimpleContentFilter;
  
 public class ContentSearchApp extends SearchApp{
  
