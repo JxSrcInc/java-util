@@ -1,5 +1,6 @@
 package jxsource.util.folder.search;
 
+import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,13 +18,16 @@ public abstract class SearchEngine {
 	private Filter filter;
 	private int count;
 
+	public abstract void search(File file);
 	public int getSearchedCount() {
 		return count;
 	}
 	public void setFilter(Filter filter) {
 		this.filter = filter;
 	}
-
+	public Filter getFilter() {
+		return filter;
+	}
 	public SearchEngine addAction(Action action) {
 		actions.add(action);
 		return this;
@@ -32,7 +36,9 @@ public abstract class SearchEngine {
 	public void setActions(Set<Action> actions) {
 		this.actions = actions;
 	}
-
+	public Set<Action> getActions() {
+		return actions;
+	}
 	/**
 	 * check filter to determine if file should be
 	 * 	1. accept: apply all actions. the JFile can be directory or file

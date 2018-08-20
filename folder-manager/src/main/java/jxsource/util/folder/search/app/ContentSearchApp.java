@@ -1,7 +1,8 @@
 package jxsource.util.folder.search.app;
 
 import jxsource.util.folder.search.filter.Filter;
-import jxsource.util.folder.search.filter.leaffilter.SimpleContentFilter;
+import jxsource.util.folder.search.filter.leaffilter.ContentFilter;
+import jxsource.util.folder.search.filter.leaffilter.LeafFilterFactory;
  
 public class ContentSearchApp extends SearchApp{
  
@@ -26,7 +27,7 @@ public class ContentSearchApp extends SearchApp{
                                 }
                         }
                 }
-                Filter tmpFilter = new SimpleContentFilter(contentSearch).setWordMatch(word);
+                Filter tmpFilter = ((ContentFilter)LeafFilterFactory.create(LeafFilterFactory.Content, contentSearch)).setWordMatch(word);
                 if(workingFilter == null) {
                         filter = workingFilter = tmpFilter;
                 } else {

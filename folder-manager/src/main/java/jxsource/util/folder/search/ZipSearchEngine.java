@@ -25,7 +25,7 @@ import jxsource.util.folder.node.SysFile;
 import jxsource.util.folder.node.ZipFile;
 import jxsource.util.folder.search.action.CollectionAction;
 import jxsource.util.folder.search.filter.Filter;
-import jxsource.util.folder.search.filter.leaffilter.FilterFactory;
+import jxsource.util.folder.search.filter.leaffilter.LeafFilterFactory;
 import jxsource.util.folder.search.filter.pathfilter.PathFilter;
 import jxsource.util.folder.search.util.NodeUtil;
 import jxsource.util.folder.search.util.Util;
@@ -57,7 +57,16 @@ public class ZipSearchEngine extends SearchEngine {
 	/**
 	 * public method to search a zip/jar file
 	 */
-	public void search(JFile f) throws ZipException, IOException {
+	@Override
+	public void search(File f) {
+		try {
+			search(new SysFile(f));
+		} catch (IOException e) {
+			log.error("Error when search "+f.getPath(),  e);
+			throw new RuntimeException("Error when search "+f.getPath(),  e);
+		}
+	}
+	private void search(JFile f) throws ZipException, IOException {
 		if(!Util.isArchive(f)) {
 			throw new IOException(f.getPath()+" is not a jar or zip file.");
 		}
@@ -111,7 +120,7 @@ public class ZipSearchEngine extends SearchEngine {
 			engine.setFilter(filter);
 			CollectionAction action = new CollectionAction();
 			engine.addAction(action);
-			engine.search(new SysFile(new File("test-data.jar")));
+			engine.search(new File("testdata\\test-data.jar"));
 				ObjectMapper mapper = new ObjectMapper();
 				for(Node f: engine.getTrees()) {
 					JsonNode node = Util.convertToJson(f);

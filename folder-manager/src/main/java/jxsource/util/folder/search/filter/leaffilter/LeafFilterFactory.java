@@ -3,16 +3,19 @@ package jxsource.util.folder.search.filter.leaffilter;
 import java.util.HashMap;
 import java.util.Map;
 
+import jxsource.util.folder.search.filter.AbstractFilter;
 import jxsource.util.folder.search.filter.Filter;
+import jxsource.util.folder.search.util.StringMatcher;
 import jxsource.util.folder.search.util.Util;
 
-public class FilterFactory {
+public class LeafFilterFactory {
 	
 	public static final String Ext = "Ext";
 	public static final String Name = "Name";
 	public static final String FullName = "FullName";
 	public static final String Time = "Time";
 	public static final String Zip = "Zip";
+	public static final String Content = "Content";
 
 	public static Filter createZipFilter(HashMap<Integer, Boolean>...filterProperties) {
 		if(filterProperties.length == 0) {
@@ -27,7 +30,7 @@ public class FilterFactory {
 	}
 
 	public static Filter create(String type, String value, Map<Integer, Boolean> option) {
-		LeafFilter filter = null;
+		AbstractFilter filter = null;
 		switch(type) {
 		case Ext:
 			filter = new ExtFilter();
@@ -43,6 +46,9 @@ public class FilterFactory {
 			break;
 		case Zip:
 			filter = new ZipFilter();
+			break;
+		case Content:
+			filter = new ContentFilter(value);
 			break;
 			default:
 				throw new RuntimeException("Invalid Filter type: "+type);

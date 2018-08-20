@@ -53,7 +53,7 @@ public class CompareEngineTest {
 		engine.setLeafDiffer(null);
 		JFile src = new SysFile(new File("testdata/test-data"));
 		ZipSearchEngine zipEngine = new ZipSearchEngine();
-		zipEngine.search(new SysFile(new File("testdata/test-data.jar")));
+		zipEngine.search(new File("testdata/test-data.jar"));
 		Node jar = null;
 		for(Node node: zipEngine.getTrees()) {
 			if(node.getName().equals("test-data")) {

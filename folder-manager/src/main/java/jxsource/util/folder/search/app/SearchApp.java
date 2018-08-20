@@ -9,7 +9,7 @@ import jxsource.util.folder.search.SysSearchEngine;
 import jxsource.util.folder.search.action.CollectionAction;
 import jxsource.util.folder.search.action.FilePrintAction;
 import jxsource.util.folder.search.filter.Filter;
-import jxsource.util.folder.search.filter.leaffilter.FilterFactory;
+import jxsource.util.folder.search.filter.leaffilter.LeafFilterFactory;
 import jxsource.util.folder.search.filter.leaffilter.FilterProperties;
 
 public class SearchApp {
@@ -51,7 +51,7 @@ public class SearchApp {
 			throw new RuntimeException("Invalid Filter: " + entry);
 		}
 		log.debug("type=" + type + ", value=" + value + ", props=" + props);
-		Filter tmpFilter = FilterFactory.create(type, value, props);
+		Filter tmpFilter = LeafFilterFactory.create(type, value, props);
 		if (filter == null) {
 			filter = tmpFilter;
 		} else {

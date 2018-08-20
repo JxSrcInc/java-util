@@ -17,7 +17,7 @@ import org.junit.Test;
 
 import jxsource.util.folder.search.filter.Filter;
 import jxsource.util.folder.search.filter.leaffilter.ExtFilter;
-import jxsource.util.folder.search.filter.leaffilter.FilterFactory;
+import jxsource.util.folder.search.filter.leaffilter.LeafFilterFactory;
 import jxsource.util.folder.search.filter.leaffilter.FilterProperties;
 import jxsource.util.folder.search.filter.leaffilter.FullNameFilter;
 import jxsource.util.folder.search.filter.leaffilter.NameFilter;
@@ -61,7 +61,7 @@ public class ZipSearchTemplateTest {
 	@Test
 	public void extFilterTest() {
 		ZipSearchTemplate zst = builder
-			.setZipFilter(FilterFactory.create(FilterFactory.Ext, "class"))
+			.setZipFilter(LeafFilterFactory.create(LeafFilterFactory.Ext, "class"))
 			.setZipReport(zipReportAssert.setExt("class"))
 			.build();
 		zst.search();		
@@ -69,7 +69,7 @@ public class ZipSearchTemplateTest {
 	@Test
 	public void fullnameFilterTest() {
 		ZipSearchTemplate zst = builder
-				.setZipFilter(FilterFactory.create(FilterFactory.FullName, "Filter.class"))
+				.setZipFilter(LeafFilterFactory.create(LeafFilterFactory.FullName, "Filter.class"))
 				.setZipReport(zipReportAssert.setName("Filter")) // ZipReportAssert removes extension from name 
 				.build();
 			zst.search();		
@@ -77,14 +77,14 @@ public class ZipSearchTemplateTest {
 	@Test
 	public void nameFilterTest() {
 		ZipSearchTemplate zst = builder
-				.setZipFilter(FilterFactory.create(FilterFactory.Name, "Filter"))
+				.setZipFilter(LeafFilterFactory.create(LeafFilterFactory.Name, "Filter"))
 				.setZipReport(zipReportAssert.setName("Filter"))
 				.build();
 			zst.search();		
 	}
 	@Test
 	public void ignoreCaseNameFilterTest() {
-		Filter filter = FilterFactory.create(FilterFactory.Name, "filter", FilterProperties.setIgnoreCase(true));
+		Filter filter = LeafFilterFactory.create(LeafFilterFactory.Name, "filter", FilterProperties.setIgnoreCase(true));
 		ZipSearchTemplate zst = builder
 				.setZipFilter(filter)
 				.setZipReport(zipReportAssert.setName("Filter"))
@@ -93,7 +93,7 @@ public class ZipSearchTemplateTest {
 	}	
 	@Test
 	public void likeNameFilterTest() {
-		Filter filter = FilterFactory.create(FilterFactory.Name, "Da", FilterProperties.setLike(true));
+		Filter filter = LeafFilterFactory.create(LeafFilterFactory.Name, "Da", FilterProperties.setLike(true));
 		ZipSearchTemplate zst = builder
 				.setZipFilter(filter)
 				.setZipReport(zipReportAssert.setName("Data, Date"))
@@ -106,7 +106,7 @@ public class ZipSearchTemplateTest {
 	@Test
 	public void pathAndNameFilterTest() {
 		Filter filter = new PathFilter("test-data");
-		filter.setNext(FilterFactory.create(FilterFactory.Name, "Data"));
+		filter.setNext(LeafFilterFactory.create(LeafFilterFactory.Name, "Data"));
 		ZipSearchTemplate zst = builder
 				.setZipFilter(filter)
 				.setZipReport(zipReportAssert.setName("Data"))
@@ -118,7 +118,7 @@ public class ZipSearchTemplateTest {
 	@Test
 	public void timeFilterTest() throws ParseException {
 		ZipSearchTemplate zst = builder
-				.setZipFilter(FilterFactory.create(FilterFactory.Time, "2001-01-01 00:00:00,2030-01-01 00:00:00"))
+				.setZipFilter(LeafFilterFactory.create(LeafFilterFactory.Time, "2001-01-01 00:00:00,2030-01-01 00:00:00"))
 				.setZipReport(zipReportAssert.setStart(TimeFilter.convert("2001-01-01 00:00:00")))
 				.build();
 			zst.search();		

@@ -1,4 +1,4 @@
-package jxsource.util.folder.search.filter.leaffilter;
+package jxsource.util.folder.search.util;
 
 import java.util.ArrayList;
 import java.util.HashSet;

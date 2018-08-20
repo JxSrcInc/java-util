@@ -2,45 +2,39 @@ package jxsource.util.folder.search.filter.leaffilter;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.regex.Pattern;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import jxsource.util.folder.search.filter.filefilter.BuilderFilter;
+import jxsource.util.folder.search.util.Util;
 
-import jxsource.util.folder.node.JFile;
-import jxsource.util.folder.node.Node;
-import jxsource.util.folder.search.filter.Filter;
-
-public abstract class ContentFilter extends LeafFilter {
-	private static Logger log = LogManager.getLogger(ContentFilter.class);
-
+/**
+ * Filter 
+ * @author JiangJxSrc
+ *
+ */
+public class ContentFilter extends BuilderFilter{
+	private Pattern p;
+	private String match;
+	private boolean wordMatch;
+	ContentFilter(String match) {
+		this.match = match;
+		// (\\n|.)* - any number of char and \n
+		// (?i) - ignore case
+		// (\\W+|^) - at least one \W or begin of line
+		// (\\W+|$) - at least one \W or end of line
+		p = Pattern.compile("(\\n|.)*(?i)(\\W+|^)"+match+"(\\W+|$).*");
+	}
+	public ContentFilter setWordMatch(boolean wordMatch) {
+		this.wordMatch = wordMatch;
+		return this;
+	}
 	@Override
-	public int _getStatus(Node node) {
-		if (node instanceof JFile) {
-			JFile file = (JFile) node;
-			InputStream in = null;
-			try {
-				in = file.getInputStream();
-				if (accept(in)) {
-					return ACCEPT;
-				} else {
-					return REJECT;
-				}
-			} catch (IOException e) {
-				log.error("Error when getting input stream for " + file.getPath(), e);
-				return REJECT;
-			} finally {
-				if (in != null) {
-					try {
-						in.close();
-					} catch (IOException e) {
-						log.error(e);
-					}
-				}
-			}
+	public boolean accept(StringBuilder sb) {
+		String content = sb.toString();
+		if(wordMatch) {
+			return p.matcher(content).matches();
 		} else {
-			return Filter.REJECT;
+			return content.contains(match);
 		}
 	}
-
-	public abstract boolean accept(InputStream in) throws IOException;
 }

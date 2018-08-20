@@ -62,7 +62,7 @@ public class ZipExtractAction implements Action {
 				engine.setFilter(filter);
 				// just collect all entries
 				engine.addAction(ca);
-				engine.search(new SysFile(new File(file.getAbsolutePath())));
+				engine.search(new File(file.getAbsolutePath()));
 				if (ca.getNodes().size() > 0) {
 					log.debug("searched: " + file.getPath() + ", find: " + ca.getNodes().size());
 					if (reportAction != null) {

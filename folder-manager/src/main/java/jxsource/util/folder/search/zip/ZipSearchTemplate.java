@@ -14,7 +14,7 @@ import jxsource.util.folder.search.action.CollectionAction;
 import jxsource.util.folder.search.action.ZipExtractAction;
 import jxsource.util.folder.search.filter.Filter;
 import jxsource.util.folder.search.filter.leaffilter.ExtFilter;
-import jxsource.util.folder.search.filter.leaffilter.FilterFactory;
+import jxsource.util.folder.search.filter.leaffilter.LeafFilterFactory;
 /**
  * Select archive files using SysSearchEngine
  * Each selected archive file will be processed by ZipExtractAction to further search file content
@@ -28,7 +28,7 @@ public class ZipSearchTemplate {
 	
 	private ZipSearchTemplate(File rootDir, Filter sysFilter, Filter zipFilter, ZipReportAction zipReport, boolean cache) {
 		se = new SysSearchEngine();
-		se.setFilter(sysFilter==null?FilterFactory.createZipFilter():sysFilter); // select archive file only
+		se.setFilter(sysFilter==null?LeafFilterFactory.createZipFilter():sysFilter); // select archive file only
 		
 		ZipExtractAction zipExtractAction = new ZipExtractAction()
 				.setCache(cache)

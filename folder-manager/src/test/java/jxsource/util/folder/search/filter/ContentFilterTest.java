@@ -9,35 +9,26 @@ import java.io.InputStream;
 
 import org.junit.Test;
 
-import jxsource.util.folder.search.filter.leaffilter.SimpleContentFilter;
+import jxsource.util.folder.search.filter.leaffilter.ContentFilter;
+import jxsource.util.folder.search.filter.leaffilter.LeafFilterFactory;
 
 public class ContentFilterTest {
 
 	@Test
 	public void simpleTest() {
-		SimpleContentFilter f = new SimpleContentFilter("abc");
-		ByteArrayInputStream in = new ByteArrayInputStream("abcdefg".getBytes());
-		try {
-			assertTrue(f.accept(in));
-		} catch (IOException e) {
-			e.printStackTrace();
-			assertTrue(false);
-		}
+		ContentFilter f = (ContentFilter)LeafFilterFactory.create(LeafFilterFactory.Content, "abc");
+		StringBuilder sb = new StringBuilder();
+		sb.append("abcdefg");
+			assertTrue(f.accept(sb));
 	}
 	
 	@Test
 	public void phraseTest() {
-		SimpleContentFilter f = new SimpleContentFilter("abc f");
-		f.setWordMatch(true);
-		try {
-			ByteArrayInputStream in = new ByteArrayInputStream("a abc f defg".getBytes());
-			assertTrue(f.accept(in));
-			in = new ByteArrayInputStream("a abc defg".getBytes());
-			assertFalse(f.accept(in));
-		} catch (IOException e) {
-			e.printStackTrace();
-			assertTrue(false);
-		}
+		ContentFilter f = (ContentFilter)LeafFilterFactory
+				.create(LeafFilterFactory.Content, "abc f");
+		StringBuilder sb = new StringBuilder();
+		sb.append("a abc f defg");
+			assertTrue(f.accept(sb));
 	}
 
 }

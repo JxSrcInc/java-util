@@ -1,5 +1,6 @@
 package jxsource.util.folder.search.util;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -25,6 +26,9 @@ public class Util {
 //	};
 	public static final String archiveTypes = "jar,zip";
 	
+	public static boolean isArchive(File f) {
+		return isArchive(new SysFile(f));
+	}
 	public static boolean isArchive(JFile f) {
 		String[] types = archiveTypes.split(",");
 		for(int i=0; i<types.length; i++) {

@@ -13,7 +13,7 @@ import org.junit.Test;
 import jxsource.util.folder.node.Node;
 import jxsource.util.folder.search.SysSearchEngine;
 import jxsource.util.folder.search.action.CollectionAction;
-import jxsource.util.folder.search.filter.leaffilter.FilterFactory;
+import jxsource.util.folder.search.filter.leaffilter.LeafFilterFactory;
 import jxsource.util.folder.search.filter.leaffilter.FilterProperties;
 
 public class LeafFilterTest {
@@ -35,7 +35,7 @@ public class LeafFilterTest {
 	@Test
 	public void excludeTest() {
 		FilterProperties fp = FilterProperties.setExclude(true);
-		Filter filter = FilterFactory.create(FilterFactory.Ext, "java", fp); 
+		Filter filter = LeafFilterFactory.create(LeafFilterFactory.Ext, "java", fp); 
 		engine.setFilter(filter);
 		engine.search(root);
 		for(Node node: ca.getNodes()) {
