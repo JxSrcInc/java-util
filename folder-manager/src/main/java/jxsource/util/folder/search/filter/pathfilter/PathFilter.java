@@ -28,7 +28,7 @@ public class PathFilter extends Filter {
 	}
 
 	@Override
-	public int getStatus(Node file) {
+	public int delegateAccept(Node file) {
 		if(reject) {
 			return getRejectStatus(file);
 		} else {

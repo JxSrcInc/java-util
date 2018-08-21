@@ -44,10 +44,10 @@ public abstract class Filter {
 	 * @param file
 	 * @return
 	 */
-	public abstract int getStatus(Node file);
+	public abstract int delegateAccept(Node file);
 
 	public int accept(Node file) {
-		int status = getStatus(file);
+		int status = delegateAccept(file);
 		switch (status) {
 		case ACCEPT:
 			if (next != null) {

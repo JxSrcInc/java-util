@@ -7,7 +7,7 @@ import jxsource.util.folder.search.filter.Filter;
 public class ExtFilter extends LeafFilter{
 	
 	ExtFilter() {}
-	protected int _getStatus(Node f) {
+	protected int delegateStatus(Node f) {
 		String name = f.getName();
 		int index = name.lastIndexOf('.');
 		if(index > 0)  {

@@ -3,7 +3,6 @@ package jxsource.util.folder.search.filter.leaffilter;
 import java.util.HashMap;
 import java.util.Map;
 
-import jxsource.util.folder.search.filter.AbstractFilter;
 import jxsource.util.folder.search.filter.Filter;
 import jxsource.util.folder.search.util.StringMatcher;
 import jxsource.util.folder.search.util.Util;
@@ -30,7 +29,7 @@ public class LeafFilterFactory {
 	}
 
 	public static Filter create(String type, String value, Map<Integer, Boolean> option) {
-		AbstractFilter filter = null;
+		LeafFilter filter = null;
 		switch(type) {
 		case Ext:
 			filter = new ExtFilter();

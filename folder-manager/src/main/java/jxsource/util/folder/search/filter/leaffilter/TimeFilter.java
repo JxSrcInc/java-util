@@ -26,7 +26,7 @@ public class TimeFilter extends LeafFilter {
 
 	TimeFilter(){}
 	
-	protected int _getStatus(Node node) {
+	protected int delegateStatus(Node node) {
 		List<String> matchs = stringMatcher.getMatchList();
 		if (node instanceof JFile) {
 			JFile f = (JFile) node;

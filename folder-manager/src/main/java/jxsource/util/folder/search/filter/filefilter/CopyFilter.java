@@ -13,7 +13,7 @@ import jxsource.util.folder.search.filter.Filter;
 public class CopyFilter extends FileFilter{
 	@Override
 	protected int delegateStatus(JFile file) {
-		File moveTo = getManager().getTempDir().createTempFile(file);
+		File moveTo = BackDirHolder.get().createTempFile(file);
         Path temp;
 		try {
 			temp = Files.copy

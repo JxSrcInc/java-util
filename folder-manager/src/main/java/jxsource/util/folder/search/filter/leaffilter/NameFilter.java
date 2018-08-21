@@ -11,7 +11,7 @@ public class NameFilter extends LeafFilter {
 	
 	NameFilter(){}
 	@Override
-	protected int _getStatus(Node file) {
+	protected int delegateStatus(Node file) {
 		String name = file.getName();
 		int i = name.lastIndexOf('.');
 		if(i > 0) {

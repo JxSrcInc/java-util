@@ -1,33 +1,32 @@
 package jxsource.util.folder.manager;
 
 import jxsource.util.folder.search.SearchEngine;
-import jxsource.util.folder.search.SysSearchEngine;
-import jxsource.util.folder.search.action.CollectionAction;
-import jxsource.util.folder.search.filter.Filter;
-import jxsource.util.folder.search.filter.filefilter.TempDir;
+import jxsource.util.folder.search.filter.filefilter.FileFilter;
 
-public abstract class ManagerBuilder {
+public class ManagerBuilder {
 	private String workingDir;
-	private Filter filter;
+	private FileFilter filter;
+	private SearchEngine engine;
 	
 	public ManagerBuilder setWorkingDir(String workingDir) {
 		this.workingDir = workingDir;
 		return this;
 	}
-	public ManagerBuilder setFilter(Filter filter) {
+	public ManagerBuilder setFileFilter(FileFilter filter) {
 		this.filter = filter;
 		return this;
 	}
+	public ManagerBuilder setEngine(SearchEngine engine) {
+		this.engine = engine;
+		return this;
+	}
+
 	public Manager build() {
 		Manager manager = new Manager();
-		if(workingDir != null) {
-			manager.tempDir = TempDir.builder().setSubWorkingDir(workingDir).build();
-		} else {
-			manager.tempDir = TempDir.builder().build();				
-		}
-		manager.setFilter(buildFilter());
+		manager.setWorkingDir(workingDir);
+		manager.setFileFilter(filter);
+		manager.setEngine(engine);
 		return manager;
 	}
-	protected abstract Filter buildFilter();
 
 }

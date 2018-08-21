@@ -8,23 +8,23 @@ import static org.hamcrest.Matchers.is;
 
 import org.junit.Test;
 
+import jxsource.util.folder.search.filter.filefilter.BackDirHolder;
 import jxsource.util.folder.search.filter.filefilter.CopyFilter;
 import jxsource.util.folder.search.filter.filefilter.FileFilterFactory;
-import jxsource.util.folder.search.filter.filefilter.TempDir;
+import jxsource.util.folder.search.filter.filefilter.BackDir;
 
 public class FileFilterTest {
 	@Test
 	public void testDefaultDir() throws InstantiationException, IllegalAccessException {
-		TempDir tempDir = TempDir.builder().build();
-		CopyFilter copyFilter = FileFilterFactory.create(CopyFilter.class, tempDir);
-		String tempDirPath = copyFilter.getTempDir().get().getPath();
-		assertThat(tempDirPath, is(TempDir.defaultTempDir));
+		CopyFilter copyFilter = FileFilterFactory.create(CopyFilter.class);
+		String tempDirPath = BackDirHolder.get().get().getPath();
+		assertThat(tempDirPath, is(BackDir.rootDir));
 	}
-	@Test
-	public void testCustomDir() throws InstantiationException, IllegalAccessException {
-		TempDir tempDir = TempDir.builder().setSubWorkingDir("copy").build();
-		CopyFilter copyFilter = FileFilterFactory.create(CopyFilter.class, tempDir);
-		String tempDirPath = copyFilter.getTempDir().get().getPath();
-		assertThat(tempDirPath, is(new File(TempDir.defaultTempDir, "copy").getPath()));
-	}
+//	@Test
+//	public void testCustomDir() throws InstantiationException, IllegalAccessException {
+//		TempDir tempDir = TempDir.builder().setSubWorkingDir("copy").build();
+//		CopyFilter copyFilter = FileFilterFactory.create(CopyFilter.class);
+//		String tempDirPath = copyFilter.getTempDir().get().getPath();
+//		assertThat(tempDirPath, is(new File(TempDir.rootDir, "copy").getPath()));
+//	}
 }

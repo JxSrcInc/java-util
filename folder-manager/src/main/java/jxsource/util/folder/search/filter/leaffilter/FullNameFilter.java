@@ -13,7 +13,7 @@ import jxsource.util.folder.search.filter.Filter;
 public class FullNameFilter extends LeafFilter {
 	FullNameFilter(){}
 	@Override
-	protected int _getStatus(Node file) {
+	protected int delegateStatus(Node file) {
 		String name = file.getName();
 		if(stringMatcher.match(name)) {
 			return Filter.ACCEPT;

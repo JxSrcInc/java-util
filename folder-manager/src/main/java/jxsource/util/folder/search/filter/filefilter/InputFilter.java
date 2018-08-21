@@ -8,8 +8,8 @@ import org.apache.logging.log4j.Logger;
 
 import jxsource.util.folder.node.JFile;
 import jxsource.util.folder.node.Node;
-import jxsource.util.folder.search.filter.AbstractFilter;
 import jxsource.util.folder.search.filter.Filter;
+import jxsource.util.folder.search.filter.leaffilter.LeafFilter;
 import jxsource.util.folder.search.filter.leaffilter.LeafFilter;
 
 public abstract class InputFilter extends FileFilter {
