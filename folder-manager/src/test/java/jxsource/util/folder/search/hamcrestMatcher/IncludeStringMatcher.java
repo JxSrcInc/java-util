@@ -5,8 +5,6 @@ import java.util.Arrays;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 
-import jxsource.util.folder.node.AbstractNode;
-
 public class IncludeStringMatcher extends BaseMatcher<String> {
 
 	private String[] matchArray;

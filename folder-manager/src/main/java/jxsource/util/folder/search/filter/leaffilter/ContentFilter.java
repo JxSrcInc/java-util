@@ -10,8 +10,6 @@ import org.apache.logging.log4j.Logger;
 import jxsource.util.folder.node.JFile;
 import jxsource.util.folder.node.Node;
 import jxsource.util.folder.search.filter.Filter;
-import jxsource.util.folder.search.filter.filefilter.BuilderFilter;
-import jxsource.util.folder.search.filter.filefilter.BackDir;
 import jxsource.util.folder.search.util.Util;
 
 /**

@@ -9,15 +9,14 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import jxsource.util.folder.node.JFile;
 import jxsource.util.folder.node.Node;
+import jxsource.util.folder.node.ZipFile;
 import jxsource.util.folder.search.util.Util;
-import jxsource.util.folder.search.zip.ZipReportAction;
 
 public class TreeZipReport extends ZipReportAction{
 	private static Logger log = LogManager.getLogger(TreeZipReport.class);
 	@Override
-	public void report(String url, List<Node> trees) {
+	public void report(String url, List<ZipFile> trees) {
 		log.debug("url: "+url);
 		ObjectMapper mapper = new ObjectMapper();
 		for(Node f: trees) {

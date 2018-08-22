@@ -4,11 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-
 public abstract class AbstractNode implements Node, Serializable {
 	private static final long serialVersionUID = 1L;
 	public static final String Root = "";
@@ -21,7 +16,6 @@ public abstract class AbstractNode implements Node, Serializable {
 	protected List<Node> children = new ArrayList<Node>(); 
 	protected long lastModified;
 	protected String parentPath;
-	private static ObjectMapper mapper = new ObjectMapper();
 
 	/*
 	 * Null for parent has two means

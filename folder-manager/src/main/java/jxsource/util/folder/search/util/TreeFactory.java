@@ -10,7 +10,6 @@ import java.util.Set;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import jxsource.util.folder.node.JFile;
 import jxsource.util.folder.node.Node;
 
 /*
@@ -25,11 +24,6 @@ import jxsource.util.folder.node.Node;
  */
 public class TreeFactory {
 	Logger log = LogManager.getLogger(TreeFactory.class);
-	private static final int Root = 2;
-	private static final int OnPath = 1;
-	private static final int Sibling = 0;
-	private static final int Child = -1;
-	private static final int Duplicate = -2;
 	// working path
 	private List<Node> path = new ArrayList<Node>();
 	// created trees
@@ -89,10 +83,6 @@ public class TreeFactory {
 		path.clear();
 		path.add(root);
 		trees.add(root);
-	}
-
-	private boolean isArray(Node file) {
-		return file.isDir();
 	}
 
 	private void proc() {

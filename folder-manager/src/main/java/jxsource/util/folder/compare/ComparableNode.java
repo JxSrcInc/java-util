@@ -1,21 +1,8 @@
 package jxsource.util.folder.compare;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-
-import jxsource.util.folder.compare.comparator.LastModifiedDiffer;
-import jxsource.util.folder.compare.comparator.LeafDiffer;
-import jxsource.util.folder.compare.comparator.LengthDiffer;
-import jxsource.util.folder.compare.util.Constants;
-import jxsource.util.folder.compare.util.JsonUtil;
-import jxsource.util.folder.node.JFile;
 import jxsource.util.folder.node.Node;
 
 /**
@@ -42,7 +29,6 @@ public class ComparableNode {
 	// extra in src - found in src but not in compareTo. The Set contains src's
 	// nodes
 	private Set<Node> extra = new HashSet<Node>();
-	private static ObjectMapper mapper = new ObjectMapper();
 	private String diffType;
 	private String comparePath;
 

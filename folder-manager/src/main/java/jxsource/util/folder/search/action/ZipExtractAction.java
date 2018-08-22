@@ -7,8 +7,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import jxsource.util.folder.node.JFile;
-import jxsource.util.folder.node.Node;
 import jxsource.util.folder.node.SysFile;
+import jxsource.util.folder.node.ZipFile;
 import jxsource.util.folder.search.ZipSearchEngine;
 import jxsource.util.folder.search.filter.Filter;
 import jxsource.util.folder.search.util.Util;
@@ -34,11 +34,11 @@ import jxsource.util.folder.search.zip.ZipReportAction;
  * 	2. call getResult() method of this action to get filtered nodes for further processing.
  * 
  */
-public class ZipExtractAction implements Action {
+public class ZipExtractAction implements Action<SysFile> {
 	Logger log = LogManager.getLogger(ZipExtractAction.class);
 	private Filter filter;
 	private ZipReportAction reportAction;
-	private CollectionAction ca = new CollectionAction();
+	private CollectionAction<ZipFile> ca = new CollectionAction<ZipFile>();
 //	private boolean buildTree;
 	private boolean cache;
 
@@ -49,7 +49,7 @@ public class ZipExtractAction implements Action {
 	 * then applies ZipSearchEngine to process the archive file.
 	 * 
 	 */
-	public void proc(Node file) {
+	public void proc(SysFile file) {
 		if (file.isDir())
 			return;
 		// skip all non-archive files.
@@ -75,7 +75,7 @@ public class ZipExtractAction implements Action {
 		}
 	}
 
-	public List<Node> getResult() {
+	public List<ZipFile> getResult() {
 		return ca.getNodes();
 	}
 

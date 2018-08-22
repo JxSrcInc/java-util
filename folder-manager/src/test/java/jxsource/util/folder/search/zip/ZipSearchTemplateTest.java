@@ -1,29 +1,22 @@
 package jxsource.util.folder.search.zip;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertNotNull;
 
 import java.text.ParseException;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.greaterThanOrEqualTo;
-
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import jxsource.util.folder.search.filter.Filter;
-import jxsource.util.folder.search.filter.leaffilter.ExtFilter;
-import jxsource.util.folder.search.filter.leaffilter.LeafFilterFactory;
 import jxsource.util.folder.search.filter.leaffilter.FilterProperties;
-import jxsource.util.folder.search.filter.leaffilter.FullNameFilter;
-import jxsource.util.folder.search.filter.leaffilter.NameFilter;
+import jxsource.util.folder.search.filter.leaffilter.LeafFilterFactory;
 import jxsource.util.folder.search.filter.leaffilter.TimeFilter;
 import jxsource.util.folder.search.filter.pathfilter.PathFilter;
-import jxsource.util.folder.search.zip.ZipSearchTemplate;
 import jxsource.util.folder.search.zip.ZipSearchTemplate.ZipSearchTemplateBuilder;
 
 public class ZipSearchTemplateTest {

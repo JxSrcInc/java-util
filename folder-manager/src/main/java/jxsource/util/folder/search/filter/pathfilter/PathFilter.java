@@ -1,9 +1,5 @@
 package jxsource.util.folder.search.filter.pathfilter;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import jxsource.util.folder.node.JFile;
 import jxsource.util.folder.node.Node;
 import jxsource.util.folder.search.filter.Filter;
 import jxsource.util.folder.search.match.MatchFactory;
@@ -14,7 +10,6 @@ import jxsource.util.folder.search.match.NodeMatch;
  * 
  */
 public class PathFilter extends Filter {
-	private static Logger log = LogManager.getLogger(PathFilter.class);
 
 	private NodeMatch[] matches;
 	private boolean reject;

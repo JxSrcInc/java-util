@@ -19,7 +19,6 @@ import jxsource.util.folder.node.JFile;
 import jxsource.util.folder.node.SysFile;
 
 public class JsonReportTest {
-	private final String outPath = "";
 	@Test
 	public void jsonReportTest() throws JsonProcessingException {
 		LeafDiffer differ = new LengthDiffer();
@@ -33,7 +32,9 @@ public class JsonReportTest {
 		
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode jsonNode = JsonUtil.build().convertToJson(comparableNode);
-		String jsonReport  =mapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonNode);
+		//String jsonReport = 
+		mapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonNode);
+		
 	}
 
 }

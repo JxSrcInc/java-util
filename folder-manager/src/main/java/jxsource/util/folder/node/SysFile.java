@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -91,6 +90,10 @@ public class SysFile extends AbstractNode implements JFile{
 		if(content instanceof File && file == null) {
 			file = (File) content;
 		}
-		
 	}	
+	
+	// TODO: need to update parent
+	public boolean delete() {
+		return file.delete();
+	}
 }

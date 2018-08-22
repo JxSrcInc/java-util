@@ -1,19 +1,10 @@
 package jxsource.util.folder.search.zip;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.util.Set;
-import java.util.zip.ZipInputStream;
 
-import jxsource.util.folder.node.AbstractNode;
 import jxsource.util.folder.search.SysSearchEngine;
-import jxsource.util.folder.search.ZipSearchEngine;
-import jxsource.util.folder.search.action.Action;
-import jxsource.util.folder.search.action.CollectionAction;
 import jxsource.util.folder.search.action.ZipExtractAction;
 import jxsource.util.folder.search.filter.Filter;
-import jxsource.util.folder.search.filter.leaffilter.ExtFilter;
 import jxsource.util.folder.search.filter.leaffilter.LeafFilterFactory;
 /**
  * Select archive files using SysSearchEngine
@@ -26,6 +17,7 @@ public class ZipSearchTemplate {
 	private File rootDir;
 	private SysSearchEngine se;
 	
+	@SuppressWarnings("unchecked")
 	private ZipSearchTemplate(File rootDir, Filter sysFilter, Filter zipFilter, ZipReportAction zipReport, boolean cache) {
 		se = new SysSearchEngine();
 		se.setFilter(sysFilter==null?LeafFilterFactory.createZipFilter():sysFilter); // select archive file only
@@ -83,7 +75,7 @@ public class ZipSearchTemplate {
 	
 	public static void main(String...args) {
 		ZipSearchTemplate t = ZipSearchTemplate.getBuilder()
-				.setRootDir("test-data.jar")
+				.setRootDir("testdata/test-data.jar")
 //				.setZipFilter(FilterFactory.create(FilterFactory.Name, "RestController"))
 				.setZipReport(new ZipReportPrinter())
 				.build();

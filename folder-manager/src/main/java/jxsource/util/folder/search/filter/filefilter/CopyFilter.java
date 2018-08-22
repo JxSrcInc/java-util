@@ -7,10 +7,14 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import jxsource.util.folder.node.JFile;
 import jxsource.util.folder.search.filter.Filter;
 
 public class CopyFilter extends FileFilter{
+	private static Logger log = LogManager.getLogger(CopyFilter.class);
 	@Override
 	protected int delegateStatus(JFile file) {
 		File moveTo = BackDirHolder.get().createTempFile(file);
@@ -30,7 +34,7 @@ public class CopyFilter extends FileFilter{
 	        }
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error("Error when delegating in "+getClass().getName(), e);;
 			return Filter.REJECT;
 		}
  

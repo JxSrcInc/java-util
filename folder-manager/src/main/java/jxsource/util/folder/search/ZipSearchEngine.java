@@ -25,7 +25,6 @@ import jxsource.util.folder.node.SysFile;
 import jxsource.util.folder.node.ZipFile;
 import jxsource.util.folder.search.action.CollectionAction;
 import jxsource.util.folder.search.filter.Filter;
-import jxsource.util.folder.search.filter.leaffilter.LeafFilterFactory;
 import jxsource.util.folder.search.filter.pathfilter.PathFilter;
 import jxsource.util.folder.search.util.NodeUtil;
 import jxsource.util.folder.search.util.Util;
@@ -50,7 +49,7 @@ import jxsource.util.folder.search.util.Util;
  * @author JiangJxSrc
  *
  */
-public class ZipSearchEngine extends SearchEngine {
+public class ZipSearchEngine extends SearchEngine<ZipFile> {
 	private static Logger log = LogManager.getLogger(ZipSearchEngine.class);
 	private NodeManager nodeManager = new NodeManager();//NodeManagerHolder.get();
 
@@ -78,26 +77,26 @@ public class ZipSearchEngine extends SearchEngine {
 			log.debug("zip search: "+currNode.getPath());
 		}
 		
-		List<Node> list = new ArrayList<Node>();
+		List<ZipFile> list = new ArrayList<ZipFile>();
 		// build tree and convert to list for consume.
-		for(Node node: getTrees()) {
+		for(ZipFile node: getTrees()) {
 			list.addAll(NodeUtil.convertTreeToList(node));			
 		}
 		// ZipSearchEngine calls consume after tree build
 		// to make PathFilter works. 
 		// Because PathFilter requires a complete tree
 		// but zip file elements may not form a tree
-		for(Node node: list) {
+		for(ZipFile node: list) {
 			consume(node);
 		}
 		zis.close();
 	}
-	public Set<Node> getTrees() {
-		return nodeManager.buildTrees();
+	public Set<ZipFile> getTrees() {
+		return nodeManager.buildTrees(ZipFile.class);
 	}
 	
-	public Node getTreeRootNode() {
-		Iterator<Node> i = getTrees().iterator();
+	public ZipFile getTreeRootNode() {
+		Iterator<ZipFile> i = getTrees().iterator();
 		if(i.hasNext()) {
 			return i.next();
 		} else {
@@ -118,7 +117,7 @@ public class ZipSearchEngine extends SearchEngine {
 			Filter filter = new PathFilter("test-data/src");
 //			filter.setNext(FilterFactory.create(FilterFactory.Name, "Data"));
 			engine.setFilter(filter);
-			CollectionAction action = new CollectionAction();
+			CollectionAction<ZipFile> action = new CollectionAction<ZipFile>();
 			engine.addAction(action);
 			engine.search(new File("testdata\\test-data.jar"));
 				ObjectMapper mapper = new ObjectMapper();
@@ -127,7 +126,7 @@ public class ZipSearchEngine extends SearchEngine {
 					log.info(f.getPath()+'\n'+mapper.writerWithDefaultPrettyPrinter().writeValueAsString(node));
 				}
 			String filteredNodes = "";
-			for(Node node: action.getNodes()) {
+			for(ZipFile node: action.getNodes()) {
 				filteredNodes += '\n'+node.getPath();
 				JFile f = (JFile) node;
 				InputStream in = f.getInputStream();

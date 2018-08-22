@@ -27,27 +27,6 @@ public class JsonUtil {
 	public static JsonUtil build() {
 		return new JsonUtil();
 	}
-//	public static JsonUtilBuilder getBuilder() {
-//		return new JsonUtilBuilder();
-//	}
-//	public static class JsonUtilBuilder {
-//		private String srcPath;
-//		private String cmpPath;
-//		public JsonUtilBuilder setSrcPath(String srcPath) {
-//			this.srcPath = srcPath;
-//			return this;
-//		}
-//		public JsonUtilBuilder setToComparePath(String cmpPath) {
-//			this.cmpPath = cmpPath;
-//			return this;
-//		}
-//		public JsonUtil build() {
-//			JsonUtil jsonUtil = new JsonUtil();
-//			jsonUtil.cmpPath = cmpPath;
-//			jsonUtil.srcPath = srcPath;
-//			return jsonUtil;
-//		}
-//	}
 
 	public ArrayNode convertNodeCollectionToJsonArrau(Collection<Node> src) {
 		ArrayNode arrayNode = om.createArrayNode();
@@ -108,7 +87,6 @@ public class JsonUtil {
 	}
 
 	private String createDiff(String diffType, Object srcValue, Object cmpValue) {
-		ObjectNode node = om.createObjectNode();
 		return Constants.srcSymbol + ": " + srcValue + ", " + Constants.cmpSymbol + ": " + cmpValue;
 	}
 	

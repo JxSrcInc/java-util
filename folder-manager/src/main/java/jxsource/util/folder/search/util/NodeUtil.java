@@ -4,28 +4,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jxsource.util.folder.node.Node;
-import jxsource.util.folder.node.SysFile;
+import jxsource.util.folder.search.action.Action;
 import jxsource.util.folder.search.match.NodeMatch;
 
 public class NodeUtil {
-	private static String userDir = System.getProperty("user.dir");
 	
-	public static List<Node> convertTreeToList(Node root) {
-		List<Node>	list = new ArrayList<Node>();
+	@SuppressWarnings("unchecked")
+	public static <T extends Node>List<T> convertTreeToList(T root) {
+		List<T>	list = new ArrayList<T>();
 		list.add(root);
 		if(root.getChildren() != null) {
 			for(Node child: root.getChildren()) {
-				list.addAll(convertTreeToList(child));
+				list.addAll(convertTreeToList((T)child));
 			}
 			
 		}
 		return list;
 	}
 
-	public static Node getChild(Node node, String childName) {
+	@SuppressWarnings("unchecked")
+	public static <T extends Node> T getChild(T node, String childName) {
 		for (Node child : node.getChildren()) {
 			if (child.getName().contentEquals(childName)) {
-				return child;
+				return (T)child;
 			}
 		}
 		return null;
@@ -87,5 +88,21 @@ public class NodeUtil {
 	}
 	public static int isOnPath(List<String> path, NodeMatch match) {
 		return isOnPath(path.toArray(new String[path.size()]), match);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static <T extends Node> void procTree(T node, Action<T>...action) {
+		if(node.isDir()) {
+			for(Node child: node.getChildren()) {
+				for(int i=0; i<action.length; i++) {
+					procTree((T)child, action[i]);
+				}
+			}
+		}
+		// Do all children first
+		for(int i=0; i<action.length; i++) {
+			action[i].proc(node);
+		}
+		
 	}
 }

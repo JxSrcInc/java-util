@@ -4,49 +4,31 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import jxsource.util.folder.node.JFile;
+import jxsource.util.folder.node.SysFile;
+import jxsource.util.folder.search.util.NodeUtil;
 
 public class BackDir {
 	private static Logger log = LogManager.getLogger(BackDir.class);
 	public static String rootDir = System.getProperty("user.dir")
 			+System.getProperty("file.separator")+"working-backup";
-	private File tempDir = new File(rootDir);
+	private File backDir = new File(rootDir);
 	private Map<String,String> regitory = new HashMap<String,String>();
 	
-//	public static class TempDirBuilder{
-//		private String subWorkingDir;
-//		public TempDirBuilder() {
-//			this.subWorkingDir = TempDir.rootDir;
-//		}
-//		public TempDirBuilder setSubWorkingDir(String root) {
-//			if(root != null) {
-//				this.subWorkingDir = TempDir.rootDir+System.getProperty("file.separator")+root;
-//			}
-//			return this;
-//		}
-//		public TempDir build() {
-//			return new TempDir(subWorkingDir);
-//		}
-//		
-//	}
-//	public static TempDirBuilder builder() {
-//		return new TempDirBuilder();
-//	}
 	public BackDir setWorkingDir(String workingtDir) { 
 		if(workingtDir != null) {
-			tempDir = new File(rootDir, workingtDir);
+			backDir = new File(rootDir, workingtDir);
 		} else {
-			tempDir = new File(rootDir);			
+			backDir = new File(rootDir);			
 		}
 		return this;
 	}
 	public File get() {
-		return tempDir;
+		return backDir;
 	}
 	
 	public File createTempFile(JFile src) {
@@ -66,16 +48,10 @@ public class BackDir {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void clear() {
-		delete(tempDir);
+		log.info("clear: "+backDir);
+		NodeUtil.procTree(new SysFile(backDir), sysFile -> sysFile.delete());
 	}
 	
-	private void delete(File file) {
-		if(file.isDirectory()) {
-			for(File child: file.listFiles()) {
-				delete(child);
-			}
-		}
-		file.delete();
-	}
 }

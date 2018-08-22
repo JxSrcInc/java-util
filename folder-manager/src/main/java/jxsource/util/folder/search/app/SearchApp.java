@@ -5,6 +5,7 @@ import java.io.File;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import jxsource.util.folder.node.SysFile;
 import jxsource.util.folder.search.SysSearchEngine;
 import jxsource.util.folder.search.action.CollectionAction;
 import jxsource.util.folder.search.action.FilePrintAction;
@@ -83,8 +84,8 @@ public class SearchApp {
 	public void run() {
 		log.info("Search: " + root);
 		SysSearchEngine engin = new SysSearchEngine();
-		engin.addAction(new FilePrintAction());
-		CollectionAction ca = new CollectionAction();
+		engin.addAction(new FilePrintAction<SysFile>());
+		CollectionAction<SysFile> ca = new CollectionAction<SysFile>();
 		ca.setUrl(root);
 		engin.addAction(ca);
 		engin.setFilter(filter);

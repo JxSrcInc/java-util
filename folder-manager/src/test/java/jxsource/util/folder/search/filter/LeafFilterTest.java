@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import jxsource.util.folder.node.Node;
+import jxsource.util.folder.node.SysFile;
 import jxsource.util.folder.search.SysSearchEngine;
 import jxsource.util.folder.search.action.CollectionAction;
 import jxsource.util.folder.search.filter.leaffilter.LeafFilterFactory;
@@ -20,7 +21,7 @@ public class LeafFilterTest {
 	static Logger log = LogManager.getLogger(LeafFilterTest.class);
 	File root = new File("testdata");
 	SysSearchEngine engine = new SysSearchEngine();
-	CollectionAction ca = new CollectionAction();
+	CollectionAction<SysFile> ca = new CollectionAction<SysFile>();
 	boolean ready = false;
 	@Before
 	public void init() {

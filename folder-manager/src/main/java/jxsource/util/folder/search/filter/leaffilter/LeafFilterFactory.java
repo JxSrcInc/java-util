@@ -16,7 +16,7 @@ public class LeafFilterFactory {
 	public static final String Zip = "Zip";
 	public static final String Content = "Content";
 
-	public static Filter createZipFilter(HashMap<Integer, Boolean>...filterProperties) {
+	public static Filter createZipFilter(@SuppressWarnings("unchecked") HashMap<Integer, Boolean>...filterProperties) {
 		if(filterProperties.length == 0) {
 			return create(Zip, Util.archiveTypes);
 		} else {

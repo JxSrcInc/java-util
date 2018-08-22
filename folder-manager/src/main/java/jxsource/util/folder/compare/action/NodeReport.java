@@ -1,12 +1,8 @@
 package jxsource.util.folder.compare.action;
 
 import java.io.PrintStream;
-import java.util.Set;
 
 import jxsource.util.folder.compare.ComparableNode;
-import jxsource.util.folder.compare.util.Constants;
-import jxsource.util.folder.node.JFile;
-import jxsource.util.folder.node.Node;
 
 public class NodeReport extends BaseReport {
 	private LenDiffReport diff = new LenDiffReport();

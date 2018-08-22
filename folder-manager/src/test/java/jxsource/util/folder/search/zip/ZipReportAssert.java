@@ -1,5 +1,8 @@
 package jxsource.util.folder.search.zip;
 
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,19 +12,13 @@ import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 
-import jxsource.util.folder.node.AbstractNode;
 import jxsource.util.folder.node.JFile;
 import jxsource.util.folder.node.Node;
-import jxsource.util.folder.search.filter.Filter;
+import jxsource.util.folder.node.ZipFile;
 import jxsource.util.folder.search.util.Util;
-import jxsource.util.folder.search.zip.ZipReportAction;
-
-import static org.junit.Assert.*;
 
 public class ZipReportAssert extends ZipReportAction {
 	private static Logger log = LogManager.getLogger(ZipReportAssert.class);
-	private String url;
-	private String[] paths;
 	private String[] names;
 	private String[] exts;
 	private long start, end;
@@ -34,7 +31,6 @@ public class ZipReportAssert extends ZipReportAction {
 				for (String match : matchs) {
 						if(src.contains(match)) {
 							log.debug("Match: "+match+" with "+src);
-//							found.add(src);
 							return true;
 						}
 				}
@@ -59,10 +55,6 @@ public class ZipReportAssert extends ZipReportAction {
 		}
 		return foundFiles;
 	}
-	public ZipReportAssert setPath(String multiPaths) {
-		paths = Util.toArray(multiPaths);
-		return this;
-	}
 
 	public ZipReportAssert setName(String multiNames) {
 		names = Util.toArray(multiNames);
@@ -83,7 +75,7 @@ public class ZipReportAssert extends ZipReportAction {
 	}
 
 	@Override
-	public void report(String url, List<Node> extractFiles) {
+	public void report(String url, List<ZipFile> extractFiles) {
 //		assertTrue(extractFiles.size() > 0);
 		log.debug("find "+extractFiles.size()+" entries in "+url);
 		for (Node node : extractFiles) {

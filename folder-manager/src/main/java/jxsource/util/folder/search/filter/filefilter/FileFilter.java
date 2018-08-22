@@ -1,6 +1,5 @@
 package jxsource.util.folder.search.filter.filefilter;
 
-import jxsource.util.folder.manager.Manager;
 import jxsource.util.folder.node.JFile;
 import jxsource.util.folder.node.Node;
 import jxsource.util.folder.search.filter.Filter;

@@ -1,24 +1,17 @@
 package jxsource.util.folder.compare;
 
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.containsString;
 import static org.junit.Assert.assertThat;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.PrintStream;
-import java.util.Arrays;
-import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jxsource.util.folder.compare.action.AdditionReport;
 import jxsource.util.folder.compare.action.BaseReport;
@@ -30,7 +23,6 @@ import jxsource.util.folder.compare.comparator.LastModifiedDiffer;
 import jxsource.util.folder.compare.comparator.LeafDiffer;
 import jxsource.util.folder.compare.comparator.LengthDiffer;
 import jxsource.util.folder.compare.util.Constants;
-import jxsource.util.folder.compare.util.JsonUtil;
 import jxsource.util.folder.node.JFile;
 import jxsource.util.folder.node.SysFile;
 import jxsource.util.folder.node.ZipCacheTest;

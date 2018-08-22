@@ -2,8 +2,6 @@ package jxsource.util.folder.node;
 
 import java.util.List;
 
-import com.fasterxml.jackson.databind.JsonNode;
-
 /**
  * Interface to build a tree
  * @author JiangJxSrc

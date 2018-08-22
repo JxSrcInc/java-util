@@ -6,9 +6,9 @@ import java.util.List;
 import jxsource.util.folder.node.JFile;
 import jxsource.util.folder.node.Node;
 
-public class CollectionAction implements Action{
+public class CollectionAction<T extends Node> implements Action<T>{
 	private List<JFile> files = new ArrayList<JFile>();
-	private List<Node> nodes = new ArrayList<Node>();
+	private List<T> nodes = new ArrayList<T>();
 	private String url = "Undefined";
 	private boolean leafOnly = true;
 	
@@ -28,7 +28,7 @@ public class CollectionAction implements Action{
 	public void setUrl(String url) {
 		this.url = url;
 	}
-	public void proc(Node f) {
+	public void proc(T f) {
 		if(leafOnly && f.isDir()) return;
 		files.add((JFile)f);
 		nodes.add(f);
@@ -36,7 +36,7 @@ public class CollectionAction implements Action{
 //	public List<JFile> getFiles() {
 //		return files;
 //	}
-	public List<Node> getNodes() {
+	public List<T> getNodes() {
 		return nodes;
 	}
 	@Override

@@ -17,7 +17,6 @@ public class ZipFile extends AbstractNode implements JFile {
 	public static String cache;
 	private ZipEntry zipEntry;
 	private byte[] content;
-	private ByteArrayInputStream inputStream;
 
 	static {
 		cache = System.getProperty(CachePropertyName);
@@ -72,7 +71,8 @@ public class ZipFile extends AbstractNode implements JFile {
 	}
 
 	public InputStream getInputStream() throws IOException {
-		return inputStream = new ByteArrayInputStream(content);
+		// InputStream must create every time because it will be consumed by caller
+		return new ByteArrayInputStream(content);
 	}
 
 	public void close() {

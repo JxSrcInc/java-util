@@ -1,6 +1,5 @@
 package jxsource.util.folder.search.filter.leaffilter;
 
-import jxsource.util.folder.node.JFile;
 import jxsource.util.folder.node.Node;
 import jxsource.util.folder.search.filter.Filter;
 
@@ -20,13 +19,6 @@ public class NameFilter extends LeafFilter {
 		if(stringMatcher.match(name)) {
 			return Filter.ACCEPT;
 		}
-
-		
-//		for(String match: matchs) {
-//			if(contains(name, match)) {
-//				return Filter.ACCEPT;
-//			}
-//		}
 		return Filter.REJECT;
 	}
 

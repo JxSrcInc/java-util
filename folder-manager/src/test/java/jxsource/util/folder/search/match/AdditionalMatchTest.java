@@ -1,21 +1,14 @@
 package jxsource.util.folder.search.match;
 
-import java.io.File;
-import java.util.List;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 
-import org.junit.Ignore;
+import java.io.File;
+
 import org.junit.Test;
 
 import jxsource.util.folder.node.SysFile;
-import jxsource.util.folder.search.action.CollectionAction;
-import jxsource.util.folder.search.filter.Filter;
-import jxsource.util.folder.search.filter.pathfilter.PathFilter;
 import jxsource.util.folder.search.filter.pathfilter.PathMatcher;
-import jxsource.util.folder.search.match.MatchFactory;
-import jxsource.util.folder.search.match.NodeMatch;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
 
 public class AdditionalMatchTest {
 	@Test

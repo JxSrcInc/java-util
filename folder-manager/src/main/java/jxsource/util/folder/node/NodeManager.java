@@ -48,6 +48,15 @@ public class NodeManager {
 		return trees;
 	}
 	
+	@SuppressWarnings("unchecked")
+	public <T extends Node> Set<T> buildTrees(Class<T> cl) {
+		Set<T> trees = new HashSet<T>();
+		for(Node node: buildTrees()) {
+			trees.add((T)node);
+		}
+		return trees;
+	}
+	
 	/**
 	 * zip file may contain entries in format segment-1/segment-2 and no entry for segment-1.
 	 * It is OK for most zip search but cannot create a standard normal tree using only zip file entries.

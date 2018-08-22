@@ -1,6 +1,5 @@
 package jxsource.util.folder.search.filter;
 
-import jxsource.util.folder.node.JFile;
 import jxsource.util.folder.node.Node;
 
 /**
@@ -33,9 +32,23 @@ public abstract class Filter {
 	public static final int PASS = 0;
 	public static final int REJECT = -1;
 	protected Filter next;
+	protected Filter before;
 
-	public void setNext(Filter filter) {
-		next = filter;
+
+	public Filter getNext() {
+		return next;
+	}
+
+	public void setNext(Filter next) {
+		this.next = next;
+	}
+
+	public Filter getBefore() {
+		return before;
+	}
+
+	public void setBefore(Filter before) {
+		this.before = before;
 	}
 
 	/**
@@ -51,6 +64,7 @@ public abstract class Filter {
 		switch (status) {
 		case ACCEPT:
 			if (next != null) {
+				next.setBefore(this);
 				return next.accept(file);
 			} else {
 				return ACCEPT;

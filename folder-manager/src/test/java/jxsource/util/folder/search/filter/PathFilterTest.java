@@ -4,13 +4,11 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
 import java.io.File;
-import java.util.List;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
-import jxsource.util.folder.node.Node;
+import jxsource.util.folder.node.SysFile;
 import jxsource.util.folder.search.SysSearchEngine;
 import jxsource.util.folder.search.action.CollectionAction;
 import jxsource.util.folder.search.filter.pathfilter.PathFilter;
@@ -19,7 +17,7 @@ public class PathFilterTest {
 	
 	File root = new File("testdata/test-data");
 	SysSearchEngine engine = new SysSearchEngine();
-	CollectionAction ca = new CollectionAction();
+	CollectionAction<SysFile> ca = new CollectionAction<SysFile>();
 	boolean ready = false;
 	@Before
 	public void init() {

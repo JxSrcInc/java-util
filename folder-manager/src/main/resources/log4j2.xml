@@ -24,13 +24,13 @@
       <AppenderRef ref="syserr"/>
       <AppenderRef ref="fileLogger"/>
     </Root>
-    <Logger name="jxsource.util.folder.node" level="debug" additivity="false">
+    <Logger name="jxsource.util.folder.node" level="info" additivity="false">
     	<Appender-ref ref="sysout"/>
     </Logger>
     <Logger name="jxsource.util.folder.search.util" level="info" additivity="false">
     	<Appender-ref ref="sysout"/>
     </Logger>
-    <Logger name="jxsource.util.folder.search" level="debug" additivity="false">
+    <Logger name="jxsource.util.folder.search" level="info" additivity="false">
     	<Appender-ref ref="sysout"/>
        <AppenderRef ref="fileLogger"/>
     </Logger>

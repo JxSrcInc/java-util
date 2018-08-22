@@ -1,12 +1,7 @@
 package jxsource.util.folder.search.hamcrestMatcher;
 
-import java.util.Arrays;
-
-import org.hamcrest.BaseMatcher;
-import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 
-import jxsource.util.folder.node.AbstractNode;
 import jxsource.util.folder.search.util.Util;
 
 public class MatcherFactory {

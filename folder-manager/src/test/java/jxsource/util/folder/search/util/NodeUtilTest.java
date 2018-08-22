@@ -1,21 +1,17 @@
 package jxsource.util.folder.search.util;
 
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import jxsource.util.folder.node.JFile;
 import jxsource.util.folder.node.Node;
 import jxsource.util.folder.node.SysFile;
-import jxsource.util.folder.search.util.NodeUtil;
-import jxsource.util.folder.search.util.TreeFactory;
-
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
 
 public class NodeUtilTest {
 

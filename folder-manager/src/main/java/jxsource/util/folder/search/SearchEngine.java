@@ -7,14 +7,13 @@ import java.util.Set;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import jxsource.util.folder.node.JFile;
 import jxsource.util.folder.node.Node;
 import jxsource.util.folder.search.action.Action;
 import jxsource.util.folder.search.filter.Filter;
 
-public abstract class SearchEngine {
+public abstract class SearchEngine<T extends Node> {
 	static Logger log = LogManager.getLogger(SearchEngine.class);
-	private Set<Action> actions = new HashSet<Action>();
+	private Set<Action<T>> actions = new HashSet<Action<T>>();
 	private Filter filter;
 	private int count;
 
@@ -28,15 +27,15 @@ public abstract class SearchEngine {
 	public Filter getFilter() {
 		return filter;
 	}
-	public SearchEngine addAction(Action action) {
+	public SearchEngine<T> addAction(Action<T> action) {
 		actions.add(action);
 		return this;
 	}
 
-	public void setActions(Set<Action> actions) {
+	public void setActions(Set<Action<T>> actions) {
 		this.actions = actions;
 	}
-	public Set<Action> getActions() {
+	public Set<Action<T>> getActions() {
 		return actions;
 	}
 	/**
@@ -50,7 +49,7 @@ public abstract class SearchEngine {
 	 * @return true to allow search engine to process its children
 	 * 		false inform search engine to stop process its children
 	 */
-	protected int consume(Node file) {
+	protected int consume(T file) {
 		int status = Filter.ACCEPT;
 		if(filter != null) {
 			status = filter.accept(file);
@@ -60,7 +59,7 @@ public abstract class SearchEngine {
 		}
 		log.debug(Filter.getStatusName(status)+", "+file.getPath());
 		if(status == Filter.ACCEPT) {
-			for (Action action : actions) {
+			for (Action<T> action : actions) {
 			action.proc(file);
 			}	
 		}

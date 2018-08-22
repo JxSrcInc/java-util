@@ -1,12 +1,7 @@
 package jxsource.util.folder.search.util;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-
-import jxsource.util.folder.node.AbstractNode;
-import jxsource.util.folder.search.filter.Filter;
 
 /**
  * Support ignore case and like search

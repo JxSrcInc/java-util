@@ -1,27 +1,25 @@
 package jxsource.util.folder.manager;
 
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
 import java.io.File;
 
-import static org.hamcrest.Matchers.is;
-
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-import jxsource.util.folder.search.filter.filefilter.CopyFilter;
+import jxsource.util.folder.node.SysFile;
+import jxsource.util.folder.search.SysSearchEngine;
 import jxsource.util.folder.search.filter.filefilter.BackDir;
+import jxsource.util.folder.search.filter.filefilter.BackDirHolder;
 
 public class ManagerTest {
-	static ManagerBuilder builder;
-	static Manager manager;
+	ManagerBuilder<SysFile> builder;
 	boolean ready;
-	@BeforeClass
-	public static void init() {
+	@Before
+	public void init() {
 			try {
 				builder = CopyManager.builder();
-				manager = builder.build();
 			} catch (Exception e) {
 				e.printStackTrace();
 				assert(false);
@@ -29,14 +27,23 @@ public class ManagerTest {
 	}
 	@Test
 	public void testDefaultTempDir() {
-		assertThat(manager.getTempDir().get(), is(new File(BackDir.rootDir, "copy")));
+		Manager<SysFile> manager = builder.setEngine(new SysSearchEngine()).build();
+		assertThat(manager.getBackDir().get(), is(new File(BackDir.rootDir, "copy")));
 	}
-//	@Test
-//	public void testFilter() {
-//		manager.run("testdata/test-data/xyz");
-//		System.err.println(manager.getEngine());
-//		System.err.println(manager.getEngine().getFilter());
-//		assertThat(manager.getEngine().getFilter().getClass().getSimpleName(), is("CopyFilter"));
-//	}
+
+	@Test(expected = java.lang.AssertionError.class)
+	public void testNoEngingError() {
+		Manager<SysFile> manager = builder.build();
+		manager.run("testdata");
+		assert(false);
+	}
+	@Test
+	public void testEngine() {
+		Manager<SysFile> manager = builder.setEngine(new SysSearchEngine()).build();
+		assertThat(manager.getEngine() instanceof SysSearchEngine, is(true));
+		assertThat(manager.getEngine().getFilter().getClass().getSimpleName(), is("CopyFilter"));
+		manager.run("testdata/test-data/xyz");
+		BackDirHolder.get().clear();
+	}
 
 }
