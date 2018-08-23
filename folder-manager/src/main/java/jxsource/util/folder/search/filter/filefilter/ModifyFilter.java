@@ -18,7 +18,7 @@ public class ModifyFilter extends FileFilter{
 	private Pattern p;
 	private boolean changed;
 	
-	
+	ModifyFilter() {}
 	public String getReplacement() {
 		return replacement;
 	}
@@ -52,7 +52,6 @@ public class ModifyFilter extends FileFilter{
 			}
 	        return Filter.ACCEPT;
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			log.error("Error when delegating in "+getClass().getName(), e);;
 			return Filter.REJECT;
 		}

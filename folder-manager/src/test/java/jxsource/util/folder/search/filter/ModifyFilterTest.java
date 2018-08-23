@@ -8,6 +8,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import jxsource.util.folder.node.SysFile;
+import jxsource.util.folder.search.filter.filefilter.BackDirHolder;
+import jxsource.util.folder.search.filter.filefilter.FileFilterFactory;
 import jxsource.util.folder.search.filter.filefilter.ModifyFilter;
 
 import static org.mockito.Mockito.mock;
@@ -27,11 +29,12 @@ public class ModifyFilterTest {
 	public static void init() {
 		String msg = prefMsg+regex;
 		in = new ByteArrayInputStream(msg.getBytes());
+		BackDirHolder.get().clear();
 	}
 	
 	@Before
 	public void setup() {
-		filter = new ModifyFilter().setRegex(regex).setReplacement(replacement);
+		filter = FileFilterFactory.create(ModifyFilter.class).setRegex(regex).setReplacement(replacement);
 		file = mock(SysFile.class);
 	}
 	
@@ -43,7 +46,6 @@ public class ModifyFilterTest {
 			assertThat(filter.getContent(), is(prefMsg+replacement));
 			assertThat(filter.isChanged(), is(true));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			assert(false);
 		}

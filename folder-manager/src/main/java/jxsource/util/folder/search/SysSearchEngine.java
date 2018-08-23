@@ -47,12 +47,13 @@ public class SysSearchEngine extends SearchEngine<SysFile> {
 	public static void main(String...args) {
 		try {
 			SysSearchEngine engine = new SysSearchEngine();
-			Filter filter = new PathFilter("**/*.java");
+//			Filter filter = new PathFilter("**/*.java");
+			Filter filter = new PathFilter("testdata/test-data/src");
 			engine.setFilter(filter);
 			CollectionAction<SysFile> action = new CollectionAction<SysFile>();
 			action.setLeafOnly(false);
 			engine.addAction(action);
-			engine.search(new File("src"));
+			engine.search(new File("testdata/test-data"));
 			for(SysFile node: action.getNodes()) {
 				log.info(node.getAbsolutePath());
 			}

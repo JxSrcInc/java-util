@@ -34,8 +34,7 @@ public class ContentFilter extends LeafFilter{
 		this.wordMatch = wordMatch;
 		return this;
 	}
-	@Override
-	protected int delegateStatus(Node node) {
+	public int delegateStatus(Node node) {
 		JFile file = (JFile)node;
 		try {
 			InputStream in = file.getInputStream();

@@ -11,13 +11,14 @@ import org.apache.logging.log4j.Logger;
 import jxsource.util.folder.node.JFile;
 import jxsource.util.folder.node.SysFile;
 import jxsource.util.folder.search.util.NodeUtil;
+import jxsource.util.folder.search.util.Util;
 
 public class BackDir {
 	private static Logger log = LogManager.getLogger(BackDir.class);
 	public static String rootDir = System.getProperty("user.dir")
 			+System.getProperty("file.separator")+"working-backup";
 	private File backDir = new File(rootDir);
-	private Map<String,String> regitory = new HashMap<String,String>();
+	private Map<String,String> registory = new HashMap<String,String>();
 	
 	public BackDir setWorkingDir(String workingtDir) { 
 		if(workingtDir != null) {
@@ -32,15 +33,15 @@ public class BackDir {
 	}
 	
 	public File createTempFile(JFile src) {
-		String suffix = Long.toHexString(System.currentTimeMillis());
+		String suffix = Util.getBcakFileSuffix();
 		File parent = new File(get(), src.getParentPath());
 		if(!parent.exists()) {
 			parent.mkdirs();
 		}
-		File file = new File(parent, src.getName()+'-'+suffix);
+		File file = new File(parent, src.getName()+'.'+suffix);
 		try {
 			file.createNewFile();
-			regitory.put(file.getPath(), src.getAbsolutePath());
+			registory.put(file.getPath(), src.getAbsolutePath());
 			return file;
 		} catch (IOException e) {
 			log.warn("Error when creating back file "+file.getPath(), e);
@@ -51,7 +52,15 @@ public class BackDir {
 	@SuppressWarnings("unchecked")
 	public void clear() {
 		log.info("clear: "+backDir);
+		registory.clear();
 		NodeUtil.procTree(new SysFile(backDir), sysFile -> sysFile.delete());
+	}
+	/**
+	 * clear and reset backDir to rootDir
+	 */
+	public void reset() {
+		clear();
+		setWorkingDir(null);
 	}
 	
 }

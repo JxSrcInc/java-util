@@ -15,6 +15,8 @@ import jxsource.util.folder.search.filter.Filter;
 
 public class CopyFilter extends FileFilter{
 	private static Logger log = LogManager.getLogger(CopyFilter.class);
+	
+	CopyFilter() {}
 	@Override
 	protected int delegateStatus(JFile file) {
 		File moveTo = BackDirHolder.get().createTempFile(file);
@@ -33,7 +35,6 @@ public class CopyFilter extends FileFilter{
 	            return Filter.REJECT;
 	        }
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			log.error("Error when delegating in "+getClass().getName(), e);;
 			return Filter.REJECT;
 		}

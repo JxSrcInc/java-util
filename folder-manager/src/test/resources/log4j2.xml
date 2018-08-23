@@ -30,7 +30,7 @@
     <Logger name="jxsource.util.folder.search.filter.pathfilter" level="info" additivity="false">
     	<Appender-ref ref="sysout"/>
     </Logger>
-    <Logger name="jxsource.util.folder.search" level="info" additivity="false">
+    <Logger name="jxsource.util.folder.node" level="debug" additivity="false">
     	<Appender-ref ref="sysout"/>
     </Logger>
     <Logger name="jxsource.util.folder.search.filter" level="debug" additivity="false">

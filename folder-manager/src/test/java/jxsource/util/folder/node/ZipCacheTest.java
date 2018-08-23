@@ -27,44 +27,54 @@ public class ZipCacheTest {
 
 	@BeforeClass
 	public static void init() {
-		System.setProperty(ZipFile.CachePropertyName, ZipFile.Memory);		
+		System.setProperty(ZipFile.CachePropertyName, ZipFile.Memory);
 	}
+
 	@Test
 	public void test() throws ZipException, IOException {
 		ZipSearchEngine engine = new ZipSearchEngine();
-		Filter filter = new PathFilter("test-data/src");
-		engine.setFilter(filter);
-		CollectionAction action = new CollectionAction();
+		Filter zipfilter = new PathFilter("test-data/src");
+		engine.setFilter(zipfilter);
+		CollectionAction<ZipFile> action = new CollectionAction<ZipFile>();
 		engine.addAction(action);
 		engine.search(new File("testdata/test-data.jar"));
-		List<Node> zipResults = action.getNodes();
+		List<ZipFile> zipResults = action.getNodes();
 
 		SysSearchEngine sysEngine = new SysSearchEngine();
-		sysEngine.setFilter(filter);
-		CollectionAction sysAction = new CollectionAction();
+		Filter sysFilter = new PathFilter("testdata/test-data/src");
+		sysEngine.setFilter(sysFilter);
+		CollectionAction<SysFile> sysAction = new CollectionAction<SysFile>();
 		sysEngine.addAction(sysAction);
 		sysEngine.search(new File("testdata/test-data"));
-		List<Node> sysResults = action.getNodes();
-		
-		assertThat(sysResults.size()==zipResults.size(), is(true));
+		List<SysFile> sysResults = sysAction.getNodes();
+
+		assertThat(sysResults.size() == zipResults.size(), is(true));
 		assertThat("no match", sysResults.size(), greaterThan(0));
 
-		log.debug("matched files: "+sysResults.size());
-		for(int i=0; i<sysResults.size(); i++) {
-			String zipContent = getContent(zipResults.get(i));
-			String sysContent = getContent(sysResults.get(i));
+		log.debug("matched files: " + sysResults.size());
+		for (int i = 0; i < zipResults.size(); i++) {
+			ZipFile zipFile = zipResults.get(i);
+			String zipContent = getContent(zipFile);
+			String sysContent = null;
+			for (int k = 0; k < sysResults.size(); k++) {
+				SysFile sysFile = sysResults.get(k);
+				if (sysFile.getName().equals(zipFile.getName())) {
+					sysContent = getContent(sysFile);
+					break;
+				}
+			}
 			assertThat(zipContent, is(sysContent));
 		}
 	}
-	
+
 	private String getContent(Node node) throws IOException {
-			Reader in = new InputStreamReader(((JFile)node).getInputStream());
-			char[] buf = new char[1024];
-			int i;
-			StringBuilder sb = new StringBuilder();
-			while((i=in.read(buf)) != -1) {
-				sb.append(buf, 0, i);
-			}
-			return sb.toString();
+		Reader in = new InputStreamReader(((JFile) node).getInputStream());
+		char[] buf = new char[1024];
+		int i;
+		StringBuilder sb = new StringBuilder();
+		while ((i = in.read(buf)) != -1) {
+			sb.append(buf, 0, i);
+		}
+		return sb.toString();
 	}
 }

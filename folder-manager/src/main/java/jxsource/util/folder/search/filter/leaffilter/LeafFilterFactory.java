@@ -3,7 +3,6 @@ package jxsource.util.folder.search.filter.leaffilter;
 import java.util.HashMap;
 import java.util.Map;
 
-import jxsource.util.folder.search.filter.Filter;
 import jxsource.util.folder.search.util.StringMatcher;
 import jxsource.util.folder.search.util.Util;
 
@@ -16,7 +15,7 @@ public class LeafFilterFactory {
 	public static final String Zip = "Zip";
 	public static final String Content = "Content";
 
-	public static Filter createZipFilter(@SuppressWarnings("unchecked") HashMap<Integer, Boolean>...filterProperties) {
+	public static LeafFilter createZipFilter(@SuppressWarnings("unchecked") HashMap<Integer, Boolean>...filterProperties) {
 		if(filterProperties.length == 0) {
 			return create(Zip, Util.archiveTypes);
 		} else {
@@ -24,11 +23,11 @@ public class LeafFilterFactory {
 		}
 	}
 	
-	public static Filter create(String type, String value) {
+	public static LeafFilter create(String type, String value) {
 		return create(type, value, new HashMap<Integer, Boolean>());
 	}
 
-	public static Filter create(String type, String value, Map<Integer, Boolean> option) {
+	public static LeafFilter create(String type, String value, Map<Integer, Boolean> option) {
 		LeafFilter filter = null;
 		switch(type) {
 		case Ext:

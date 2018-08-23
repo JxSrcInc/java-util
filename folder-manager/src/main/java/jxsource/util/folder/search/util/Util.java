@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,13 +48,16 @@ public class Util {
 		return array;
 	}
 	// not thread safe
-	public static StringBuilder getContent(InputStream in) throws IOException {
+	public static StringBuilder getContent(InputStream in, boolean...close) throws IOException {
 		StringBuilder sb = new StringBuilder();
 		Reader r = new InputStreamReader(in);
 		char[] cbuf = new char[1024*8];
 		int i = 0;
 		while((i=r.read(cbuf)) != -1) {
 			sb.append(cbuf,0,i);
+		}
+		if(close.length == 0 || close[0] == true) {
+			in.close();
 		}
 		return sb;
 	}
@@ -140,5 +145,10 @@ public class Util {
 			}
 		}
 		return node;
+	}
+	public static String getBcakFileSuffix() {
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss");
+		LocalDateTime now = LocalDateTime.now();
+		return dtf.format(now);
 	}
 }
