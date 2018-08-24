@@ -28,24 +28,37 @@ public class SaveFilterTest {
 	public void testNoContent() {
 		SaveFilter saveFilter = FileFilterFactory.create(SaveFilter.class);
 		saveFilter.setBefore(FileFilterFactory.create(ModifyFilter.class));
-		assertThat(saveFilter.delegateStatus(new SysFile(new File("testdata/test-save/content.txt"))), is(Filter.REJECT));
+		assertThat(saveFilter.delegateStatus(new SysFile(
+				new File("testdata/test-save/content.txt"))), is(Filter.REJECT));
 	}
 
 	@Test
 	public void testNoModifyFilter() {
 		SaveFilter saveFilter = FileFilterFactory.create(SaveFilter.class);
 		saveFilter.setBefore(LeafFilterFactory.create(LeafFilterFactory.Ext, ""));
-		assertThat(saveFilter.delegateStatus(new SysFile(new File("testdata/test-save/content.txt"))), is(Filter.REJECT));
+		assertThat(saveFilter.delegateStatus(new SysFile(
+				new File("testdata/test-save/content.txt"))), is(Filter.REJECT));
 	}
 	
 	@Test
 	public void testSave() {
 		ModifyFilter modifyFilter = mock(ModifyFilter.class);
 		when(modifyFilter.getContent()).thenReturn("test content");
+		when(modifyFilter.isChanged()).thenReturn(true);
 		SaveFilter saveFilter = FileFilterFactory.create(SaveFilter.class);
 		saveFilter.setBefore(modifyFilter);
-		assertThat(saveFilter.delegateStatus(new SysFile(new File("testdata/test-save/content.txt"))), is(Filter.ACCEPT));
+		assertThat(saveFilter.delegateStatus(new SysFile(
+				new File("testdata/test-save/content.txt"))), is(Filter.ACCEPT));
 	}
 	
+	@Test
+	public void testNoModify() {
+		ModifyFilter modifyFilter = mock(ModifyFilter.class);
+		when(modifyFilter.isChanged()).thenReturn(false);
+		SaveFilter saveFilter = FileFilterFactory.create(SaveFilter.class);
+		saveFilter.setBefore(modifyFilter);
+		assertThat(saveFilter.delegateStatus(new SysFile(
+				new File("testdata/test-save/content.txt"))), is(Filter.REJECT));
+	}
 
 }

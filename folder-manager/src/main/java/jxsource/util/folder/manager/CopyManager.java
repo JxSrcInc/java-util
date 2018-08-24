@@ -21,7 +21,7 @@ public class CopyManager extends Manager<SysFile>{
 	}
 	public static void main(String...arg) {
 			Manager<SysFile> manager = CopyManager.builder()
-					.setEngine(new SysSearchEngine()).build();
+					.setEngine(new SysSearchEngine()).build(CopyManager.class);
 			BackDirHolder.get().clear();
 			manager.run("testdata/test-data/xyz");
 			System.out.println(manager.getBackDir().get());

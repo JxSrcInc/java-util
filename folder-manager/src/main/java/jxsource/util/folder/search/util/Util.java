@@ -151,4 +151,11 @@ public class Util {
 		LocalDateTime now = LocalDateTime.now();
 		return dtf.format(now);
 	}
+	public static String getBeginString(String src, int...len) {
+		int size = src.length();
+		if(len.length > 0 ) {
+			size = Math.min(size, len[0]);
+		}
+		return src.substring(0,  size);
+	}
 }

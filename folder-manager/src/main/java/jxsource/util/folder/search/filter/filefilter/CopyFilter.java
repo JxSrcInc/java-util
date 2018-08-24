@@ -20,6 +20,7 @@ public class CopyFilter extends FileFilter{
 	@Override
 	protected int delegateStatus(JFile file) {
 		File moveTo = BackDirHolder.get().createTempFile(file);
+		log.debug("copy "+file.getPath()+" to "+moveTo.getPath());
         Path temp;
 		try {
 			temp = Files.copy

@@ -27,10 +27,10 @@
     <Logger name="jxsource.util.folder.node" level="info" additivity="false">
     	<Appender-ref ref="sysout"/>
     </Logger>
-    <Logger name="jxsource.util.folder.search.util" level="info" additivity="false">
+    <Logger name="jxsource.util.folder.search.manager" level="debug" additivity="false">
     	<Appender-ref ref="sysout"/>
     </Logger>
-    <Logger name="jxsource.util.folder.search" level="info" additivity="false">
+    <Logger name="jxsource.util.folder.search.filter.filefilter" level="debug" additivity="false">
     	<Appender-ref ref="sysout"/>
        <AppenderRef ref="fileLogger"/>
     </Logger>

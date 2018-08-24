@@ -27,19 +27,19 @@ public class ManagerTest {
 	}
 	@Test
 	public void testDefaultTempDir() {
-		Manager<SysFile> manager = builder.setEngine(new SysSearchEngine()).build();
+		SysManager manager = builder.setEngine(new SysSearchEngine()).build(SysManager.class);
 		assertThat(manager.getBackDir().get(), is(new File(BackDir.rootDir, "copy")));
 	}
 
 	@Test(expected = java.lang.AssertionError.class)
 	public void testNoEngingError() {
-		Manager<SysFile> manager = builder.build();
+		SysManager manager = builder.build(SysManager.class);
 		manager.run("testdata");
 		assert(false);
 	}
 	@Test
 	public void testEngine() {
-		Manager<SysFile> manager = builder.setEngine(new SysSearchEngine()).build();
+		SysManager manager = builder.setEngine(new SysSearchEngine()).build(SysManager.class);
 		assertThat(manager.getEngine() instanceof SysSearchEngine, is(true));
 		assertThat(manager.getEngine().getFilter().getClass().getSimpleName(), is("CopyFilter"));
 		manager.run("testdata/test-data/xyz");

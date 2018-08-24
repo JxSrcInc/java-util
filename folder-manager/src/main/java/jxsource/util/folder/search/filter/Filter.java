@@ -39,16 +39,18 @@ public abstract class Filter {
 		return next;
 	}
 
-	public void setNext(Filter next) {
+	public Filter setNext(Filter next) {
 		this.next = next;
+		return this;
 	}
 
 	public Filter getBefore() {
 		return before;
 	}
 
-	public void setBefore(Filter before) {
+	public Filter setBefore(Filter before) {
 		this.before = before;
+		return this;
 	}
 
 	/**

@@ -11,6 +11,7 @@ import org.apache.logging.log4j.Logger;
 import jxsource.util.folder.node.JFile;
 import jxsource.util.folder.node.SysFile;
 import jxsource.util.folder.search.filter.Filter;
+import jxsource.util.folder.search.util.Util;
 
 public class SaveFilter extends FileFilter{
 	private static Logger log = LogManager.getLogger(SaveFilter.class);
@@ -23,11 +24,13 @@ public class SaveFilter extends FileFilter{
 			if(modifyFilter != null) {
 				String content = ((ModifyFilter)modifyFilter).getContent();
 				String path = file.getPath();
-				if(content != null) {
+				if(((ModifyFilter)modifyFilter).isChanged() && content != null) {
+					log.debug("save content -> "+Util.getBeginString(content, 50));
 					try {
 						OutputStream out = new FileOutputStream(path);
 						BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out));
 						writer.write(content);
+						writer.flush();
 						out.close();
 						return Filter.ACCEPT;						
 					} catch (Exception e) {
@@ -56,13 +59,10 @@ public class SaveFilter extends FileFilter{
 		Filter before = filter.getBefore();
 		if(before instanceof ModifyFilter) {
 			return before;
+		} else if(before == null) {
+			return null;
 		} else {
-			Filter beforeBefore = before.getBefore();
-			if(beforeBefore != null) {
-				return getModifyFilter(beforeBefore);
-			} else {
-				return null;
-			}
+			return getModifyFilter(before);
 		}
 	}
 }

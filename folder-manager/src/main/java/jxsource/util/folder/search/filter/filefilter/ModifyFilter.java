@@ -48,9 +48,13 @@ public class ModifyFilter extends FileFilter{
 			content = Util.getContent(in).toString();
 			changed =p.matcher(content).find();
 			if(changed) {
+				log.debug("-> "+Util.getBeginString(content, 50));
 				content = content.replaceAll(p.pattern(), replacement);
+				log.debug("<- "+Util.getBeginString(content, 50));
+		        return Filter.ACCEPT;
+			} else {
+		        return Filter.REJECT;
 			}
-	        return Filter.ACCEPT;
 		} catch (IOException e) {
 			log.error("Error when delegating in "+getClass().getName(), e);;
 			return Filter.REJECT;
