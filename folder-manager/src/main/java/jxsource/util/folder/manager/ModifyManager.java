@@ -1,12 +1,17 @@
 package jxsource.util.folder.manager;
 
 import jxsource.util.folder.node.SysFile;
+import jxsource.util.folder.search.SearchEngine;
 import jxsource.util.folder.search.SysSearchEngine;
 import jxsource.util.folder.search.filter.filefilter.BackDirHolder;
 import jxsource.util.folder.search.filter.filefilter.CopyFilter;
 import jxsource.util.folder.search.filter.filefilter.FileFilterFactory;
 import jxsource.util.folder.search.filter.filefilter.ModifyFilter;
 import jxsource.util.folder.search.filter.filefilter.SaveFilter;
+import jxsource.util.folder.search.filter.leaffilter.ExtFilter;
+import jxsource.util.folder.search.filter.leaffilter.FilterProperties;
+import jxsource.util.folder.search.filter.leaffilter.LeafFilter;
+import jxsource.util.folder.search.filter.leaffilter.LeafFilterFactory;
 
 public class ModifyManager extends Manager<SysFile>{
 
@@ -20,6 +25,10 @@ public class ModifyManager extends Manager<SysFile>{
 		}
 		public ModifyManagerBuilder setReplacement(String replacement) {
 			this.replacement = replacement;
+			return this;
+		}
+		public ModifyManagerBuilder setEngine(SearchEngine engine) {
+			super.setEngine(engine);
 			return this;
 		}
 		public ModifyManager build() {
@@ -38,7 +47,9 @@ public class ModifyManager extends Manager<SysFile>{
 				filter.setNext(modifyFilter);
 			}
 			setWorkingDir("modify");
-			setEngine(new SysSearchEngine());
+			if(engine == null) {
+				setEngine(new SysSearchEngine());
+			}
 			return super.build(ModifyManager.class);
 		}
 	}
@@ -46,10 +57,15 @@ public class ModifyManager extends Manager<SysFile>{
 		return new ModifyManagerBuilder();
 	}
 	public static void main(String...arg) {
+		SysSearchEngine engine = new SysSearchEngine();
+		FilterProperties pros = FilterProperties.setExclude(true);
+		LeafFilter filter = LeafFilterFactory.create(LeafFilterFactory.Ext, "log", pros);
+		engine.setFilter(filter);
 		ModifyManagerBuilder builder = ModifyManager.builder();
 		ModifyManager manager = builder
 				.setRegex("content")
 				.setReplacement("updated content")
+				.setEngine(engine)
 				.build();
 		manager.run("testdata/test-save");
 		System.out.println(manager.getBackDir().get());
