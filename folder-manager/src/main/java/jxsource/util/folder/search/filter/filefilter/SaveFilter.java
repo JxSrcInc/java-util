@@ -25,7 +25,7 @@ public class SaveFilter extends FileFilter{
 				String content = ((ModifyFilter)modifyFilter).getContent();
 				String path = file.getPath();
 				if(((ModifyFilter)modifyFilter).isChanged() && content != null) {
-					log.debug("save content -> "+Util.getBeginString(content, 50));
+					log.debug("save content("+content.length()+") -> "+path);
 					try {
 						OutputStream out = new FileOutputStream(path);
 						BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out));

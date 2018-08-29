@@ -9,6 +9,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -150,12 +152,5 @@ public class Util {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss");
 		LocalDateTime now = LocalDateTime.now();
 		return dtf.format(now);
-	}
-	public static String getBeginString(String src, int...len) {
-		int size = src.length();
-		if(len.length > 0 ) {
-			size = Math.min(size, len[0]);
-		}
-		return src.substring(0,  size);
 	}
 }

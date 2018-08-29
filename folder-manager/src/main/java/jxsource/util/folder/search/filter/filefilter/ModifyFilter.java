@@ -2,6 +2,8 @@ package jxsource.util.folder.search.filter.filefilter;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import org.apache.logging.log4j.LogManager;
@@ -9,14 +11,16 @@ import org.apache.logging.log4j.Logger;
 
 import jxsource.util.folder.node.JFile;
 import jxsource.util.folder.search.filter.Filter;
+import jxsource.util.folder.search.util.RegexMatcher;
 import jxsource.util.folder.search.util.Util;
 
 public class ModifyFilter extends FileFilter{
 	private static Logger log = LogManager.getLogger(ModifyFilter.class);
 	private String replacement;
 	private String content;
-	private Pattern p;
+	private RegexMatcher matcher;
 	private boolean changed;
+	private List<String> matches = new ArrayList<>();
 	
 	ModifyFilter() {}
 	public String getReplacement() {
@@ -33,7 +37,7 @@ public class ModifyFilter extends FileFilter{
 	}
 
 	public ModifyFilter setRegex(String regex) {
-		p = Pattern.compile(regex);
+		matcher = RegexMatcher.builder().build(regex);
 		return this;
 	}
 
@@ -46,11 +50,10 @@ public class ModifyFilter extends FileFilter{
 		try {
 			InputStream in = file.getInputStream();
 			content = Util.getContent(in).toString();
-			changed =p.matcher(content).find();
+			matches = matcher.find(content);
+			changed = matches.size() > 0;
 			if(changed) {
-				log.debug("-> "+Util.getBeginString(content, 50));
-				content = content.replaceAll(p.pattern(), replacement);
-				log.debug("<- "+Util.getBeginString(content, 50));
+				content = matcher.replace(content, replacement);
 		        return Filter.ACCEPT;
 			} else {
 		        return Filter.REJECT;
