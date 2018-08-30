@@ -1,10 +1,10 @@
 package jxsource.util.folder.search.app;
 
-import jxsource.util.folder.search.filter.Filter;
-import jxsource.util.folder.search.filter.leaffilter.ContentFilter;
-import jxsource.util.folder.search.filter.leaffilter.LeafFilterFactory;
 import java.util.List;
 import java.util.Map;
+
+import jxsource.util.folder.search.filter.leaffilter.ContentFilter;
+import jxsource.util.folder.search.util.RegexMatcher;
 
 public class ContentSearchApp extends SearchApp {
 
@@ -35,8 +35,12 @@ public class ContentSearchApp extends SearchApp {
 				}
 			}
 		}
-		contentFilter = (ContentFilter) LeafFilterFactory.create(LeafFilterFactory.Content, contentSearch);
-		contentFilter.setWordMatch(word);
+//		contentFilter = (ContentFilter) LeafFilterFactory.create(LeafFilterFactory.Content, contentSearch);
+//		contentFilter.setWordMatch(word);
+		RegexMatcher matcher = RegexMatcher.builder()
+				.setWord(word)
+				.build(contentSearch);
+		contentFilter = ContentFilter.builder().setRegexMatcher(matcher).build();
 		if (workingFilter == null) {
 			filter = workingFilter = contentFilter;
 		} else {

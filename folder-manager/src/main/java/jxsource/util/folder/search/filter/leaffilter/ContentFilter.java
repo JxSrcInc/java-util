@@ -5,7 +5,6 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -24,27 +23,16 @@ import jxsource.util.folder.search.util.Util;
  */
 public class ContentFilter extends LeafFilter {
 	private static Logger log = LogManager.getLogger(ContentFilter.class);
-	private Pattern p;
-	private String match;
-	private boolean wordMatch;
+	private RegexMatcher regexMatcher;
 	private Map<String, List<String>> matchDisplay = new HashMap<String, List<String>>();
 
-	ContentFilter(String match) {
-		this.match = match;
-		// (^|\\s) - line start or white space
-		// (?i) - ignore case
-		// (\\s|$) - white space or line end
-		p = Pattern.compile("(^|\\s)((?i)" + match + ")(\\s|$)");
+	private ContentFilter() {
 	}
 
 	public Map<String, List<String>> getMatchDisplay() {
 		return matchDisplay;
 	}
 
-	public ContentFilter setWordMatch(boolean wordMatch) {
-		this.wordMatch = wordMatch;
-		return this;
-	}
 
 	public int delegateStatus(Node node) {
 		JFile file = (JFile) node;
@@ -52,11 +40,12 @@ public class ContentFilter extends LeafFilter {
 			InputStream in = file.getInputStream();
 			String content = Util.getContent(in).toString();
 			List<String> matches;
-			if(wordMatch) {
-				matches = RegexMatcher.builder().setWord(true).build(match).find(content);
-			} else {
-				matches = RegexMatcher.builder().build(match).find(content);				
-			}
+//			if(wordMatch) {
+//				matches = RegexMatcher.builder().setWord(true).build(match).find(content);
+//			} else {
+//				matches = RegexMatcher.builder().build(match).find(content);				
+//			}
+			matches = regexMatcher.find(content);
 			if (matches.size() > 0) {
 				matchDisplay.put(file.getPath(), matches);
 				return Filter.ACCEPT;
@@ -67,5 +56,22 @@ public class ContentFilter extends LeafFilter {
 			log.warn("Error when creating content for file " + file.getPath(), e);
 			return Filter.REJECT;
 		}
+	}
+	
+	public static class ContentFilterBuilder {
+		private RegexMatcher regexMatcher;
+		public ContentFilterBuilder setRegexMatcher(RegexMatcher regexMatcher) {
+			this.regexMatcher = regexMatcher;
+			return this;
+		}
+		public ContentFilter build() {
+			assert regexMatcher != null: "ContentFilter's RegexMatcher cannot be null.";
+			ContentFilter filter = new ContentFilter();
+			filter.regexMatcher = regexMatcher;
+			return filter;
+		}
+	}
+	public static ContentFilterBuilder builder() {
+		return new ContentFilterBuilder();
 	}
 }

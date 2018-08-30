@@ -11,6 +11,7 @@ import jxsource.util.folder.node.SysFile;
 import jxsource.util.folder.search.filter.filefilter.BackDirHolder;
 import jxsource.util.folder.search.filter.filefilter.FileFilterFactory;
 import jxsource.util.folder.search.filter.filefilter.ModifyFilter;
+import jxsource.util.folder.search.util.RegexMatcher;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -34,7 +35,8 @@ public class ModifyFilterTest {
 	
 	@Before
 	public void setup() {
-		filter = FileFilterFactory.create(ModifyFilter.class).setRegex(regex).setReplacement(replacement);
+		RegexMatcher matcher = RegexMatcher.builder().build(regex);
+		filter = FileFilterFactory.create(ModifyFilter.class).setRegexMatcher(matcher).setReplacement(replacement);
 		file = mock(SysFile.class);
 	}
 	
@@ -43,6 +45,7 @@ public class ModifyFilterTest {
 		try {
 			when(file.getInputStream()).thenReturn(in);
 			assertThat(filter.delegateStatus(file), is(Filter.ACCEPT));
+			System.out.println(filter.getContent());
 			assertThat(filter.getContent(), is(prefMsg+replacement));
 			assertThat(filter.isChanged(), is(true));
 		} catch (IOException e) {

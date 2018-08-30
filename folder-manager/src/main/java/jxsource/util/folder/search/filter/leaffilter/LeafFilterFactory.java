@@ -13,7 +13,6 @@ public class LeafFilterFactory {
 	public static final String FullName = "FullName";
 	public static final String Time = "Time";
 	public static final String Zip = "Zip";
-	public static final String Content = "Content";
 
 	public static LeafFilter createZipFilter(@SuppressWarnings("unchecked") HashMap<Integer, Boolean>...filterProperties) {
 		if(filterProperties.length == 0) {
@@ -44,9 +43,6 @@ public class LeafFilterFactory {
 			break;
 		case Zip:
 			filter = new ZipFilter();
-			break;
-		case Content:
-			filter = new ContentFilter(value);
 			break;
 			default:
 				throw new RuntimeException("Invalid Filter type: "+type);

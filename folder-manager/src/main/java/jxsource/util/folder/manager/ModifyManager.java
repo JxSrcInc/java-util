@@ -1,17 +1,15 @@
 package jxsource.util.folder.manager;
 
 import jxsource.util.folder.node.SysFile;
-import jxsource.util.folder.search.SearchEngine;
 import jxsource.util.folder.search.SysSearchEngine;
-import jxsource.util.folder.search.filter.filefilter.BackDirHolder;
 import jxsource.util.folder.search.filter.filefilter.CopyFilter;
 import jxsource.util.folder.search.filter.filefilter.FileFilterFactory;
 import jxsource.util.folder.search.filter.filefilter.ModifyFilter;
 import jxsource.util.folder.search.filter.filefilter.SaveFilter;
-import jxsource.util.folder.search.filter.leaffilter.ExtFilter;
 import jxsource.util.folder.search.filter.leaffilter.FilterProperties;
 import jxsource.util.folder.search.filter.leaffilter.LeafFilter;
 import jxsource.util.folder.search.filter.leaffilter.LeafFilterFactory;
+import jxsource.util.folder.search.util.RegexMatcher;
 
 public class ModifyManager extends Manager<SysFile>{
 
@@ -27,14 +25,15 @@ public class ModifyManager extends Manager<SysFile>{
 			this.replacement = replacement;
 			return this;
 		}
-		public ModifyManagerBuilder setEngine(SearchEngine engine) {
+		public ModifyManagerBuilder setEngine(SysSearchEngine engine) {
 			super.setEngine(engine);
 			return this;
 		}
 		public ModifyManager build() {
 			ModifyFilter modifyFilter = FileFilterFactory.create(ModifyFilter.class);
 			CopyFilter copyFilter = FileFilterFactory.create(CopyFilter.class);
-			modifyFilter.setRegex(regex);
+			RegexMatcher matcher = RegexMatcher.builder().build(regex);
+			modifyFilter.setRegexMatcher(matcher);
 			modifyFilter.setReplacement(replacement);
 			SaveFilter saveFilter = FileFilterFactory.create(SaveFilter.class);
 			modifyFilter.setNext(copyFilter);

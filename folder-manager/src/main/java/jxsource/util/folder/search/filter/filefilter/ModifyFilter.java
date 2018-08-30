@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -36,8 +35,8 @@ public class ModifyFilter extends FileFilter{
 		return content;
 	}
 
-	public ModifyFilter setRegex(String regex) {
-		matcher = RegexMatcher.builder().build(regex);
+	public ModifyFilter setRegexMatcher(RegexMatcher matcher) {
+		this.matcher = matcher;
 		return this;
 	}
 
@@ -59,7 +58,7 @@ public class ModifyFilter extends FileFilter{
 		        return Filter.REJECT;
 			}
 		} catch (IOException e) {
-			log.error("Error when delegating in "+getClass().getName(), e);;
+			log.error("Error when delegating in "+getClass().getName(), e);
 			return Filter.REJECT;
 		}
  
