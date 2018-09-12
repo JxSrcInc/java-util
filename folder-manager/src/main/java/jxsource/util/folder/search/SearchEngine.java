@@ -15,11 +15,15 @@ public abstract class SearchEngine<T extends Node> {
 	static Logger log = LogManager.getLogger(SearchEngine.class);
 	private Set<Action<T>> actions = new HashSet<Action<T>>();
 	private Filter filter;
-	private int count;
-
+	private int searchedCount;
+	private int acceptedCount;
+	
 	public abstract void search(File file);
 	public int getSearchedCount() {
-		return count;
+		return searchedCount;
+	}
+	public int getAcceptedCount() {
+		return acceptedCount;
 	}
 	public void setFilter(Filter filter) {
 		this.filter = filter;
@@ -50,15 +54,14 @@ public abstract class SearchEngine<T extends Node> {
 	 * 		false inform search engine to stop process its children
 	 */
 	protected int consume(T file) {
+		searchedCount++;			
 		int status = Filter.ACCEPT;
 		if(filter != null) {
 			status = filter.accept(file);
 		}
-		if(file.isDir()) {
-			count++;			
-		}
 		log.debug(Filter.getStatusName(status)+", "+file.getPath());
 		if(status == Filter.ACCEPT) {
+			acceptedCount++;
 			for (Action<T> action : actions) {
 			action.proc(file);
 			}	

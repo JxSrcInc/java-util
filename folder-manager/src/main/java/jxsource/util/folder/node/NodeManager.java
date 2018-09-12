@@ -18,7 +18,7 @@ public class NodeManager {
 	// key: Node path, value: Node
 	private Map<String, Node> map = new HashMap<String, Node>();
 	
-	public NodeManager() {
+	NodeManager() {
 		
 	}
 	public void add(Node file) {
@@ -34,11 +34,15 @@ public class NodeManager {
 		map.clear();
 	}
 	
-	public Set<Node> buildTrees() {
+	public List<Node> getNodeList() {
 		List<Node> list = new ArrayList<Node>(map.size());
 		for(Node f: map.values()) {
 			list.add(f);
-		}
+		}	
+		return list;
+	}
+	public Set<Node> buildTrees() {
+		List<Node> list = getNodeList();
 		// added code below to normalize ZipFiles creation.
 		Set<Node> trees = new HashSet<Node>();
 		for(Node f: TreeFactory.build().createTrees(list)) {

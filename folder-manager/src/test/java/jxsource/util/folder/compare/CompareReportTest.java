@@ -28,7 +28,7 @@ import jxsource.util.folder.node.SysFile;
 import jxsource.util.folder.node.ZipCacheTest;
 
 public class CompareReportTest {
-	private Logger log = LogManager.getLogger(ZipCacheTest.class);
+	private Logger log = LogManager.getLogger(CompareReportTest.class);
 	private PrintStream printer;
 	private ByteArrayOutputStream out;
 	private String[] expect;
@@ -132,7 +132,6 @@ public class CompareReportTest {
 
 		assertThat(engine.isDiff(comparableNode), is(true));
 		expect = new String[] {
-				// String.format(Constants.diffPrintFormat,"/src/_pom_.txt","diff-len",Constants.srcSymbol,"51",Constants.cmpSymbol,"0"),
 				String.format(Constants.arrayPrintFormat, "/src/main/java", Constants.srcSymbol + ".missing",
 						"Date.java"),
 				String.format(Constants.arrayPrintFormat, "/src", Constants.srcSymbol + ".addition", "test"),

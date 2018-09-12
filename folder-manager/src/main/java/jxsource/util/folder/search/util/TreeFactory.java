@@ -45,6 +45,7 @@ public class TreeFactory {
 		trees.clear();
 		this.src = new ArrayList<Node>(src);
 		Collections.sort(this.src);
+		Collections.reverse(this.src);
 		proc();
 		return trees;
 	}
@@ -53,7 +54,7 @@ public class TreeFactory {
 	public Node createTree(final List<Node> src) {
 		Iterator<Node> i = createTrees(src).iterator();
 		Node first = null;
-		if(i.hasNext()) {
+		if (i.hasNext()) {
 			first = i.next();
 		}
 		return first;
@@ -86,32 +87,64 @@ public class TreeFactory {
 	}
 
 	private void proc() {
-		if (src.size() == 0) {
-			return;
-		}
-		Node file = src.remove(0);
-		// find file's parent node from (working) path by comparing parent path String
-		Node parentNode = findParent(file);
-		if (parentNode == null) {
-			// file is root or a new tree
-			addRoot(file);
-		} else {
-			if (file.getParent() == null) {
-				// file has no parent node when file is ZipFile
-				file.setParent(parentNode);
+		for (int i = src.size(); i > 0; i--) {
+			Node file = src.get(i - 1);
+
+			// find file's parent node from (working) path by comparing parent path String
+			Node parentNode = findParent(file);
+			if (parentNode == null) {
+				// file is root or a new tree
+				addRoot(file);
 			} else {
-				// validation
-				if (!file.getParent().equals(parentNode)) {
-					throw new RuntimeException(
-							"multi parent error: " + file.getParent().getPath() + "," + parentNode.getPath());
+				if (file.getParent() == null) {
+					// file has no parent node when file is ZipFile
+					file.setParent(parentNode);
+				} else {
+					// validation
+					if (!file.getParent().equals(parentNode)) {
+						throw new RuntimeException(
+								"multi parent error: " + file.getParent().getPath() + "," + parentNode.getPath());
+					}
 				}
+				parentNode.addChild(file);
+				path.add(file);
 			}
-			parentNode.addChild(file);
-			path.add(file);
+			log.debug("trees=" + trees.size() + ", path-length: " + path.size() + ", file=" + file.getPath() + ", "
+					+ "parent=" + (path.size() == 0 ? "null" : path.get(path.size() - 1).getPath()));
 		}
-		log.debug("trees=" + trees.size() + ", path-length: " + path.size() + ", file=" + file.getPath() + ", "
-				+ "parent=" + (path.size() == 0 ? "null" : path.get(path.size() - 1).getPath()));
-		// process next item in src
-		proc();
 	}
+
+	// private void proc() {
+	// if (src.size() == 0) {
+	// return;
+	// }
+	// Node file = src.remove(0);
+	// // find file's parent node from (working) path by comparing parent path
+	// String
+	// Node parentNode = findParent(file);
+	// if (parentNode == null) {
+	// // file is root or a new tree
+	// addRoot(file);
+	// } else {
+	// if (file.getParent() == null) {
+	// // file has no parent node when file is ZipFile
+	// file.setParent(parentNode);
+	// } else {
+	// // validation
+	// if (!file.getParent().equals(parentNode)) {
+	// throw new RuntimeException(
+	// "multi parent error: " + file.getParent().getPath() + "," +
+	// parentNode.getPath());
+	// }
+	// }
+	// parentNode.addChild(file);
+	// path.add(file);
+	// }
+	// log.debug("trees=" + trees.size() + ", path-length: " + path.size() + ",
+	// file=" + file.getPath() + ", "
+	// + "parent=" + (path.size() == 0 ? "null" : path.get(path.size() -
+	// 1).getPath()));
+	// // process next item in src
+	// proc();
+	// }
 }
