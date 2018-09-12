@@ -30,7 +30,6 @@ public class SysSearchEngine extends SearchEngine<SysFile> {
 	@Override
 	public void search(File file) {
 		SysFile sysFile = new SysFile(file);
-		//NodeManagerHolder.get().add(sysFile);
 		int status = consume(sysFile);
 		if (status == Filter.ACCEPT || status == Filter.PASS) {
 			if (file.isDirectory()) {

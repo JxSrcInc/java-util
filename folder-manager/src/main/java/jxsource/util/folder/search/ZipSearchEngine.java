@@ -110,7 +110,7 @@ public class ZipSearchEngine extends SearchEngine<ZipFile> {
 	 * @param args
 	 */
 	public static void main(String...args) {
-		System.setProperty(ZipFile.CachePropertyName, ZipFile.Memory);
+//		System.setProperty(ZipFile.ZipExtract, "true");
 		try {
 //			ZipInputStream in = new ZipInputStream(new FileInputStream("test-data.jar"));
 			ZipSearchEngine engine = new ZipSearchEngine();

@@ -27,7 +27,7 @@ public class ZipCacheTest {
 
 	@BeforeClass
 	public static void init() {
-		System.setProperty(ZipFile.CachePropertyName, ZipFile.Memory);
+		System.setProperty(ZipFile.ZipExtract, "true");
 	}
 
 	@Test

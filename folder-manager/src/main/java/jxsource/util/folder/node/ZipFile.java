@@ -2,32 +2,42 @@ package jxsource.util.folder.node;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class ZipFile extends AbstractNode implements JFile {
+	private static Logger log = LogManager.getLogger(ZipFile.class);
 	private static final long serialVersionUID = 1L;
-	public static final String CachePropertyName = "jxsource.util.folder.zipfile.cache";
-	public static final String NoCache = "NoCache";
-	public static final String Memory = "Memory";
-	public static final String File = "File";
-	public static String cache;
+	public static final String ZipTempDir = "jxsource.util.folder.zipfile.temp-dir";
+	public static final String ZipExtract = "jxsource.util.folder.zipfile.extract";
+	private static String zipTempDir = "zip-temp";
+	private static boolean extract;
 	private ZipEntry zipEntry;
-	private byte[] content;
+	private InputStream in;
+	private File tempFile;
 
 	static {
-		cache = System.getProperty(CachePropertyName);
-		if (cache == null || (!cache.equals(Memory)) && (!cache.equals(File))) {
-			cache = NoCache;
+		extract = (System.getProperty(ZipExtract) != null);
+		String _zipTempDir = System.getProperty(ZipTempDir);
+		if (_zipTempDir != null) {
+			zipTempDir = _zipTempDir.trim();
 		}
 	}
 
 	public ZipFile() {
-		
+
 	}
+
 	public ZipFile(String uri, ZipEntry zipEntry, ZipInputStream zis) {
 		this.zipEntry = zipEntry;
 		String path = zipEntry.getName();
@@ -41,24 +51,26 @@ public class ZipFile extends AbstractNode implements JFile {
 		setLength(zipEntry.getSize());
 		setArray(zipEntry.isDirectory());
 		lastModified = zipEntry.getLastModifiedTime().toMillis();
-		if (!this.isDir()) {
-			switch (cache) {
-			case Memory:
-				try {
-					loadContent(zis);
-				} catch (IOException e) {
-					throw new RuntimeException("Error when loading content for " + getAbsolutePath(), e);
-				}
-
-				break;
-			case File:
-			default:
+		if (!this.isDir() && zipTempDir != null) {
+			try {
+				loadContent(zis);
+			} catch (IOException e) {
+				throw new RuntimeException("Error when loading content for " + getAbsolutePath(), e);
 			}
 		}
 	}
 
-	private void loadContent(ZipInputStream in) throws IOException {
-		ByteArrayOutputStream out = new ByteArrayOutputStream();
+	public void loadContent(ZipInputStream in) throws IOException {
+		String parentPath = this.getParentPath();
+		File parent = new File(zipTempDir, parentPath);
+		if (!parent.exists()) {
+			if (!parent.mkdirs()) {
+				throw new IOException("Cannot create " + parent.getPath());
+			}
+		}
+		tempFile = new File(zipTempDir, path);
+		tempFile.deleteOnExit();
+		OutputStream out = new FileOutputStream(tempFile);
 		byte[] b = new byte[1024 * 8];
 		int i = 0;
 		while ((i = in.read(b)) != -1) {
@@ -66,17 +78,25 @@ public class ZipFile extends AbstractNode implements JFile {
 		}
 		out.flush();
 		out.close();
-		content = out.toByteArray();
 
 	}
 
 	public InputStream getInputStream() throws IOException {
 		// InputStream must create every time because it will be consumed by caller
-		return new ByteArrayInputStream(content);
+		return in = new FileInputStream(new File(zipTempDir, path));
 	}
 
 	public void close() {
-		// do nothing
+		if (in != null) {
+			try {
+				in.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				log.error("Error when closing " + tempFile.getPath());
+			} finally {
+				in = null;
+			}
+		}
 	}
 
 	@Override

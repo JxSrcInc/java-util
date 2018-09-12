@@ -38,7 +38,7 @@ public class CompareEngineTest {
 	}
 	@Test
 	public void testZipSys() throws ZipException, IOException {
-		System.setProperty(ZipFile.CachePropertyName, ZipFile.Memory);
+		System.setProperty(ZipFile.ZipExtract, "true");
 		CompareEngine engine = new CompareEngine();
 		engine.setLeafDiffer(null);
 		JFile src = new SysFile(new File("testdata/test-data"));
