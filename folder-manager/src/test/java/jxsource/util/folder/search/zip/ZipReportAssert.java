@@ -4,7 +4,9 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -22,7 +24,7 @@ public class ZipReportAssert extends ZipReportAction {
 	private String[] names;
 	private String[] exts;
 	private long start, end;
-	private List<JFile> found = new ArrayList<JFile>();
+	private Set<JFile> found = new HashSet<JFile>();
 	
 	private Matcher<String> contains(final String[] matchs) {
 		return new BaseMatcher<String>() {
@@ -43,7 +45,7 @@ public class ZipReportAssert extends ZipReportAction {
 		};
 	}
 
-	public List<JFile> getFound() {
+	public Set<JFile> getFound() {
 		return found;
 	}
 	public List<JFile> getFoundFiles() {
@@ -83,7 +85,7 @@ public class ZipReportAssert extends ZipReportAction {
 			JFile f = (JFile) node;
 			if (exts != null) {
 				assertThat(f.getExt(), contains(exts));
-				found.add(f);
+				add(f);
 			}
 			if (names != null) {
 				// don't verify extension
@@ -93,22 +95,24 @@ public class ZipReportAssert extends ZipReportAction {
 					name = name.substring(0, i);
 				}
 				assertThat(name, contains(names));
-				found.add(f);
+				add(f);
 			}
 			if(start > 0) {
 				if(f.getLastModified() >= start && (end == 0 ||f.getLastModified() < end)) {
 					assertTrue(true);
-					found.add(f);
+					add(f);
 				} else {
 					assertTrue(false);
 				}
 			}
 			if(exts == null && names == null && start <= 0) {
 				// default - accept all files
-				found.add(f);
+				add(f);
 			}
 		}
 	}
 
-
+	private void add(JFile f) {
+		found.add(f);		
+	}
 }

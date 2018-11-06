@@ -12,6 +12,7 @@ import org.apache.logging.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 
+import jxsource.util.folder.node.JFile;
 import jxsource.util.folder.search.filter.Filter;
 import jxsource.util.folder.search.filter.leaffilter.FilterProperties;
 import jxsource.util.folder.search.filter.leaffilter.LeafFilterFactory;
