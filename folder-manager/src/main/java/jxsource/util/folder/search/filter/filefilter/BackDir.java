@@ -13,6 +13,11 @@ import jxsource.util.folder.node.SysFile;
 import jxsource.util.folder.search.util.NodeUtil;
 import jxsource.util.folder.search.util.Util;
 
+/**
+ * Folder/Dir to save changed files
+ * @author JiangJxSrc
+ *
+ */
 public class BackDir {
 	private static Logger log = LogManager.getLogger(BackDir.class);
 	public static String rootDir = System.getProperty("user.dir")
@@ -20,11 +25,21 @@ public class BackDir {
 	private File backDir = new File(rootDir);
 	private Map<String,String> registory = new HashMap<String,String>();
 	
-	public BackDir setWorkingDir(String workingtDir) { 
-		if(workingtDir != null) {
-			backDir = new File(rootDir, workingtDir);
-		} else {
-			backDir = new File(rootDir);			
+	/**
+	 * Change BackDir from rootDir to a sub-directory of rootDir
+	 * 
+	 * @param workingDir - sub-directory name
+	 * @return
+	 */
+	public BackDir changeBackDir(String workingDir) { 
+		if(workingDir != null) {
+			File tmpDir = new File(rootDir, workingDir);
+			if(!tmpDir.exists()) {
+				if(!tmpDir.mkdirs()) {
+					throw new RuntimeException("Cannot create folder "+workingDir);
+				}
+			}
+			backDir = tmpDir;
 		}
 		return this;
 	}
@@ -60,7 +75,7 @@ public class BackDir {
 	 */
 	public void reset() {
 		clear();
-		setWorkingDir(null);
+		changeBackDir(null);
 	}
 	
 }

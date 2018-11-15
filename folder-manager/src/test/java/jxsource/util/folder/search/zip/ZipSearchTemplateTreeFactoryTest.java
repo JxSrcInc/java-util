@@ -6,12 +6,12 @@ import org.junit.Test;
 import jxsource.util.folder.search.zip.ZipSearchTemplate.ZipSearchTemplateBuilder;
 
 public class ZipSearchTemplateTreeFactoryTest {
-	ZipReportAssert zipReportAssert;
+	ZipReportCollection zipReportAssert;
 	ZipSearchTemplateBuilder builder;
 	
 	@Before
 	public void init() {
-		zipReportAssert = new ZipReportAssert();
+		zipReportAssert = new ZipReportCollection();
 		builder = ZipSearchTemplate.getBuilder();
 	}
 	@Test

@@ -12,6 +12,13 @@ import jxsource.util.folder.node.JFile;
 import jxsource.util.folder.node.SysFile;
 import jxsource.util.folder.search.filter.Filter;
 
+/**
+ * If there is a ModifyFilter before this Filter in Filter chain
+ * and content changes, save the modified content to its original file.
+ * 
+ * See jxsource.util.folder.manager.ModifyManager for how to use
+ *
+ */
 public class SaveFilter extends FileFilter{
 	private static Logger log = LogManager.getLogger(SaveFilter.class);
 	
@@ -19,7 +26,7 @@ public class SaveFilter extends FileFilter{
 	@Override
 	protected int delegateStatus(JFile file) {
 		if(file instanceof SysFile) {
-			Filter modifyFilter = getModifyFilter(this);
+			Filter modifyFilter = getModifyFilterFromChainBeforeThis(this);
 			if(modifyFilter != null) {
 				String content = ((ModifyFilter)modifyFilter).getContent();
 				String path = file.getPath();
@@ -50,18 +57,20 @@ public class SaveFilter extends FileFilter{
 		}
 	}
 	/**
-	 * Make public for mock in JUnit test
-	 * @param filter
-	 * @return
+	 * Find ModifyFilter from all Filters in Filter chain before this.
+	 * It is recursive search until no before filter.
+	 * 
+	 * @param filter - start filter
+	 * @return ModifyFilter or null
 	 */
-	public Filter getModifyFilter(Filter filter) {
+	public Filter getModifyFilterFromChainBeforeThis(Filter filter) {
 		Filter before = filter.getBefore();
 		if(before instanceof ModifyFilter) {
 			return before;
 		} else if(before == null) {
 			return null;
 		} else {
-			return getModifyFilter(before);
+			return getModifyFilterFromChainBeforeThis(before);
 		}
 	}
 }

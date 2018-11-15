@@ -26,9 +26,9 @@ public class Manager<T extends Node> {
 		return backDir;
 	}
 	
-	Manager<T> setWorkingDir(String workingDir) {
+	Manager<T> changeBackDir(String workingDir) {
 		backDir = BackDirHolder.get();
-		backDir.setWorkingDir(workingDir);
+		backDir.changeBackDir(workingDir);
 		return this;
 	}
 
@@ -78,9 +78,15 @@ public class Manager<T extends Node> {
 		assert filter != null: "Manager.filter is null.";
 		assert engine != null: "Manager.engine is null.";
 	}
+	/*
+	 * public entry point
+	 */
 	public void run(String file) {
 		run(new File(file));
 	}
+	/*
+	 * public entry point
+	 */
 	public void run(File file) {
 		if(!engineReady) {
 			initEngine();

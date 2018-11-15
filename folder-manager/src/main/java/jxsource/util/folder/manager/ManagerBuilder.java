@@ -34,7 +34,7 @@ public class ManagerBuilder<T extends Node> {
 	public <M extends Manager<T>> M build(Class<M> classManager) {
 		try {
 		M manager = classManager.newInstance();
-		manager.setWorkingDir(workingDir);
+		manager.changeBackDir(workingDir);
 		manager.setFileFilter(filter);
 		manager.setEngine(engine);
 		return manager;

@@ -1,6 +1,5 @@
 package jxsource.util.folder.search.zip;
 
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -19,8 +18,8 @@ import jxsource.util.folder.node.Node;
 import jxsource.util.folder.node.ZipFile;
 import jxsource.util.folder.search.util.Util;
 
-public class ZipReportAssert extends ZipReportAction {
-	private static Logger log = LogManager.getLogger(ZipReportAssert.class);
+public class ZipReportCollection extends ZipReportAction {
+	private static Logger log = LogManager.getLogger(ZipReportCollection.class);
 	private String[] names;
 	private String[] exts;
 	private long start, end;
@@ -58,24 +57,32 @@ public class ZipReportAssert extends ZipReportAction {
 		return foundFiles;
 	}
 
-	public ZipReportAssert setName(String multiNames) {
+	public ZipReportCollection setName(String multiNames) {
 		names = Util.toArray(multiNames);
 		return this;
 	}
 
-	public ZipReportAssert setExt(String multiExts) {
+	public ZipReportCollection setExt(String multiExts) {
 		exts = Util.toArray(multiExts);
 		return this;
 	}
-	public ZipReportAssert setStart(long start) {
+	public ZipReportCollection setStart(long start) {
 		this.start = start;
 		return this;
 	}
-	public ZipReportAssert setEnd(long end) {
+	public ZipReportCollection setEnd(long end) {
 		this.end = end;
 		return this;
 	}
 
+	private boolean inArray(String match, String[] array) {
+		for(String ele: array) { 
+			if(ele.equals(ele)) {
+				return true;
+			}
+		}
+		return false;
+	}
 	@Override
 	public void report(String url, List<ZipFile> extractFiles) {
 //		assertTrue(extractFiles.size() > 0);
@@ -84,8 +91,9 @@ public class ZipReportAssert extends ZipReportAction {
 			// TODO: Node/JFile
 			JFile f = (JFile) node;
 			if (exts != null) {
-				assertThat(f.getExt(), contains(exts));
-				add(f);
+				if(inArray(f.getExt(), exts)) {
+					add(f);
+				}
 			}
 			if (names != null) {
 				// don't verify extension
@@ -94,8 +102,9 @@ public class ZipReportAssert extends ZipReportAction {
 				if (i > 0) {
 					name = name.substring(0, i);
 				}
-				assertThat(name, contains(names));
-				add(f);
+				if(inArray(name, names)) {
+					add(f);
+				}
 			}
 			if(start > 0) {
 				if(f.getLastModified() >= start && (end == 0 ||f.getLastModified() < end)) {

@@ -11,6 +11,19 @@ import jxsource.util.folder.search.filter.leaffilter.LeafFilter;
 import jxsource.util.folder.search.filter.leaffilter.LeafFilterFactory;
 import jxsource.util.folder.search.util.RegexMatcher;
 
+/**
+ * ModifyManager creates a Filter chain: 
+ * 1. ModifyFilter - if content matchs RegexMatcher, modify content.
+ * 2. CopyFilter - if the file is modified, copy file original content
+ *                 from system to BackDir
+ * 3. SaveFilter - if the file is modified, save modified file content 
+ *                 back to the original file.
+ *                 
+ * Note: because the three filters are in above order in filter chain,
+ * CopyFilter and SaveFilter will invoke only if ModifyFilter accepts the file.
+ * 
+ * You can add other filters before ModifyFilter to get better performance.
+ */
 public class ModifyManager extends Manager<SysFile>{
 
 	public static class ModifyManagerBuilder extends ManagerBuilder<SysFile>{
@@ -31,11 +44,13 @@ public class ModifyManager extends Manager<SysFile>{
 		}
 		public ModifyManager build() {
 			ModifyFilter modifyFilter = FileFilterFactory.create(ModifyFilter.class);
-			CopyFilter copyFilter = FileFilterFactory.create(CopyFilter.class);
 			RegexMatcher matcher = RegexMatcher.builder().build(regex);
 			modifyFilter.setRegexMatcher(matcher);
 			modifyFilter.setReplacement(replacement);
+			
+			CopyFilter copyFilter = FileFilterFactory.create(CopyFilter.class);
 			SaveFilter saveFilter = FileFilterFactory.create(SaveFilter.class);
+			
 			modifyFilter.setNext(copyFilter);
 			copyFilter.setBefore(modifyFilter);
 			copyFilter.setNext(saveFilter);

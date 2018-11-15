@@ -33,10 +33,10 @@
     <Logger name="jxsource.util.folder.node" level="debug" additivity="false">
     	<Appender-ref ref="sysout"/>
     </Logger>
-    <Logger name="jxsource.util.folder.search.filter" level="debug" additivity="false">
+    <Logger name="jxsource.util.folder.search" level="info" additivity="false">
     	<Appender-ref ref="sysout"/>
     </Logger>
-    <Logger name="jxsource.util.folder.compare" level="debug" additivity="false">
+    <Logger name="jxsource.util.folder.search.action" level="info" additivity="false">
     	<Appender-ref ref="sysout"/>
     </Logger>
    </Loggers>

@@ -82,6 +82,7 @@ public class ZipSearchEngine extends SearchEngine<ZipFile> {
 		}
 		ZipInputStream zis = new ZipInputStream(new FileInputStream(f.getPath()));
 		ZipEntry entry;
+		log.info("search zip file: " + f.getPath());
 		while ((entry = zis.getNextEntry()) != null) {
 			ZipFile currNode = new ZipFile(f.getPath(), entry, zis);
 			nodeManager.add(currNode);

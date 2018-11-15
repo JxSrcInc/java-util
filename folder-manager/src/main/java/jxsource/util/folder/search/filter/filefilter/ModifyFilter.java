@@ -13,9 +13,21 @@ import jxsource.util.folder.search.filter.Filter;
 import jxsource.util.folder.search.util.RegexMatcher;
 import jxsource.util.folder.search.util.Util;
 
+/**
+ * Modify file content (in memory) if the RegexMatcher matches the file content.
+ * Therefore
+ * 1. if match, content changes.
+ * 2. if not, content does not change
+ *
+ * A Filter after it can get changed content using getContent() method.
+ * 
+ * See jxsource.util.folder.manager.ModifyManager for how to use
+ */
 public class ModifyFilter extends FileFilter{
 	private static Logger log = LogManager.getLogger(ModifyFilter.class);
+	/* replacement for RegexMatcher */
 	private String replacement;
+	/* file content */
 	private String content;
 	private RegexMatcher matcher;
 	private boolean changed;
@@ -44,6 +56,10 @@ public class ModifyFilter extends FileFilter{
 		return changed;
 	}
 
+	/**
+	 * If file content matches RegesMatcher,
+	 * replace all matched contents with replacement
+	 */
 	@Override
 	protected int delegateStatus(JFile file) {
 		try {

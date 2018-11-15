@@ -6,6 +6,11 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
+/**
+ * 
+ * Roll back files from BackDir to their original folders.
+ *
+ */
 public class RestoreManager {
 	public static void main(String...args) {
 		File backDir = new File("working-backup/modify");

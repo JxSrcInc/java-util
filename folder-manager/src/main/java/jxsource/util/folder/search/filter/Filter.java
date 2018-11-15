@@ -54,13 +54,20 @@ public abstract class Filter {
 	}
 
 	/**
-	 * implemented by sub-class to determine that "file" should be accept,
+	 * implemented by sub-class to determine that Node should be accept,
 	 * 
 	 * @param file
-	 * @return
+	 * @return int: ACCEPT, PASS or REJECT
 	 */
 	public abstract int delegateAccept(Node file);
 
+	/**
+	 * This is a chain call to invoke next filter
+	 * while the above abstract delegateAccept method determines for the Node.
+	 * 
+	 * @param file
+	 * @return int: ACCEPT, PASS or REJECT
+	 */
 	public int accept(Node file) {
 		int status = delegateAccept(file);
 		switch (status) {
